@@ -17,10 +17,39 @@ atom-text-editor::shadow {
   div.ink.block {
     background: url("atom://ink/res/stripe.png");
     background-size: 20px;
-    opacity: 0.1;
+    opacity: 0.05;
     transition: opacity 0.2s;
+    &.hidden {
+      opacity: 0;
+    }
   }
-  div.ink.block.hidden {
+
+}
+
+.ink.inline {
+  font-family: @font-family;
+
+  @inline-background-color: fade(@base-background-color, 90%);
+  background: linear-gradient(to top, darken(@inline-background-color, 3%),
+                                      @inline-background-color 10%,
+                                      @inline-background-color 90%,
+                                      lighten(@inline-background-color, 3%));
+  box-shadow: 0.5px 0.5px 2px @base-border-color;
+  border-radius: 3px;
+
+  padding: 0px 5px 0px 5px;
+  transition: opacity 0.1s;
+  opacity: 1;
+  cursor: default;
+
+  .header {
+    font-weight: bold;
+  }
+
+  &.hidden {
     opacity: 0;
+  }
+  &.invalid {
+    opacity: 0.5;
   }
 }

@@ -29,6 +29,5 @@ module.exports =
       height: end-start+1
     @timeout 20, => div.classList.add 'hidden'
     @timeout 220, =>
-      console.log 'removed'
       overlay.remove div
     div

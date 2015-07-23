@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 block = require './block'
 loading = require './loading'
+results = require './results'
 
 module.exports = Ink =
   activate: ->
@@ -14,3 +15,4 @@ module.exports = Ink =
       loading.done()
     reset: ->
       loading.reset()
+    results: results
