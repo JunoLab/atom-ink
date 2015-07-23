@@ -1,0 +1,16 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+atom-text-editor::shadow {
+  div.block-notify .region {
+    background: @background-color-info;
+    opacity: 0.2;
+  }
+  div.block-notify.hidden .region {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}
