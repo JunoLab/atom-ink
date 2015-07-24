@@ -11,7 +11,7 @@ module.exports =
     body.classList.add 'body'
     body
 
-  result: (ed) ->
+  result: (ed, opts) ->
     view = document.createElement 'div'
     view.classList.add 'ink', 'inline', 'result'
     view.style.position = 'relative'
@@ -21,8 +21,8 @@ module.exports =
     body = @body()
     view.appendChild header
     view.appendChild body
-    header.innerText = "Result"
-    body.innerText = "[1, 2, 3\n 4, 5, 6\n 7, 8, 9]"
+    header.innerText = opts.header
+    body.innerText = opts.body
     view: view
     header: header
     body: body
@@ -35,11 +35,13 @@ module.exports =
     r.hide = => @hideBody r
     r.toggle = => @toggle r
 
-  show: (ed, mark, {watch}={watch: true}) ->
+  show: (ed, mark, {watch, header, body}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
     @removeLines ed, mark.getHeadBufferPosition().row,
                      mark.getTailBufferPosition().row
-    result = @result ed
+    result = @result ed,
+      header: header
+      body: body
     mark.result = result
     result.editor = ed
     result.marker = mark
@@ -53,7 +55,7 @@ module.exports =
     result.view.style.opacity = 0
     @timeout 10, =>
       result.view.style.opacity = null
-    watch and @watchText result
+    watch != false and @watchText result
     @watchNewline result
     result
 
