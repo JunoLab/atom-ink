@@ -11,11 +11,11 @@ module.exports =
     body.classList.add 'body'
     body
 
-  result: () ->
+  result: (ed) ->
     view = document.createElement 'div'
     view.classList.add 'ink', 'inline', 'result'
     view.style.position = 'relative'
-    view.style.top = -@ed.getLineHeightInPixels() + 'px'
+    view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'
     header = @header()
     body = @body()
@@ -36,7 +36,10 @@ module.exports =
     r.toggle = => @toggle r
 
   show: (ed, mark, {watch}={}) ->
-    result = @result()
+    @removeLines ed, mark.getHeadBufferPosition().row,
+                     mark.getTailBufferPosition().row
+    result = @result ed
+    mark.result = result
     result.editor = ed
     result.marker = mark
     result.text = @text result
@@ -52,6 +55,9 @@ module.exports =
     watch and @watchText result
     result
 
+  lineRange: (ed, start, end) ->
+    [[start, 0], [end, ed.lineTextForBufferRow(end).length]]
+
   showForRange: (ed, range, opts) ->
     mark = ed.markBufferRange range
     result = @show ed, mark, opts
@@ -59,7 +65,7 @@ module.exports =
     return result
 
   showForLines: (ed, start, end, opts) ->
-    @showForRange ed, [[start, 0], [end, 100]], opts #TODO: check line length
+    @showForRange ed, @lineRange(ed, start, end), opts
 
   remove: (result) ->
     result.view.style.opacity = 0
@@ -97,3 +103,12 @@ module.exports =
 
   toggle: (r) ->
     if r.hidden then @showBody r else @hideBody r
+
+  forLines: (ed, start, end) ->
+    ed.findMarkers().filter((m)->m.result? &&
+                                 m.getBufferRange().intersectsRowRange(start, end))
+                    .map((m)->m.result)
+
+  removeLines: (ed, start, end) ->
+    for r in @forLines ed, start, end
+      r.destroy()
