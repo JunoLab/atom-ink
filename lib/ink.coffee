@@ -9,10 +9,5 @@ module.exports = Ink =
   provide: ->
     highlight: (ed, start, end) =>
       block.highlight ed, start, end
-    working: ->
-      loading.working()
-    done: ->
-      loading.done()
-    reset: ->
-      loading.reset()
+    loading: loading
     results: results
