@@ -100,7 +100,9 @@ module.exports =
     r.newlineWatch = r.marker.onDidChange (e) => @checkNewline r, e
 
   checkNewline: (r, e) ->
-    if e.textChanged
+    if !e.isValid
+      r.destroy()
+    else if e.textChanged
       old = e.oldHeadScreenPosition
       nu = e.newHeadScreenPosition
       text = r.editor.getTextInRange([old, nu])
