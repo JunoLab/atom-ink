@@ -130,5 +130,6 @@ module.exports =
       r.destroy()
 
   removeAll: (ed) ->
+    ed ?= atom.workspace.getActiveTextEditor()
     for r in ed.findMarkers().filter((m)->m.result?).map((m)->m.result)
       r.destroy()
