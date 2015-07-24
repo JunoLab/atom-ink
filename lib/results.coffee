@@ -35,7 +35,8 @@ module.exports =
     r.hide = => @hideBody r
     r.toggle = => @toggle r
 
-  show: (ed, mark, {watch}={}) ->
+  show: (ed, mark, {watch}={watch: true}) ->
+    mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
     @removeLines ed, mark.getHeadBufferPosition().row,
                      mark.getTailBufferPosition().row
     result = @result ed
@@ -53,6 +54,7 @@ module.exports =
     @timeout 10, =>
       result.view.style.opacity = null
     watch and @watchText result
+    @watchNewline result
     result
 
   lineRange: (ed, start, end) ->
@@ -73,6 +75,7 @@ module.exports =
       result.decorator.destroy()
       result.ownsMark and result.marker.destroy()
       result.editorWatch?.dispose()
+      result.newlineWatch?.dispose()
 
   invalidate: (result) ->
     result.view.classList.add 'invalid'
@@ -93,6 +96,17 @@ module.exports =
     if r.text == text and r.invalid then r.validate()
     else if r.text != text and !r.invalid then r.invalidate()
 
+  watchNewline: (r) ->
+    r.newlineWatch = r.marker.onDidChange (e) => @checkNewline r, e
+
+  checkNewline: (r, e) ->
+    if e.textChanged
+      old = e.oldHeadScreenPosition
+      nu = e.newHeadScreenPosition
+      text = r.editor.getTextInRange([old, nu])
+      if old.isLessThan(nu) && text.match /^\n\s*$/
+        r.marker.setHeadBufferPosition old
+
   showBody: (r) ->
     r.body.style.display = null
     r.hidden = false
@@ -111,4 +125,8 @@ module.exports =
 
   removeLines: (ed, start, end) ->
     for r in @forLines ed, start, end
+      r.destroy()
+
+  removeAll: (ed) ->
+    for r in ed.findMarkers().filter((m)->m.result?).map((m)->m.result)
       r.destroy()
