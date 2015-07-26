@@ -102,6 +102,7 @@ module.exports =
     r.newlineWatch = r.marker.onDidChange (e) => @checkNewline r, e
 
   checkNewline: (r, e) ->
+    # TODO: destroy on empty
     if !e.isValid
       r.destroy()
     else if e.textChanged
