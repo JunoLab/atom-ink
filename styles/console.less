@@ -1,0 +1,63 @@
+@import "syntax-variables";
+
+@gutter-width: 30px;
+
+.console {
+  width: 100%;
+  height: 100%;
+  background-color: @syntax-background-color;
+  color: @syntax-text-color;
+
+  atom-text-editor::shadow {
+    .cursor-line {
+      background: none;
+    }
+  }
+  & > .gutter {
+    position: absolute;
+    height: 100%;
+    width: @gutter-width;
+    color: @syntax-gutter-text-color;
+    background-color: @syntax-gutter-background-color;
+  }
+  .divider {
+    width: 80%;
+    height: 1px;
+    background-color: @syntax-wrap-guide-color;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    .hidden {
+      opacity: 0;
+    }
+  }
+
+  .cell {
+    transition: all 0.1s ease;
+    position: relative;
+    top: 0px;
+    &.ink-hide {
+      opacity: 0;
+      position: relative;
+      top: 10px;
+    }
+    .gutter {
+      width: @gutter-width;
+      height: 10px;
+      float: left;
+      color: @syntax-gutter-text-color;
+      text-align:center;
+    }
+    .stream {
+      font-family: 'DejaVu Sans Mono';
+      font-size: 12px;
+    }
+    .error {
+      color: @text-color-warning;
+    }
+    .info {
+      color: @text-color-info;
+    }
+  }
+}
