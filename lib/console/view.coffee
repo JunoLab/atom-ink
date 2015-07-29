@@ -14,6 +14,8 @@ class ConsoleView extends ScrollView
   initialize: ->
     super
     @items = @element.querySelector '.items'
+    @element.querySelector('.spacer').onclick = =>
+      @focusInput true
 
   getTitle: ->
     "Console"
@@ -85,3 +87,14 @@ class ConsoleView extends ScrollView
     process.nextTick =>
       view.classList.remove 'ink-hide'
     view
+
+  getInput: ->
+    items = @items.querySelectorAll('.cell')
+    items[items.length-1]
+
+  addBeforeInput: (view) ->
+    @items
+
+  focusInput: (force) ->
+    if force or @element.contains document.activeElement
+      @getInput()?.querySelector('atom-text-editor')?.focus()

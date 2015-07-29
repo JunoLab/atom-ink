@@ -24,7 +24,9 @@ module.exports =
     isInput: false
     input: ->
       @isInput = true
-      @view.addItem @view.fadeIn @view.inputView(this)
+      v = @view.inputView(this)
+      @view.addItem @view.fadeIn v
+      @view.focusInput()
     done: ->
       @isInput = false
     out: (s) ->
