@@ -88,6 +88,13 @@ class ConsoleView extends ScrollView
       view.classList.remove 'ink-hide'
     view
 
+  slideIn: (view) ->
+    h = view.clientHeight
+    view.style.height = '0'
+    process.nextTick ->
+      view.style.height = h + 'px'
+    view
+
   getInput: ->
     items = @items.querySelectorAll('.cell')
     items[items.length-1]

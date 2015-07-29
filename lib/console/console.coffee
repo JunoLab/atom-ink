@@ -32,7 +32,7 @@ module.exports =
       @isInput = false
     out: (s) ->
       if @isInput
-        @view.addBeforeInput @view.outView s
+        @view.slideIn @view.addBeforeInput @view.outView s
       else
         @view.addItem @view.fadeIn @view.outView s
       @divider()
@@ -40,18 +40,3 @@ module.exports =
       @view.divider @isInput
     emitter: new Emitter
     onEval: (f) -> @emitter.on 'eval', f
-
-  echo: ->
-    @openTab (c) =>
-      c.onEval (ed) =>
-        c.done()
-        window.ed = ed
-        if ed.getText()
-          c.out ed.getText()
-        # setTimeout (-> if ed.getText()
-        #   c.out ed.getText()), 1000
-        c.input()
-      c.input()
-      @c = c
-
-  # @echo()
