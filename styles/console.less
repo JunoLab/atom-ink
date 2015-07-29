@@ -28,8 +28,13 @@
     margin-right: auto;
     margin-top: 2px;
     margin-bottom: 2px;
-    .hidden {
+
+    transition: all 0.1s ease;
+    top: 0;
+    &.ink-hide {
       opacity: 0;
+      position: relative;
+      top: 10px;
     }
   }
   .items-scroll {
@@ -45,7 +50,7 @@
   .cell {
     transition: all 0.1s ease;
     position: relative;
-    top: 0px;
+    top: 0;
     &.ink-hide {
       opacity: 0;
       position: relative;

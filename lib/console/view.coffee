@@ -23,6 +23,7 @@ class ConsoleView extends ScrollView
 
   addItem: (view) ->
     @items.appendChild view
+    view
 
   clear: ->
     while @items.hasChildNodes()
@@ -47,9 +48,6 @@ class ConsoleView extends ScrollView
     content.appendChild v
     cell.appendChild gutter
     cell.appendChild content
-    cell.classList.add 'ink-hide'
-    process.nextTick =>
-      cell.classList.remove 'ink-hide'
     cell
 
   outView: (s) ->
@@ -81,3 +79,9 @@ class ConsoleView extends ScrollView
       con.emitter.emit 'eval', ed.getModel()
     @cellView ed,
       icon: 'chevron-right'
+
+  fadeIn: (view) ->
+    view.classList.add 'ink-hide'
+    process.nextTick =>
+      view.classList.remove 'ink-hide'
+    view

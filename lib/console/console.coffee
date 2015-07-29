@@ -15,24 +15,24 @@ module.exports =
     @consoleOpener.dispose()
     @openCmd.dispose()
 
+  openTab: (f) ->
+    atom.workspace.open('atom://console', split:'right').then (view) =>
+      f @console view
+
   console: (view) ->
     view: view
     isInput: false
     input: ->
       @isInput = true
-      @view.addItem @view.inputView(this)
+      @view.addItem @view.fadeIn @view.inputView(this)
     done: ->
       @isInput = false
     out: (s) ->
-      @view.addItem @view.outView s
+      @view.addItem @view.fadeIn @view.outView s
     divider: ->
-      @view.divider()
+      @view.fadeIn @view.divider()
     emitter: new Emitter
     onEval: (f) -> @emitter.on 'eval', f
-
-  openTab: (f) ->
-    atom.workspace.open('atom://console', split:'right').then (view) =>
-      f @console view
 
   echo: ->
     @openTab (c) =>
@@ -44,5 +44,6 @@ module.exports =
         c.divider()
       c.input()
       c.divider()
+      @c = c
 
   # @echo()
