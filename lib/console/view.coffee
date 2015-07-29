@@ -34,10 +34,10 @@ class ConsoleView extends ScrollView
   setGrammar: (g) ->
     @defaultGrammar = g
 
-  divider: ->
+  divider: (input) ->
     d = document.createElement 'div'
     d.classList.add 'divider'
-    @addItem d
+    if input then @addBeforeInput d else @addItem @fadeIn d
 
   cellView: (v, {icon, gutterText}={}) ->
     cell = document.createElement 'div'
@@ -93,7 +93,7 @@ class ConsoleView extends ScrollView
     items[items.length-1]
 
   addBeforeInput: (view) ->
-    @items
+    @items.insertBefore view, @getInput()
 
   focusInput: (force) ->
     if force or @element.contains document.activeElement

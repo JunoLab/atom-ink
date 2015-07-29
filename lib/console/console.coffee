@@ -23,28 +23,35 @@ module.exports =
     view: view
     isInput: false
     input: ->
-      @isInput = true
       v = @view.inputView(this)
       @view.addItem @view.fadeIn v
       @view.focusInput()
+      @divider()
+      @isInput = true
     done: ->
       @isInput = false
     out: (s) ->
-      @view.addItem @view.fadeIn @view.outView s
+      if @isInput
+        @view.addBeforeInput @view.outView s
+      else
+        @view.addItem @view.fadeIn @view.outView s
+      @divider()
     divider: ->
-      @view.fadeIn @view.divider()
+      @view.divider @isInput
     emitter: new Emitter
     onEval: (f) -> @emitter.on 'eval', f
 
   echo: ->
     @openTab (c) =>
       c.onEval (ed) =>
-        c.out ed.getText()
-        c.divider()
+        c.done()
+        window.ed = ed
+        if ed.getText()
+          c.out ed.getText()
+        # setTimeout (-> if ed.getText()
+        #   c.out ed.getText()), 1000
         c.input()
-        c.divider()
       c.input()
-      c.divider()
       @c = c
 
   # @echo()
