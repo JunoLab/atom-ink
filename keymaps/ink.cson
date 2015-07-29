@@ -9,4 +9,4 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 
 '.console atom-text-editor:not([mini])':
-  'shift-enter': 'ink:evaluate-in-console'
+  'shift-enter': 'console:evaluate'

@@ -9,7 +9,7 @@ module.exports =
 
     # TODO: eval only in last editor
     @evalCmd = atom.commands.add '.console atom-text-editor',
-      'ink:evaluate-in-console': (e) -> e.currentTarget.getModel().inkEval()
+      'console:evaluate': (e) -> e.currentTarget.getModel().inkEval()
 
   deactivate: ->
     @consoleOpener.dispose()
@@ -37,7 +37,6 @@ module.exports =
   echo: ->
     @openTab (c) =>
       c.onEval (ed) =>
-        c.out ed.getText()
         c.out ed.getText()
         c.divider()
         c.input()
