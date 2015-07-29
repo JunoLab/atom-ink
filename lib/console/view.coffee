@@ -71,9 +71,11 @@ class ConsoleView extends ScrollView
     @cellView err,
       icon: 'info'
 
-  inputView: (s) ->
+  inputView: (con) ->
     ed = document.createElement 'atom-text-editor'
     if @defaultGrammar? then ed.getModel().setGrammar @defaultGrammar
     ed.getModel().setLineNumberGutterVisible(false)
+    ed.getModel().inkEval = =>
+      con.emitter.emit 'eval', ed.getModel()
     @cellView ed,
       icon: 'chevron-right'
