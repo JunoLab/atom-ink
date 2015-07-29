@@ -10,3 +10,6 @@
 
 '.console atom-text-editor:not([mini])':
   'shift-enter': 'console:evaluate'
+
+'.console':
+  'cmd-i cmd-c': 'console:clear'
