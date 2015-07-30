@@ -84,15 +84,13 @@ class ConsoleView extends ScrollView
 
   fadeIn: (view) ->
     view.classList.add 'ink-hide'
-    process.nextTick =>
-      view.classList.remove 'ink-hide'
+    setTimeout (-> view.classList.remove 'ink-hide'), 0
     view
 
   slideIn: (view) ->
     h = view.clientHeight
     view.style.height = '0'
-    process.nextTick ->
-      view.style.height = h + 'px'
+    setTimeout (-> view.style.height = h + 'px'), 0
     view
 
   getInput: ->
