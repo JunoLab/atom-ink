@@ -67,6 +67,7 @@ module.exports =
         p = p.splitDown()
         p.setFlexScale 1/2
       p.activateItem @view
+      @view.focusInput true
 
     toggle: ->
       if atom.workspace.getPaneItems().indexOf(@view) > -1
