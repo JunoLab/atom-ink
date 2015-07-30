@@ -41,6 +41,13 @@ module.exports =
         @view.addItem @view.fadeIn @view.outView s
       @divider()
 
+    err: (s) ->
+      if @isInput
+        @view.slideIn @view.addBeforeInput @view.errView s
+      else
+        @view.addItem @view.fadeIn @view.errView s
+      @divider()
+
     divider: ->
       @view.divider @isInput
 
