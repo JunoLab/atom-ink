@@ -38,6 +38,7 @@ class ConsoleView extends ScrollView
     d = document.createElement 'div'
     d.classList.add 'divider'
     if input then @addBeforeInput d else @addItem @fadeIn d
+    @updateLoading()
 
   cellView: (v, {icon, gutterText}={}) ->
     cell = document.createElement 'div'
