@@ -103,3 +103,13 @@ class ConsoleView extends ScrollView
   focusInput: (force) ->
     if force or @element.contains document.activeElement
       @getInput()?.querySelector('atom-text-editor')?.focus()
+
+  loading: (l) ->
+    if l
+      @loading false
+      @items.querySelector('.divider:last-child').classList.add 'loading'
+    else
+      @items.querySelector('.divider.loading')?.classList.remove 'loading'
+
+  updateLoading: ->
+    if document.querySelector('.divider.loading')? then @loading true
