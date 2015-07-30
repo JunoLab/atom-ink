@@ -24,6 +24,9 @@ module.exports =
 
     isInput: false
 
+    setGrammar: (g) ->
+      @view.setGrammar g
+
     input: ->
       v = @view.inputView(this)
       @view.addItem @view.fadeIn v
