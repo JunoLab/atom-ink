@@ -23,9 +23,25 @@ class ConsoleView extends ScrollView
   getIconName: ->
     "terminal"
 
-  addItem: (view) ->
+  addItem: (view, divider=true) ->
     @items.appendChild view
+    if divider then @divider()
     view
+
+  getInput: ->
+    items = @items.querySelectorAll('.cell')
+    items[items.length-1]
+
+  addBeforeInput: (view, divider=true) ->
+    @items.insertBefore view, @getInput()
+    if divider then @divider(true)
+    view
+
+  divider: (input) ->
+    d = document.createElement 'div'
+    d.classList.add 'divider'
+    if input then @addBeforeInput(d, false) else @addItem((@fadeIn d), false)
+    @updateLoading()
 
   clear: ->
     while @items.hasChildNodes()
@@ -33,12 +49,6 @@ class ConsoleView extends ScrollView
 
   setGrammar: (g) ->
     @defaultGrammar = g
-
-  divider: (input) ->
-    d = document.createElement 'div'
-    d.classList.add 'divider'
-    if input then @addBeforeInput d else @addItem @fadeIn d
-    @updateLoading()
 
   cellView: (v, {icon, gutterText}={}) ->
     cell = document.createElement 'div'
@@ -93,13 +103,6 @@ class ConsoleView extends ScrollView
     view.style.height = '0'
     setTimeout (-> view.style.height = h + 'px'), 0
     view
-
-  getInput: ->
-    items = @items.querySelectorAll('.cell')
-    items[items.length-1]
-
-  addBeforeInput: (view) ->
-    @items.insertBefore view, @getInput()
 
   focusInput: (force) ->
     if force or @element.contains document.activeElement
