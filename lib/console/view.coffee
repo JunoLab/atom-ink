@@ -24,6 +24,7 @@ class ConsoleView extends ScrollView
     "terminal"
 
   addItem: (view, divider=true) ->
+    @fadeIn view
     @items.appendChild view
     if divider then @divider()
     view
@@ -34,6 +35,7 @@ class ConsoleView extends ScrollView
 
   addBeforeInput: (view, divider=true) ->
     @items.insertBefore view, @getInput()
+    @slideIn view
     if divider then @divider(true)
     view
 

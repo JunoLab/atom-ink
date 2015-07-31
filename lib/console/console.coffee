@@ -29,7 +29,7 @@ module.exports =
 
     input: ->
       v = @view.inputView(this)
-      @view.addItem @view.fadeIn v
+      @view.addItem v
       @view.focusInput()
       @isInput = true
 
@@ -38,15 +38,15 @@ module.exports =
 
     out: (s) ->
       if @isInput
-        @view.slideIn @view.addBeforeInput @view.outView s
+        @view.addBeforeInput @view.outView s
       else
-        @view.addItem @view.fadeIn @view.outView s
+        @view.addItem @view.outView s
 
     err: (s) ->
       if @isInput
-        @view.slideIn @view.addBeforeInput @view.errView s
+        @view.addBeforeInput @view.errView s
       else
-        @view.addItem @view.fadeIn @view.errView s
+        @view.addItem @view.errView s
 
     clear: ->
       @done()
