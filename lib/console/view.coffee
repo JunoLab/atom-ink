@@ -23,7 +23,7 @@ class ConsoleView extends ScrollView
   getIconName: ->
     "terminal"
 
-  addItem: (view, divider=true) ->
+  addItem: (view, {divider}={divider:true}) ->
     @fadeIn view
     @items.appendChild view
     if divider then @divider()
@@ -33,16 +33,22 @@ class ConsoleView extends ScrollView
     items = @items.querySelectorAll('.cell')
     items[items.length-1]
 
-  addBeforeInput: (view, divider=true) ->
+  addBeforeInput: (view, {divider}={divider:true}) ->
     @items.insertBefore view, @getInput()
     @slideIn view
     if divider then @divider(true)
     view
 
+  add: (item, isInput, opts) ->
+    if !isInput
+      @addItem item, opts
+    else
+      @addBeforeInput item, opts
+
   divider: (input) ->
     d = document.createElement 'div'
     d.classList.add 'divider'
-    if input then @addBeforeInput(d, false) else @addItem((@fadeIn d), false)
+    if input then @addBeforeInput(d, {divider:false}) else @addItem((@fadeIn d), {divider:false})
     @updateLoading()
 
   clear: ->

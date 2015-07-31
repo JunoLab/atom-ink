@@ -28,25 +28,16 @@ module.exports =
       @view.setGrammar g
 
     input: ->
-      v = @view.inputView(this)
-      @view.addItem v
+      v = @view.inputView this
+      @view.add v
       @view.focusInput()
       @isInput = true
 
-    done: ->
-      @isInput = false
+    done: -> @isInput = false
 
-    out: (s) ->
-      if @isInput
-        @view.addBeforeInput @view.outView s
-      else
-        @view.addItem @view.outView s
+    out: (s) -> @view.add @view.outView(s), @isInput
 
-    err: (s) ->
-      if @isInput
-        @view.addBeforeInput @view.errView s
-      else
-        @view.addItem @view.errView s
+    err: (s) -> @view.add @view.errView(s), @isInput
 
     clear: ->
       @done()
