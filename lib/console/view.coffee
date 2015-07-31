@@ -114,3 +114,18 @@ class ConsoleView extends ScrollView
 
   updateLoading: ->
     if document.querySelector('.divider.loading')? then @loading true
+
+  scrollEndValue: ->
+    @items.querySelector('.divider:last-child').offsetTop -
+      @element.querySelector('.items-scroll').clientHeight + 5
+
+  isVisible: (pane, view) ->
+    [top, bottom] = [pane.scrollTop, bottom = pane.scrollTop + pane.clientHeight]
+    [ptop, pbottom] = [view.offsetTop, view.offsetTop + view.clientHeight]
+    bottom >= ptop >= top || bottom >= pbottom >= top
+
+  last: (xs) -> xs[xs.length-1]
+
+  shouldScroll: ->
+    @isVisible @element.querySelector('.items-scroll'),
+               @last @items.querySelectorAll('.cell')
