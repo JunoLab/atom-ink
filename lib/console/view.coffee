@@ -52,7 +52,7 @@ class ConsoleView extends ScrollView
   divider: (input) ->
     d = document.createElement 'div'
     d.classList.add 'divider'
-    @lastDivider = d
+    if not input then @lastDivider = d
     if input then @addBeforeInput(d, {}) else @addItem((@fadeIn d), {})
     @updateLoading()
 
