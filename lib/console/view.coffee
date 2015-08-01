@@ -155,10 +155,12 @@ class ConsoleView extends ScrollView
 
   _scroll: (check) ->
     target = @scrollEndValue()
-    delta = Math.min(target-@scrollView.scrollTop, 20)
+    delta = target-@scrollView.scrollTop
+    mov = Math.max delta/2, 5
+    mov = Math.min delta, mov
     if delta > 0
       @isScrolling = true
-      @scrollView.scrollTop += delta
+      @scrollView.scrollTop += mov
       requestAnimationFrame => @_scroll()
     else
       @isScrolling = false
