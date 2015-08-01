@@ -37,7 +37,7 @@ class ConsoleView extends ScrollView
     items[items.length-1]
 
   addBeforeInput: (view, {divider}={divider:true}) ->
-    scroll = @shouldScroll()
+    if @shouldScroll() then @lock 200
     @items.insertBefore view, @getInput()
     if divider then @divider(true)
     @slideIn view
@@ -153,7 +153,7 @@ class ConsoleView extends ScrollView
 
   isScrolling: false
 
-  _scroll: (check) ->
+  _scroll: ->
     target = @scrollEndValue()
     delta = target-@scrollView.scrollTop
     mov = Math.max delta/2, 5
@@ -169,3 +169,24 @@ class ConsoleView extends ScrollView
   scroll: ->
     if not @isScrolling
       @_scroll()
+
+  _lock: (input, target) ->
+    if input.offsetTop + input.clientHeight <
+       @scrollView.scrollTop + @scrollView
+      target = input.offsetTop - @scrollView.scrollTop
+    else
+      delta = input.offsetTop - @scrollView.scrollTop - target
+      @scrollView.scrollTop += delta
+    requestAnimationFrame (t) =>
+      if t > @isScrolling
+        @isScrolling = false
+      else
+        @_lock input, target
+
+  lock: (time) ->
+    scrolling = @isScrolling
+    @isScrolling = performance.now() + time
+    if not scrolling
+      input = @getInput()
+      target = input.offsetTop - @scrollView.scrollTop
+      @_lock input, target
