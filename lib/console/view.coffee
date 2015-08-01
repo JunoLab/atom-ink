@@ -171,8 +171,8 @@ class ConsoleView extends ScrollView
       @_scroll()
 
   _lock: (input, target) ->
-    if input.offsetTop + input.clientHeight <
-       @scrollView.scrollTop + @scrollView
+    if input.offsetTop + input.clientHeight + 10 <
+         @scrollView.scrollTop + @scrollView.clientHeight
       target = input.offsetTop - @scrollView.scrollTop
     else
       delta = input.offsetTop - @scrollView.scrollTop - target
