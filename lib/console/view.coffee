@@ -14,6 +14,7 @@ class ConsoleView extends ScrollView
   initialize: ->
     super
     @items = @element.querySelector '.items'
+    @scrollView = @element.querySelector '.items-scroll'
     @element.querySelector('.spacer').onclick = =>
       @focusInput true
 
@@ -24,9 +25,11 @@ class ConsoleView extends ScrollView
     "terminal"
 
   addItem: (view, {divider}={divider:true}) ->
+    scroll = @shouldScroll()
     @fadeIn view
     @items.appendChild view
     if divider then @divider()
+    if scroll then @scroll()
     view
 
   getInput: ->
@@ -34,9 +37,10 @@ class ConsoleView extends ScrollView
     items[items.length-1]
 
   addBeforeInput: (view, {divider}={divider:true}) ->
+    scroll = @shouldScroll()
     @items.insertBefore view, @getInput()
-    @slideIn view
     if divider then @divider(true)
+    @slideIn view
     view
 
   add: (item, isInput, opts) ->
@@ -48,12 +52,14 @@ class ConsoleView extends ScrollView
   divider: (input) ->
     d = document.createElement 'div'
     d.classList.add 'divider'
-    if input then @addBeforeInput(d, {divider:false}) else @addItem((@fadeIn d), {divider:false})
+    @lastDivider = d
+    if input then @addBeforeInput(d, {}) else @addItem((@fadeIn d), {})
     @updateLoading()
 
   clear: ->
     while @items.hasChildNodes()
       @items.removeChild @items.lastChild
+    delete @lastDivider
 
   setGrammar: (g) ->
     @defaultGrammar = g
@@ -126,9 +132,12 @@ class ConsoleView extends ScrollView
   updateLoading: ->
     if document.querySelector('.divider.loading')? then @loading true
 
+  scrollValue: ->
+    @scrollView.scrollTop
+
   scrollEndValue: ->
-    @items.querySelector('.divider:last-child').offsetTop -
-      @element.querySelector('.items-scroll').clientHeight + 5
+    return 0 unless @lastDivider
+    @lastDivider.offsetTop - @scrollView.clientHeight + 8
 
   isVisible: (pane, view) ->
     [top, bottom] = [pane.scrollTop, bottom = pane.scrollTop + pane.clientHeight]
@@ -138,5 +147,23 @@ class ConsoleView extends ScrollView
   last: (xs) -> xs[xs.length-1]
 
   shouldScroll: ->
-    @isVisible @element.querySelector('.items-scroll'),
-               @last @items.querySelectorAll('.cell')
+    items = @items.querySelectorAll('.cell')
+    return false unless items[0]
+    @isVisible @scrollView, @last items
+
+  isScrolling: false
+
+  _scroll: (check) ->
+    target = @scrollEndValue()
+    delta = Math.min(target-@scrollView.scrollTop, 20)
+    if delta > 0
+      @isScrolling = true
+      @scrollView.scrollTop += delta
+      requestAnimationFrame => @_scroll()
+    else
+      @isScrolling = false
+      @focusInput()
+
+  scroll: ->
+    if not @isScrolling
+      @_scroll()

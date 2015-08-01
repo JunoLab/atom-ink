@@ -30,7 +30,7 @@ module.exports =
     input: ->
       v = @view.inputView this
       @view.add v
-      @view.focusInput()
+      # @view.focusInput()
       @isInput = true
 
     done: -> @isInput = false
