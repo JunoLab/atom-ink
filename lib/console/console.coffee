@@ -38,6 +38,8 @@ module.exports =
 
     err: (s) -> @view.add @view.errView(s), @isInput
 
+    info: (s) -> @view.add @view.infoView(s), @isInput
+
     clear: ->
       @done()
       @view.clear()
