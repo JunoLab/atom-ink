@@ -100,15 +100,20 @@ class ConsoleView extends ScrollView
     @cellView ed,
       icon: 'chevron-right'
 
+  visible: ->
+    document.contains @element
+
   fadeIn: (view) ->
-    view.classList.add 'ink-hide'
-    setTimeout (-> view.classList.remove 'ink-hide'), 0
+    if @visible()
+      view.classList.add 'ink-hide'
+      setTimeout (-> view.classList.remove 'ink-hide'), 0
     view
 
   slideIn: (view) ->
-    h = view.clientHeight
-    view.style.height = '0'
-    setTimeout (-> view.style.height = h + 'px'), 0
+    if @visible()
+      h = view.clientHeight
+      view.style.height = '0'
+      setTimeout (-> view.style.height = h + 'px'), 0
     view
 
   hasFocus: ->
