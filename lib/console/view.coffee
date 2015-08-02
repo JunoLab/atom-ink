@@ -118,8 +118,11 @@ class ConsoleView extends ScrollView
     setTimeout (-> view.style.height = h + 'px'), 0
     view
 
+  hasFocus: ->
+    @element.contains document.activeElement
+
   focusInput: (force) ->
-    if force or @element.contains document.activeElement
+    if force or @hasFocus()
       @getInput()?.querySelector('atom-text-editor')?.focus()
 
   loading: (l) ->

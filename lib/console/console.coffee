@@ -43,12 +43,16 @@ module.exports =
     clear: ->
       @done()
       @view.clear()
-      @emitter.emit 'clear'
+
+    reset: ->
+      focus = @view.hasFocus()
+      @clear()
+      @input()
+      @view.focusInput focus
 
     emitter: new Emitter
 
     onEval: (f) -> @emitter.on 'eval', f
-    onClear: (f) -> @emitter.on 'clear', f
 
     openInTab: ->
       p = atom.workspace.getActivePane()
