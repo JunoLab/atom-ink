@@ -1,19 +1,21 @@
 {CompositeDisposable} = require 'atom'
 block = require './block'
-loading = require './loading'
+Loading = require './Loading'
+Spinner = require './spinner'
 results = require './results'
-consoul = require './console/console'
+Console = require './console/console'
 
 module.exports = Ink =
   activate: ->
-    consoul.activate()
+    Console.activate()
 
   deactivate: ->
-    consoul.deactivate()
+    Console.deactivate()
 
   provide: ->
     highlight: (ed, start, end) =>
       block.highlight ed, start, end
-    loading: loading
+    Loading: Loading
+    Spinner: Spinner
     results: results
-    Console: consoul
+    Console: Console
