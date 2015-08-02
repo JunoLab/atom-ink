@@ -15,8 +15,9 @@ class ConsoleView extends ScrollView
     super
     @items = @element.querySelector '.items'
     @scrollView = @element.querySelector '.items-scroll'
-    @element.querySelector('.spacer').onclick = =>
-      @focusInput true
+    @element.onfocus = =>
+      if @shouldScroll()
+        @focusInput()
 
   getTitle: ->
     "Console"
