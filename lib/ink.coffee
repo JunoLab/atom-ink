@@ -16,4 +16,4 @@ module.exports = Ink =
       block.highlight ed, start, end
     loading: loading
     results: results
-    console: consoul
+    Console: consoul
