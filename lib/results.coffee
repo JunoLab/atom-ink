@@ -102,8 +102,7 @@ module.exports =
     r.newlineWatch = r.marker.onDidChange (e) => @checkNewline r, e
 
   checkNewline: (r, e) ->
-    # TODO: destroy on empty
-    if !e.isValid
+    if !e.isValid or r.marker.getBufferRange().isEmpty()
       r.destroy()
     else if e.textChanged
       old = e.oldHeadScreenPosition
