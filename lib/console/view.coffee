@@ -78,26 +78,18 @@ class ConsoleView extends ScrollView
     cell.appendChild content
     cell
 
-  outView: (s) ->
+  streamView: (text, type, icon) ->
     out = document.createElement 'div'
-    out.innerText = s
-    out.classList.add 'stream', 'output'
+    out.innerText = text
+    out.classList.add type, 'stream'
     @cellView out,
-      icon: 'quote'
+      icon: icon
 
-  errView: (s) ->
-    err = document.createElement 'div'
-    err.innerText = s
-    err.classList.add 'stream', 'error'
-    @cellView err,
-      icon: 'alert'
+  outView: (s) -> @streamView s, 'output', 'quote'
 
-  infoView: (s) ->
-    err = document.createElement 'div'
-    err.innerText = s
-    err.classList.add 'stream', 'info'
-    @cellView err,
-      icon: 'info'
+  errView: (s) -> @streamView s, 'error', 'alert'
+
+  infoView: (s) -> @streamView s, 'info', 'info'
 
   inputView: (con) ->
     ed = document.createElement 'atom-text-editor'
