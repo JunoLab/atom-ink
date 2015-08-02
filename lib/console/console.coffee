@@ -12,9 +12,6 @@ module.exports =
     @evalCmd = atom.commands.add '.console atom-text-editor',
       'console:evaluate': (e) -> e.currentTarget.getModel().inkEval()
 
-    @clearCmd = atom.commands.add '.console',
-      'console:clear': (e) -> atom.workspace.getActivePaneItem().getModel().clear()
-
   deactivate: ->
     @openCmd.dispose()
     @clearCmd.dispose()
