@@ -70,6 +70,13 @@
       position: absolute;
       color: @syntax-gutter-text-color;
       text-align:center;
+      .icon {
+        transition: all 0.1s ease;
+        &.ink-hide {
+          opacity: 0;
+          transform: translate(-10px);
+        }
+      }
     }
     .content {
       margin-left: @gutter-width;

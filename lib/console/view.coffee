@@ -65,6 +65,11 @@ class ConsoleView extends ScrollView
   setGrammar: (g) ->
     @defaultGrammar = g
 
+  iconView: (name) ->
+    icon = document.createElement 'span'
+    icon.classList.add 'icon', 'icon-'+name
+    icon
+
   cellView: (v, {icon, gutterText}={}) ->
     cell = document.createElement 'div'
     cell.classList.add 'cell'
@@ -95,8 +100,7 @@ class ConsoleView extends ScrollView
     ed = document.createElement 'atom-text-editor'
     if @defaultGrammar? then ed.getModel().setGrammar @defaultGrammar
     ed.getModel().setLineNumberGutterVisible(false)
-    ed.getModel().inkEval = =>
-      con.emitter.emit 'eval', ed.getModel()
+    ed.getModel().inkConsole = con
     @cellView ed,
       icon: 'chevron-right'
 
@@ -109,12 +113,25 @@ class ConsoleView extends ScrollView
       setTimeout (-> view.classList.remove 'ink-hide'), 0
     view
 
+  fadeOut: (view) ->
+    if @visible()
+      view.classList.add 'ink-hide'
+      setTimeout (-> view.parentElement?.removeChild(view)), 100
+    view
+
   slideIn: (view) ->
     if @visible()
       h = view.clientHeight
       view.style.height = '0'
       setTimeout (-> view.style.height = h + 'px'), 0
     view
+
+  setIcon: (cell, name) ->
+    gutter = cell.querySelector '.gutter'
+    icon = cell.querySelector '.icon'
+    gutter.removeChild icon
+    icon2 = @iconView name
+    gutter.appendChild icon2
 
   hasFocus: ->
     @element.contains document.activeElement

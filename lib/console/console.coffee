@@ -10,7 +10,11 @@ class Console
   @activate: ->
     # TODO: eval only in last editor
     @evalCmd = atom.commands.add '.console atom-text-editor',
-      'console:evaluate': (e) -> e.currentTarget.getModel().inkEval()
+      'console:evaluate': (e) ->
+        ed = @getModel()
+        ed.inkConsole.emitter.emit 'eval', ed
+      'core:backspace': (e) ->
+        @getModel().inkConsole.cancelMode e
 
   @deactivate: ->
     @openCmd.dispose()
@@ -18,6 +22,8 @@ class Console
 
   constructor: ->
     @view.getModel = -> c
+    @observeInput (cell) =>
+      @watchModes cell
 
   view: new ConsoleView
 
@@ -28,6 +34,7 @@ class Console
 
   input: ->
     v = @view.inputView this
+    @emitter.emit 'new-input', v
     @view.add v
     @isInput = true
 
@@ -53,6 +60,8 @@ class Console
 
   onEval: (f) -> @emitter.on 'eval', f
 
+  observeInput: (f) -> @emitter.on 'new-input', f
+
   openInTab: ->
     p = atom.workspace.getActivePane()
     if p.items.length > 0
@@ -67,3 +76,27 @@ class Console
     else
       @openInTab()
       @view.focusInput()
+
+  modes: -> {}
+
+  cursorAtBeginning: (ed) ->
+    ed.getCursors().length == 1 and
+    ed.getCursors()[0].getBufferPosition().isEqual [0, 0]
+
+  watchModes: (cell) ->
+    @edListener?.dispose()
+    ed = cell.querySelector('atom-text-editor').getModel()
+    @edListener = ed.onWillInsertText (e) =>
+      if (mode = @modes()[e.text]) and @cursorAtBeginning(ed) and not ed.inkConsoleMode
+        e.cancel()
+        ed.inkConsoleMode = mode.name
+        if mode.grammar then ed.setGrammar mode.grammar
+        @view.setIcon cell, mode.icon
+
+  cancelMode: (e) ->
+    ed = e.currentTarget.getModel()
+    cell = e.currentTarget.parentElement.parentElement
+    if @cursorAtBeginning(ed) and ed.inkConsoleMode
+      delete ed.inkConsoleMode
+      if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
+      @view.setIcon cell, 'chevron-right'
