@@ -1,5 +1,6 @@
 # TODO: more generic commands
 # TODO: buffering
+# TODO: autocomplete
 
 {Emitter} = require 'atom'
 ConsoleView = require './view'
