@@ -1,3 +1,5 @@
+# TODO: esc key to remove current result
+
 module.exports =
   timeout: (t, f) -> setTimeout f, t
 
