@@ -85,6 +85,8 @@ class ConsoleView extends ScrollView
 
   streamView: (text, type, icon) ->
     out = document.createElement 'div'
+    out.style.fontSize = atom.config.get('editor.fontSize') + 'px'
+    out.style.fontFamily = atom.config.get('editor.fontFamily')
     out.innerText = text
     out.classList.add type, 'stream'
     @cellView out,
