@@ -110,7 +110,7 @@ module.exports =
       old = e.oldHeadScreenPosition
       nu = e.newHeadScreenPosition
       text = r.editor.getTextInRange([old, nu])
-      if old.isLessThan(nu) && text.match /^\n\s*$/
+      if old.isLessThan(nu) && text.match /^\r?\n\s*$/
         r.marker.setHeadBufferPosition old
 
   showBody: (r) ->
