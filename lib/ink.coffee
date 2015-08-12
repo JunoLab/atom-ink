@@ -1,6 +1,6 @@
 {CompositeDisposable} = require 'atom'
 block = require './block'
-Loading = require './Loading'
+Loading = require './loading'
 Spinner = require './spinner'
 results = require './results'
 Console = require './console/console'
