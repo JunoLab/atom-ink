@@ -4,6 +4,10 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
+atom-text-editor {
+  overflow: hidden; // Otherwise inline results spill everywhere
+}
+
 atom-text-editor::shadow {
   div.block-notify .region {
     background: @background-color-info;
@@ -29,6 +33,7 @@ atom-text-editor::shadow {
 .ink.inline {
   font-family: @font-family;
 
+  // @inline-background-color: fade(@inset-panel-background-color, 80%);
   @inline-background-color: @inset-panel-background-color;
   background: linear-gradient(to top, darken(@inline-background-color, 5%),
                                       @inline-background-color 10%,
@@ -38,7 +43,7 @@ atom-text-editor::shadow {
   border-radius: 3px;
 
   padding: 0px 5px 0px 5px;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
   opacity: 1;
   cursor: default;
 
@@ -51,8 +56,9 @@ atom-text-editor::shadow {
     // font-weight: bold;
   }
 
-  &.hidden {
+  &.ink-hide {
     opacity: 0;
+    transform: translate(10px);
   }
   &.invalid {
     opacity: 0.5;

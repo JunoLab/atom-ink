@@ -42,8 +42,8 @@ module.exports =
 
   show: (ed, mark, {watch, header, body}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
-    @removeLines ed, mark.getHeadBufferPosition().row,
-                     mark.getTailBufferPosition().row
+    flag = @removeLines ed, mark.getHeadBufferPosition().row,
+                            mark.getTailBufferPosition().row
     result = @result ed,
       header: header
       body: body
@@ -55,11 +55,10 @@ module.exports =
       type: 'overlay'
       item: result.view
     @methods result
-    result.hide()
-    result.header.onclick = -> result.toggle()
-    result.view.style.opacity = 0
-    @timeout 10, =>
-      result.view.style.opacity = null
+    if !flag
+      result.view.classList.add 'ink-hide'
+      @timeout 20, =>
+        result.view.classList.remove 'ink-hide'
     watch != false and @watchText result
     @watchNewline result
     result
@@ -77,7 +76,7 @@ module.exports =
     @showForRange ed, @lineRange(ed, start, end), opts
 
   remove: (result) ->
-    result.view.style.opacity = 0
+    result.view.classList.add 'ink-hide'
     @timeout 200, =>
       result.decorator.destroy()
       result.ownsMark and result.marker.destroy()
@@ -122,8 +121,11 @@ module.exports =
                     .map((m)->m.result)
 
   removeLines: (ed, start, end) ->
+    flag = false
     for r in @forLines ed, start, end
+      flag = true
       r.destroy()
+    flag
 
   removeAll: (ed) ->
     ed ?= atom.workspace.getActiveTextEditor()
