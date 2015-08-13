@@ -1,4 +1,7 @@
 # TODO: esc key to remove current result
+# In general this is weird and needs a refactor
+
+tree = require './tree'
 
 module.exports =
   timeout: (t, f) -> setTimeout f, t
@@ -13,29 +16,29 @@ module.exports =
     body.classList.add 'body'
     body
 
-  result: (ed, opts) ->
+  collapsible: (opts) ->
     view = document.createElement 'div'
-    view.classList.add 'ink', 'inline', 'result'
-    view.style.position = 'relative'
-    view.style.top = -ed.getLineHeightInPixels() + 'px'
-    view.style.left = '10px'
     header = @header()
     body = @body()
     view.appendChild header
     view.appendChild body
     header.innerText = opts.header
     body.innerText = opts.body
+    view
+
+  result: (ed, opts) ->
+    view = document.createElement 'div'
+    view.classList.add 'ink', 'inline', 'result'
+    view.style.position = 'relative'
+    view.style.top = -ed.getLineHeightInPixels() + 'px'
+    view.style.left = '10px'
+    view.appendChild @collapsible opts
     view: view
-    header: header
-    body: body
 
   methods: (r) ->
     r.destroy = => @remove r
     r.invalidate = => @invalidate r
     r.validate = => @validate r
-    r.show = => @showBody r
-    r.hide = => @hideBody r
-    r.toggle = => @toggle r
 
   show: (ed, mark, {watch, header, body}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
@@ -112,17 +115,6 @@ module.exports =
       text = r.editor.getTextInRange([old, nu])
       if old.isLessThan(nu) && text.match /^\r?\n\s*$/
         r.marker.setHeadBufferPosition old
-
-  showBody: (r) ->
-    r.body.style.display = null
-    r.hidden = false
-
-  hideBody: (r) ->
-    r.body.style.display = 'none'
-    r.hidden = true
-
-  toggle: (r) ->
-    if r.hidden then @showBody r else @hideBody r
 
   forLines: (ed, start, end) ->
     ed.findMarkers().filter((m)->m.result? &&
