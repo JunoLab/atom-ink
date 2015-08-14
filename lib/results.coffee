@@ -32,6 +32,7 @@ module.exports =
     view.style.position = 'relative'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'
+    view.style.pointerEvents = 'auto'
     view.appendChild @collapsible opts
     view: view
 
@@ -55,6 +56,7 @@ module.exports =
       type: 'overlay'
       item: result.view
     @methods result
+    setTimeout (-> result.view.parentElement.style.pointerEvents = 'none'), 100
     if !flag
       result.view.classList.add 'ink-hide'
       @timeout 20, =>
