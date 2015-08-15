@@ -14,5 +14,9 @@
 'atom-text-editor:not([mini])':
   'escape': 'inline-results:clear-current'
 
-# '.console':
-#   'cmd-i cmd-c': 'console:clear'
+'.platform-darwin atom-text-editor:not([mini])':
+  'cmd-i cmd-c': 'inline-results:clear-all'
+
+'.platform-win32 atom-text-editor:not([mini]),
+ .platform-linux atom-text-editor:not([mini])':
+  'ctrl-i ctrl-c': 'inline-results:clear-all'

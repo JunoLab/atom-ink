@@ -8,7 +8,7 @@ module.exports =
   activate: ->
     @subs = atom.commands.add 'atom-text-editor:not([mini])',
       'inline-results:clear-current': (e) => @removeCurrent e
-      'inline-results:clear all': => @removeAll()
+      'inline-results:clear-all': => @removeAll()
 
   deactivate: ->
     @subs.dispose()
