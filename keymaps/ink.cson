@@ -11,5 +11,8 @@
 '.console atom-text-editor:not([mini])':
   'shift-enter': 'console:evaluate'
 
+'atom-text-editor:not([mini])':
+  'escape': 'inline-results:clear-current'
+
 # '.console':
 #   'cmd-i cmd-c': 'console:clear'

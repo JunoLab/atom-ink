@@ -8,9 +8,11 @@ tree = require './tree'
 
 module.exports = Ink =
   activate: ->
+    results.activate()
     Console.activate()
 
   deactivate: ->
+    results.deactivate()
     Console.deactivate()
 
   provide: ->

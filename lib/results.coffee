@@ -4,6 +4,15 @@
 tree = require './tree'
 
 module.exports =
+
+  activate: ->
+    @subs = atom.commands.add 'atom-text-editor:not([mini])',
+      'inline-results:clear-current': (e) => @removeCurrent e
+      'inline-results:clear all': => @removeAll()
+
+  deactivate: ->
+    @subs.dispose()
+
   timeout: (t, f) -> setTimeout f, t
 
   result: (ed, content) ->
@@ -111,3 +120,10 @@ module.exports =
     ed ?= atom.workspace.getActiveTextEditor()
     for r in ed.findMarkers().filter((m)->m.result?).map((m)->m.result)
       r.destroy()
+
+  removeCurrent: (e) ->
+    ed = e.currentTarget.getModel()
+    for sel in ed.getSelections()
+      if @removeLines(ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row)
+        done = true
+    e.abortKeyBinding() unless done
