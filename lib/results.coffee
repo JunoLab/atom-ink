@@ -26,14 +26,14 @@ module.exports =
     body.innerText = opts.body
     view
 
-  result: (ed, opts) ->
+  result: (ed, content) ->
     view = document.createElement 'div'
     view.classList.add 'ink', 'inline', 'result'
     view.style.position = 'relative'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'
     view.style.pointerEvents = 'auto'
-    view.appendChild @collapsible opts
+    view.appendChild content
     view: view
 
   methods: (r) ->
@@ -41,13 +41,11 @@ module.exports =
     r.invalidate = => @invalidate r
     r.validate = => @validate r
 
-  show: (ed, mark, {watch, header, body}={}) ->
+  show: (ed, mark, {watch, content}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
     flag = @removeLines ed, mark.getHeadBufferPosition().row,
                             mark.getTailBufferPosition().row
-    result = @result ed,
-      header: header
-      body: body
+    result = @result ed, content
     mark.result = result
     result.editor = ed
     result.marker = mark
