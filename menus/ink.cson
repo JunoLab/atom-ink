@@ -1,0 +1,12 @@
+'context-menu':
+  '.ink.inline': [
+    {
+      'label': 'Clear'
+      'command': 'inline-results:clear'
+    }
+    {
+      'label': 'Copy'
+      'command': 'inline-results:copy'
+    }
+    {type: 'separator'}
+  ]
