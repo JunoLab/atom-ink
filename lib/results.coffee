@@ -1,14 +1,20 @@
 # TODO: esc key to remove current result
 # In general this is weird and needs a refactor
 
+{CompositeDisposable} = require 'atom'
 tree = require './tree'
 
 module.exports =
 
   activate: ->
-    @subs = atom.commands.add 'atom-text-editor:not([mini])',
+    @subs = new CompositeDisposable()
+
+    @subs.add atom.commands.add 'atom-text-editor:not([mini])',
       'inline-results:clear-current': (e) => @removeCurrent e
       'inline-results:clear-all': => @removeAll()
+
+    @subs.add atom.commands.add '.ink.inline',
+      'inline-results:clear': (e) => e.currentTarget.result.destroy()
 
   deactivate: ->
     @subs.dispose()
@@ -26,6 +32,7 @@ module.exports =
     view: view
 
   methods: (r) ->
+    r.view.result = r
     r.destroy = => @remove r
     r.invalidate = => @invalidate r
     r.validate = => @validate r
