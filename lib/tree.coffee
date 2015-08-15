@@ -21,7 +21,9 @@ module.exports =
       [head, children] = data
       @treeView head, (@fromJson child for child in children)
     else
-      $$ -> @div data
+      view = $$ -> @div()
+      view.append data
+      view
 
   toggle: (view) ->
     view.find('> .body').toggle()
