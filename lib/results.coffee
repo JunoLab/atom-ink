@@ -6,26 +6,6 @@ tree = require './tree'
 module.exports =
   timeout: (t, f) -> setTimeout f, t
 
-  header: ->
-    header = document.createElement 'div'
-    header.classList.add 'header'
-    header
-
-  body: ->
-    body = document.createElement 'div'
-    body.classList.add 'body'
-    body
-
-  collapsible: (opts) ->
-    view = document.createElement 'div'
-    header = @header()
-    body = @body()
-    view.appendChild header
-    view.appendChild body
-    header.innerText = opts.header
-    body.innerText = opts.body
-    view
-
   result: (ed, content) ->
     view = document.createElement 'div'
     view.classList.add 'ink', 'inline', 'result'

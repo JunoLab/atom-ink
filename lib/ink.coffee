@@ -4,6 +4,7 @@ Loading = require './loading'
 Spinner = require './spinner'
 results = require './results'
 Console = require './console/console'
+tree = require './tree'
 
 module.exports = Ink =
   activate: ->
@@ -19,3 +20,4 @@ module.exports = Ink =
     Spinner: Spinner
     results: results
     Console: Console
+    tree: tree
