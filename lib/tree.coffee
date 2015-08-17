@@ -5,8 +5,8 @@ module.exports =
     view = $$ ->
       @div class: 'ink tree', =>
         @span class: 'icon icon-chevron-right'
-        @div class: 'header'
-        @div class: 'body'
+        @div class: 'header gutted'
+        @div class: 'body gutted'
     view.find('> .header').append head
     view.find('> .body').append child for child in children
 
