@@ -21,9 +21,10 @@ module.exports =
 
   timeout: (t, f) -> setTimeout f, t
 
-  result: (ed, content) ->
+  result: (ed, content, {error}) ->
     view = document.createElement 'div'
     view.classList.add 'ink', 'inline', 'result'
+    if error then view.classList.add 'error'
     view.style.position = 'relative'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'
@@ -37,11 +38,12 @@ module.exports =
     r.invalidate = => @invalidate r
     r.validate = => @validate r
 
-  show: (ed, mark, {watch, content}={}) ->
+  show: (ed, mark, {watch, content, error}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
     flag = @removeLines ed, mark.getHeadBufferPosition().row,
                             mark.getTailBufferPosition().row
-    result = @result ed, content
+    result = @result ed, content,
+      error: error
     mark.result = result
     result.editor = ed
     result.marker = mark

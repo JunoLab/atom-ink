@@ -32,6 +32,11 @@ atom-text-editor::shadow {
 
 .ink.inline {
   font-family: @font-family;
+  color: @text-color;
+
+  &.error {
+    color: @text-color-error;
+  }
 
   // @inline-background-color: fade(@inset-panel-background-color, 80%);
   @inline-background-color: @inset-panel-background-color;
