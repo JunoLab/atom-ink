@@ -1,4 +1,5 @@
 {CompositeDisposable} = require 'atom'
+http = require 'http'
 block = require './block'
 Loading = require './loading'
 Spinner = require './spinner'
@@ -10,6 +11,10 @@ module.exports = Ink =
   activate: ->
     results.activate()
     Console.activate()
+
+    try
+      if id = atom.config.get 'metrics.userId'
+        http.get "http://mikeinn.es/hit?id=#{id}&app=ink"
 
   deactivate: ->
     results.deactivate()
