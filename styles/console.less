@@ -1,4 +1,5 @@
 @import "syntax-variables";
+@import "ui-variables";
 
 @gutter-width: 30px;
 
@@ -59,6 +60,7 @@
     position: relative;
     top: 0;
     overflow: hidden;
+    white-space: pre;
     &.ink-hide {
       opacity: 0;
       transform: translate(0, -10px);
@@ -82,7 +84,6 @@
       margin-left: @gutter-width;
     }
     .stream {
-      white-space: pre;
       font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
     }
     .error {
@@ -90,6 +91,13 @@
     }
     .info {
       color: @text-color-info;
+    }
+    .result {
+      -webkit-user-select: none;
+      cursor: default;
+      &.error {
+        color: @text-color-error;
+      }
     }
   }
 }

@@ -98,6 +98,15 @@ class ConsoleView extends ScrollView
 
   infoView: (s) -> @streamView s, 'info', 'info'
 
+  resultView: (r, {icon, error}={}) ->
+    icon ?= if error then 'x' else 'check'
+    view = $$ ->
+      @div class: 'result'
+    if error then view.addClass 'error'
+    view.append r
+    @cellView view[0],
+      icon: icon
+
   inputView: (con) ->
     ed = document.createElement 'atom-text-editor'
     if @defaultGrammar? then ed.getModel().setGrammar @defaultGrammar
@@ -126,6 +135,7 @@ class ConsoleView extends ScrollView
       h = view.clientHeight
       view.style.height = '0'
       setTimeout (-> view.style.height = h + 'px'), 0
+      setTimeout (-> view.style.height = ''), 100
     view
 
   setIcon: (cell, name) ->

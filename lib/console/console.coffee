@@ -46,6 +46,8 @@ class Console
 
   info: (s) -> @view.add @view.infoView(s), @isInput
 
+  result: (r, opts) -> @view.add @view.resultView(r, opts), @isInput
+
   clear: ->
     @done()
     @view.clear()
