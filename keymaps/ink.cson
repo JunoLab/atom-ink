@@ -9,7 +9,7 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 
 '.console atom-text-editor:not([mini])':
-  'shift-enter': 'console:evaluate'
+  'enter': 'console:evaluate'
 
 'atom-text-editor:not([mini])':
   'escape': 'inline-results:clear-current'
