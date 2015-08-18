@@ -14,7 +14,9 @@ module.exports =
       'inline-results:clear-all': => @removeAll()
 
     @subs.add atom.commands.add '.ink.inline',
-      'inline-results:clear': (e) => e.currentTarget.result.destroy()
+      'inline-results:clear': (e) ->
+        result = e.currentTarget.result
+        setTimeout (-> result.destroy()), 0
 
   deactivate: ->
     @subs.dispose()
