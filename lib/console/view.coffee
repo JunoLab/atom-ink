@@ -34,8 +34,11 @@ class ConsoleView extends ScrollView
     view
 
   getInput: ->
-    items = @items.querySelectorAll('.cell')
+    items = @items.querySelectorAll '.cell'
     items[items.length-1]
+
+  getInputEd: ->
+    @getInput()?.querySelector('atom-text-editor')?.getModel()
 
   addBeforeInput: (view, {divider}={divider:true}) ->
     if @shouldScroll() then @lock 200

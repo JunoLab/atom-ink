@@ -10,6 +10,8 @@
 
 '.console atom-text-editor:not([mini])':
   'enter': 'console:evaluate'
+  'alt-up': 'console:previous-in-history'
+  'alt-down': 'console:next-in-history'
 
 'atom-text-editor:not([mini])':
   'escape': 'inline-results:clear-current'

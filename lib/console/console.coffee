@@ -10,11 +10,15 @@ class Console
   @activate: ->
     # TODO: eval only in last editor
     @evalCmd = atom.commands.add '.console atom-text-editor',
-      'console:evaluate': (e) ->
+      'console:evaluate': ->
         ed = @getModel()
         ed.inkConsole.emitter.emit 'eval', ed
       'core:backspace': (e) ->
         @getModel().inkConsole.cancelMode e
+      'console:previous-in-history': ->
+        @getModel().inkConsole.previous()
+      'console:next-in-history': ->
+        @getModel().inkConsole.next()
 
   @deactivate: ->
     @openCmd.dispose()
@@ -24,6 +28,7 @@ class Console
     @view.getModel = -> c
     @observeInput (cell) =>
       @watchModes cell
+    @onEval => @logInput()
 
   view: new ConsoleView
 
@@ -102,3 +107,20 @@ class Console
       delete ed.inkConsoleMode
       if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
       @view.setIcon cell, 'chevron-right'
+
+  logInput: ->
+    @history ?= []
+    input = @view.getInputEd().getText()
+    if input && input != @history[@history.length-1] then @history.push input
+    @historyPos = @history.length
+    console.log @history
+
+  previous: ->
+    if @historyPos > 0
+      @historyPos--
+      @view.getInputEd().setText @history[@historyPos]
+
+  next: ->
+    if @historyPos < @history.length
+      @historyPos += 1
+      @view.getInputEd().setText (@history[@historyPos] or "")
