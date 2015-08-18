@@ -1,4 +1,3 @@
-# TODO: more generic commands
 # TODO: buffering
 # TODO: autocomplete
 
@@ -90,37 +89,47 @@ class Console
     ed.getCursors().length == 1 and
     ed.getCursors()[0].getBufferPosition().isEqual [0, 0]
 
+  setMode: (cell, mode) ->
+    ed = ed = cell.querySelector('atom-text-editor').getModel()
+    if not mode
+      delete ed.inkConsoleMode
+      if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
+      @view.setIcon cell, 'chevron-right'
+    else
+      ed.inkConsoleMode = mode
+      if mode.grammar then ed.setGrammar mode.grammar
+      @view.setIcon cell, mode.icon
+
   watchModes: (cell) ->
     @edListener?.dispose()
     ed = cell.querySelector('atom-text-editor').getModel()
     @edListener = ed.onWillInsertText (e) =>
       if (mode = @modes()[e.text]) and @cursorAtBeginning(ed) and not ed.inkConsoleMode
         e.cancel()
-        ed.inkConsoleMode = mode.name
-        if mode.grammar then ed.setGrammar mode.grammar
-        @view.setIcon cell, mode.icon
+        @setMode cell, mode
 
   cancelMode: (e) ->
     ed = e.currentTarget.getModel()
     cell = e.currentTarget.parentElement.parentElement
     if @cursorAtBeginning(ed) and ed.inkConsoleMode
-      delete ed.inkConsoleMode
-      if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
-      @view.setIcon cell, 'chevron-right'
+      @setMode cell
 
   logInput: ->
     @history ?= []
-    input = @view.getInputEd().getText()
-    if input && input != @history[@history.length-1] then @history.push input
+    ed = @view.getInputEd()
+    input = ed.getText()
+    mode = ed.inkConsoleMode
+    if input && input != @history[@history.length-1]?.input then @history.push {input, mode}
     @historyPos = @history.length
-    console.log @history
 
   previous: ->
     if @historyPos > 0
       @historyPos--
-      @view.getInputEd().setText @history[@historyPos]
+      @view.getInputEd().setText @history[@historyPos].input
+      @setMode @view.getInput(), @history[@historyPos].mode
 
   next: ->
     if @historyPos < @history.length
       @historyPos += 1
-      @view.getInputEd().setText (@history[@historyPos] or "")
+      @view.getInputEd().setText (@history[@historyPos]?.input or "")
+      @setMode @view.getInput(), @history[@historyPos]?.mode
