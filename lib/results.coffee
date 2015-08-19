@@ -1,4 +1,4 @@
-# TODO: esc key to remove current result
+# TODO: invalid results don't fade out
 # In general this is weird and needs a refactor
 
 {CompositeDisposable} = require 'atom'
