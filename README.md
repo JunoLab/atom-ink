@@ -1,5 +1,8 @@
-# ink package
+# Ink
 
-A short description of your package.
-
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+This package provides a collection of IDE-related UI components for Atom – for example,
+inline results, loading indicators, an interactive console, etc. It's currently used
+primarily in the [julia-client](https://github.com/JunoLab/atom-julia-client) package to
+provide IDE-like features for the Julia language. Documentation is currently a work in
+progress, so check out that package and its code if you want to get a feel for how it looks
+and works.
