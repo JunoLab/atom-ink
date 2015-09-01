@@ -52,9 +52,6 @@ atom-text-editor::shadow {
   opacity: 1;
   cursor: default;
 
-  max-width: 500px;
-  max-height: 500px;
-
   white-space: pre;
 
   .fade {
@@ -68,11 +65,18 @@ atom-text-editor::shadow {
   &.invalid {
     opacity: 0.5;
   }
+  > .tree > .body {
+    max-width: 500px;
+    max-height: 250px;
+    overflow: auto;
+  }
 }
 
 .ink.tree {
   > .icon {
-    position: absolute;
+    position: relative;
+    float: left;
+    width: 15px;
   }
   .gutted {
     margin-left: 15px;
