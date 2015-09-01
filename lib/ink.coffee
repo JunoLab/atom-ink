@@ -6,6 +6,7 @@ Spinner = require './spinner'
 results = require './results'
 Console = require './console/console'
 tree = require './tree'
+links = require './file-links'
 
 module.exports = Ink =
   activate: ->
@@ -28,3 +29,4 @@ module.exports = Ink =
     results: results
     Console: Console
     tree: tree
+    links: links
