@@ -1,5 +1,6 @@
 # TODO: invalid results don't fade out
 # In general this is weird and needs a refactor
+# TODO: fade results when the cursor is underneath
 
 {CompositeDisposable} = require 'atom'
 tree = require './tree'
@@ -23,10 +24,11 @@ module.exports =
 
   timeout: (t, f) -> setTimeout f, t
 
-  result: (ed, content, {error}) ->
+  result: (ed, content, {error, clas}) ->
     view = document.createElement 'div'
     view.classList.add 'ink', 'inline', 'result'
     if error then view.classList.add 'error'
+    if clas then view.classList.add clas
     view.style.position = 'relative'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'
@@ -40,12 +42,11 @@ module.exports =
     r.invalidate = => @invalidate r
     r.validate = => @validate r
 
-  show: (ed, mark, {watch, content, error}={}) ->
+  show: (ed, mark, {watch, content, error, clas}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
     flag = @removeLines ed, mark.getHeadBufferPosition().row,
                             mark.getTailBufferPosition().row
-    result = @result ed, content,
-      error: error
+    result = @result ed, content, {error, clas}
     mark.result = result
     result.editor = ed
     result.marker = mark

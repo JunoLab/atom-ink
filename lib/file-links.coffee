@@ -7,6 +7,7 @@ module.exports =
 
   onClick: (view, f) ->
     @withFileLinks view, (a, file, line) ->
+      a.href = '#'
       a.onclick = ->
         f file, line
 
