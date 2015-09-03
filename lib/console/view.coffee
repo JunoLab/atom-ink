@@ -97,7 +97,7 @@ class ConsoleView extends ScrollView
 
   outView: (s) -> @streamView s, 'output', 'quote'
 
-  errView: (s) -> @streamView s, 'error', 'alert'
+  errView: (s) -> @streamView s, 'err', 'alert'
 
   infoView: (s) -> @streamView s, 'info', 'info'
 
