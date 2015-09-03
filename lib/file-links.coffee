@@ -12,6 +12,9 @@ module.exports =
         f file, line
 
   linkify: (view) ->
+    @withFileLinks view, (a, file) ->
+      atom.tooltips.add a,
+        title: -> file
     @onClick view, (file, line) ->
       atom.workspace.open file,
         initialLine: line
