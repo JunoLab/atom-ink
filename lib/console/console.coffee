@@ -44,11 +44,26 @@ class Console
 
   done: -> @isInput = false
 
-  out: (s) -> @view.add @view.outView(s), @isInput
+  @debounce: (t, f) ->
+    timeout = null
+    (args...) ->
+      if timeout? then clearTimeout timeout
+      timeout = setTimeout (=> f.call this, args...), t
 
-  err: (s) -> @view.add @view.errView(s), @isInput
+  @buffer: (f) ->
+    buffer = []
+    flush = @debounce 10, ->
+      f.call this, buffer.join('').trim()
+      buffer = []
+    (s) ->
+      buffer.push(s)
+      flush.call this
 
-  info: (s) -> @view.add @view.infoView(s), @isInput
+  out: @buffer (s) -> @view.add @view.outView(s), @isInput
+
+  err: @buffer (s) -> @view.add @view.errView(s), @isInput
+
+  info: @buffer (s) -> @view.add @view.infoView(s), @isInput
 
   result: (r, opts) -> @view.add @view.resultView(r, opts), @isInput
 
