@@ -49,7 +49,7 @@ class Spinner
     @edSubscription = null
 
   loadCSS: (cb) ->
-    file = path.resolve __dirname, '..', 'styles', 'spinner.css'
+    file = path.resolve __dirname, '..', '..', 'styles', 'spinner.css'
     fs.readFile file, (err, data) =>
       @css = data.toString()
       cb?()

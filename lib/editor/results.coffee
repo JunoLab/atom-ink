@@ -3,7 +3,6 @@
 # TODO: fade results when the cursor is underneath
 
 {CompositeDisposable} = require 'atom'
-tree = require './tree'
 
 module.exports =
 

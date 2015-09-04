@@ -1,12 +1,12 @@
 {CompositeDisposable} = require 'atom'
 http = require 'http'
-block = require './block'
-Loading = require './loading'
-Spinner = require './spinner'
-results = require './results'
+Loading = require './util/loading'
+links   = require './util/file-links'
+block   = require './editor/block'
+results = require './editor/results'
+Spinner = require './editor/spinner'
 Console = require './console/console'
-tree = require './tree'
-links = require './file-links'
+tree    = require './tree'
 
 module.exports = Ink =
   activate: ->
