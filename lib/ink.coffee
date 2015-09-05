@@ -3,6 +3,7 @@ http = require 'http'
 Loading = require './util/loading'
 links   = require './util/file-links'
 block   = require './editor/block'
+highlights = require './editor/highlights'
 results = require './editor/results'
 Spinner = require './editor/spinner'
 Console = require './console/console'
@@ -28,5 +29,6 @@ module.exports = Ink =
     Spinner: Spinner
     results: results
     Console: Console
+    highlights: highlights
     tree: tree
     links: links
