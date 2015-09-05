@@ -14,6 +14,11 @@ module.exports = Ink =
     results.activate()
     Console.activate()
 
+    edId = 1
+    atom.workspace.observeTextEditors (ed) ->
+      if not ed.getPath()?
+        ed.getBuffer().inkId ?= edId++
+
     try
       if id = localStorage.getItem 'metrics.userId'
         http.get "http://mikeinn.es/hit?id=#{id}&app=ink"
