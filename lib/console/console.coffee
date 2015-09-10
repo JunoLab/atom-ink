@@ -8,7 +8,7 @@ module.exports =
 class Console
   @activate: ->
     # TODO: eval only in last editor
-    @evalCmd = atom.commands.add '.console atom-text-editor',
+    @evalCmd = atom.commands.add '.ink-console atom-text-editor',
       'console:evaluate': ->
         ed = @getModel()
         ed.inkConsole.emitter.emit 'eval', ed

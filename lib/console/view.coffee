@@ -5,7 +5,7 @@ class ConsoleView extends ScrollView
 
   @content: ->
     @div class: 'pane-item', tabindex: -1, =>
-      @div class: 'console', =>
+      @div class: 'ink-console', =>
         @div class: 'gutter'
         @div class: 'items-scroll', =>
           @div class: 'items'
