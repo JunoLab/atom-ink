@@ -1,8 +1,13 @@
 module.exports =
+  matchesPath: (ed, path) ->
+    ed.getPath() == path ||
+      (!ed.getPath() &&
+        ed.getBuffer().inkId.toString() == path.match(/untitled-(\d*)/)?[1])
+
   observeLines: (ls, f) ->
-    atom.workspace.observeTextEditors (ed) ->
+    atom.workspace.observeTextEditors (ed) =>
       for l in ls
-        if l.file == ed.getPath()
+        if @matchesPath ed, l.file
           f ed, l
 
   errorLines: (ls) ->
