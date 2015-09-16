@@ -3,6 +3,7 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+@import "syntax-variables"
 
 atom-text-editor {
   overflow: hidden; // Otherwise inline results spill everywhere
@@ -31,7 +32,10 @@ atom-text-editor::shadow {
   .highlight.error-line .region {
     background: fade(@background-color-error, 30%);
   }
-
+  
+  .sk-folding-cube .sk-cube:before {
+    background-color: @syntax-text-color!important;
+  }
 }
 
 .ink.inline {
