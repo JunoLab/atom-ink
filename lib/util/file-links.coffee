@@ -1,7 +1,7 @@
 module.exports =
   withFileLinks: (view, f) ->
     [].forEach.call view.querySelectorAll('a[data-file]'), (a) =>
-      [_, file, line] = a.dataset.file.match /([^:]*)(?::(\d*))?/
+      [_, file, line] = a.dataset.file.match /(.?:?[^:]*)(?::(\d*))?/
       if line then line = parseInt(line)-1
       f a, file, line
 
