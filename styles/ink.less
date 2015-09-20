@@ -61,8 +61,14 @@ atom-text-editor::shadow {
   transition: all 0.2s;
   opacity: 1;
   cursor: default;
-
+  
+  max-width: 400px;
+  overflow: hidden;
   white-space: pre;
+  
+  &:hover {
+    overflow: scroll;
+  }
 
   .fade {
     color: @text-color-subtle;
