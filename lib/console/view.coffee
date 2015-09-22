@@ -31,6 +31,7 @@ class ConsoleView extends ScrollView
     @items.appendChild view
     if divider then @divider()
     if scroll then @scroll()
+    @limitHistory()
     view
 
   getInput: ->
@@ -43,6 +44,7 @@ class ConsoleView extends ScrollView
   addBeforeInput: (view, {divider}={divider:true}) ->
     if @shouldScroll() then @lock 200
     @items.insertBefore view, @getInput()
+    @limitHistory()
     if divider then @divider(true)
     @slideIn view
     view
@@ -52,6 +54,10 @@ class ConsoleView extends ScrollView
       @addItem item, opts
     else
       @addBeforeInput item, opts
+
+  limitHistory: (maxSize = 1000) ->
+    if @items.childNodes.length > maxSize
+      @items.removeChild @items.firstChild
 
   divider: (input) ->
     d = document.createElement 'div'
