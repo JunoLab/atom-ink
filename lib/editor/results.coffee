@@ -28,6 +28,7 @@ module.exports =
     view.classList.add 'ink', 'inline', 'result'
     if error then view.classList.add 'error'
     if clas then view.classList.add clas
+    if atom.config.get('ink.monotypeResults') then view.style.font = 'inherit'
     view.style.position = 'relative'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'

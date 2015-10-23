@@ -10,6 +10,12 @@ Console = require './console/console'
 tree    = require './tree'
 
 module.exports = Ink =
+  config:
+    monotypeResults:
+      type: 'boolean'
+      default: false
+      description: 'Display results in your editor\'s monotype font'
+
   activate: ->
     results.activate()
     Console.activate()
