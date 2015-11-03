@@ -5,10 +5,9 @@
 {CompositeDisposable} = require 'atom'
 
 module.exports =
-
   activate: ->
     @subs = new CompositeDisposable()
-
+    @monotypeResults = atom.config.get('ink.monotypeResults')
     @subs.add atom.commands.add 'atom-text-editor:not([mini])',
       'inline-results:clear-current': (e) => @removeCurrent e
       'inline-results:clear-all': => @removeAll()
@@ -28,7 +27,7 @@ module.exports =
     view.classList.add 'ink', 'inline', 'result'
     if error then view.classList.add 'error'
     if clas then view.classList.add clas
-    if atom.config.get('ink.monotypeResults') then view.style.font = 'inherit'
+    if @monotypeResults then view.style.font = 'inherit'
     view.style.position = 'relative'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'
@@ -55,7 +54,12 @@ module.exports =
       type: 'overlay'
       item: result.view
     @methods result
-    setTimeout (-> result.view.parentElement.style.pointerEvents = 'none'), 100
+    setTimeout (->
+      result.view.parentElement.style.pointerEvents = 'none'
+      result.view.addEventListener 'click', =>
+        # change natural ordering so that a click brings the current overlay
+        # to the top of the stack:
+        result.view.parentNode.parentNode.appendChild result.view.parentNode), 100
     if !flag
       result.view.classList.add 'ink-hide'
       @timeout 20, =>
