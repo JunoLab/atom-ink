@@ -12,6 +12,7 @@ module.exports =
     @subs.add atom.commands.add 'atom-text-editor:not([mini])',
       'inline-results:clear-current': (e) => @removeCurrent e
       'inline-results:clear-all': => @removeAll()
+      'inline-results:toggle': => @toggleCurrent()
 
     @subs.add atom.commands.add '.ink.inline',
       'inline-results:clear': (e) ->
@@ -139,3 +140,10 @@ module.exports =
       if @removeLines(ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row)
         done = true
     e.abortKeyBinding() unless done
+
+  toggleCurrent: ->
+    ed = atom.workspace.getActiveTextEditor()
+    pos = ed.getCursorBufferPosition()
+    ms = ed.findMarkers {containsBufferPosition: pos}
+    m = ms.filter((m)->m.result?).map((m)->m.result)
+    m[0]?.view.firstElementChild?.firstElementChild?.click()
