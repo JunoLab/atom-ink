@@ -17,17 +17,20 @@ module.exports =
       'inline-results:clear': (e) ->
         result = e.currentTarget.result
         setTimeout (-> result.destroy()), 0
+      'inline-results:copy': (e) ->
+        atom.clipboard.write(e.currentTarget.result.view.getAttribute('plain'))
 
   deactivate: ->
     @subs.dispose()
 
   timeout: (t, f) -> setTimeout f, t
 
-  result: (ed, content, {error, clas}) ->
+  result: (ed, content, {error, clas, plainresult}) ->
     view = document.createElement 'div'
     view.classList.add 'ink', 'inline', 'result'
     if error then view.classList.add 'error'
     if clas then view.classList.add clas
+    if plainresult then view.setAttribute 'plain', plainresult
     if @monotypeResults then view.style.font = 'inherit'
     view.style.position = 'relative'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
@@ -42,11 +45,11 @@ module.exports =
     r.invalidate = => @invalidate r
     r.validate = => @validate r
 
-  show: (ed, mark, {watch, content, error, clas}={}) ->
+  show: (ed, mark, {watch, content, error, clas, plainresult}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
     flag = @removeLines ed, mark.getHeadBufferPosition().row,
                             mark.getTailBufferPosition().row
-    result = @result ed, content, {error, clas}
+    result = @result ed, content, {error, clas, plainresult}
     mark.result = result
     result.editor = ed
     result.marker = mark
