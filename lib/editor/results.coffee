@@ -12,6 +12,7 @@ module.exports =
       'inline-results:clear-current': (e) => @removeCurrent e
       'inline-results:clear-all': => @removeAll()
       'inline-results:toggle': => @toggleCurrent()
+      'inline-results:copy-current': => @copyCurrent()
 
     @subs.add atom.commands.add '.ink.inline',
       'inline-results:clear': (e) ->
@@ -148,9 +149,16 @@ module.exports =
         done = true
     e.abortKeyBinding() unless done
 
-  toggleCurrent: ->
+  getCurrentMarkers: ->
     ed = atom.workspace.getActiveTextEditor()
     pos = ed.getCursorBufferPosition()
     ms = ed.findMarkers {containsBufferPosition: pos}
-    m = ms.filter((m)->m.result?).map((m)->m.result)
-    m[0]?.view.firstElementChild?.firstElementChild?.click()
+    ms = ms.filter((m)->m.result?).map((m)->m.result)
+
+  toggleCurrent: ->
+    ms = @getCurrentMarkers()
+    ms.map((m) -> m?.view.firstElementChild?.firstElementChild?.click())
+
+  copyCurrent: ->
+    m = @getCurrentMarkers()[0]
+    atom.clipboard.write(m.view.getAttribute('plain'))
