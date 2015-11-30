@@ -33,7 +33,7 @@ module.exports =
     if clas then view.classList.add clas
     if plainresult then view.setAttribute 'plain', plainresult
     if @monotypeResults then view.style.font = 'inherit'
-    view.style.position = 'relative'
+    view.style.position = 'absolute'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
     view.style.left = '10px'
     view.style.pointerEvents = 'auto'
@@ -58,13 +58,10 @@ module.exports =
     result.decorator = ed.decorateMarker mark,
       type: 'overlay'
       item: result.view
+    # TODO: clean some of this up. It probably belongs in a constructor
     @methods result
-    setTimeout (->
-      result.view.parentElement.style.pointerEvents = 'none'
-      result.view.addEventListener 'click', =>
-        # change natural ordering so that a click brings the current overlay
-        # to the top of the stack:
-        result.view.parentNode.parentNode.appendChild result.view.parentNode), 100
+    result.view.addEventListener 'click', =>
+      result.view.parentNode.parentNode.appendChild result.view.parentNode
     if !flag
       result.view.classList.add 'ink-hide'
       @timeout 20, =>
