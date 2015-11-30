@@ -32,7 +32,7 @@ class Spinner
     @uis.push(ui)
     atom.views.getView(ed).rootElement.appendChild ui
 
-  on: () ->
+  on: ->
     if not @css? then return @loadCSS => @on()
 
     return if @edSubscription?
@@ -54,7 +54,7 @@ class Spinner
       @css = data.toString()
       cb?()
 
-  style: () ->
+  style: ->
     style = document.createElement 'style'
     style.innerText = @css
     style
