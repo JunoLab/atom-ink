@@ -1,4 +1,3 @@
-# TODO: buffering
 # TODO: autocomplete
 
 {Emitter} = require 'atom'
