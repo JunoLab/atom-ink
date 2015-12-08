@@ -62,6 +62,8 @@ module.exports =
     @methods result
     result.view.addEventListener 'click', =>
       result.view.parentNode.parentNode.appendChild result.view.parentNode
+    result.view.addEventListener 'mousewheel', (e) ->
+      e.stopPropagation()
     if !flag
       result.view.classList.add 'ink-hide'
       @timeout 20, =>
