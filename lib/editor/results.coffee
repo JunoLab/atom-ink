@@ -1,6 +1,7 @@
 # TODO: invalid results don't fade out
 # In general this is weird and needs a refactor
 # TODO: fade results when the cursor is underneath
+# TODO: better scrolling behaviour
 
 {CompositeDisposable} = require 'atom'
 
