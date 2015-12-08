@@ -14,7 +14,7 @@ module.exports = Ink =
 
     try
       if id = localStorage.getItem 'metrics.userId'
-        http.get "http://mikeinn.es/hit?id=#{id}&app=ink"
+        http.get "http://data.junolab.org/hit?id=#{id}&app=ink"
 
   deactivate: ->
     results.deactivate()
