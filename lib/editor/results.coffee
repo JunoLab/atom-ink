@@ -47,6 +47,48 @@ module.exports =
     r.invalidate = => @invalidate r
     r.validate = => @validate r
 
+  # These are proxy methods that do something similar to the existing `show`,
+  # but will be changed to real underline results once atom/atom#9930 lands.
+  toggleUnderline: (ed, range, {content, clas}) ->
+    mark = ed.markBufferRange range
+    # There can only be one (underline result per line).
+    od = ed.findMarkers().filter((m)->m.content? &&
+                                  m.getBufferRange().start.row == range.start.row)
+                         .map((m)->m.content)
+    # Compare the contents of our new range with those of possible old underline
+    # results. If they are equal, destroy the old result and exist; otherwise,
+    # destroy the old result and display the new one.
+    sameWord = false
+    if od.length > 0
+      sameWord = if od.filter((m) => m.text == @text({editor: ed, marker: mark})).length > 0 then true
+      od.map (m) -> m.destroy()
+    if !sameWord then @showUnderline ed, mark, {content, clas}
+
+  showUnderline:  (ed, mark, {content, clas}) ->
+    result = @underlineResult ed, content, clas
+    mark.content = result
+    result.editor = ed
+    result.marker = mark
+    result.text = @text result
+    result.decorator = ed.decorateMarker mark,
+      type: 'overlay'
+      item: result.view
+      class: 'ink'
+    @methods result
+    result.ownsMark = true
+    result.view.result = content
+    @watchNewline result
+    result
+
+  underlineResult: (ed, content, clas) ->
+    view = document.createElement 'div'
+    view.classList.add 'ink', 'underline'
+    view.style.position = 'relative'
+    view.style.pointerEvents = 'auto'
+    if clas then view.classList.add clas
+    view.appendChild content
+    view: view
+
   show: (ed, mark, {watch, content, error, clas, plainresult}={}) ->
     mark.getBufferRange().isReversed and throw "Cannot add result to reversed marker"
     flag = @removeLines ed, mark.getHeadBufferPosition().row,

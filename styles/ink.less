@@ -40,6 +40,35 @@ atom-text-editor::shadow {
   }
 }
 
+.ink.underline {
+  @inline-background-color: @inset-panel-background-color;
+  background: linear-gradient(to top, darken(@inline-background-color, 5%),
+                                      @inline-background-color 10%,
+                                      @inline-background-color 90%,
+                                      lighten(@inline-background-color, 5%));
+  box-shadow: 0.5px 0.5px 2px @base-border-color;
+  border-radius: 3px;
+
+  padding: 0px 5px 0px 5px;
+  transition: all 0.2s;
+  opacity: 1;
+  cursor: default;
+
+  max-width: 400px;
+  overflow: hidden;
+  white-space: pre;
+
+  &:hover {
+    overflow: auto;
+  }
+
+  .fade {
+    color: @text-color-subtle;
+  }
+
+}
+
+
 .ink.inline {
   font-family: @font-family;
   color: @text-color;
