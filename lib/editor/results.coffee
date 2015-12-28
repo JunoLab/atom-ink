@@ -20,7 +20,7 @@ module.exports =
         result = e.currentTarget.result
         setTimeout (-> result.destroy()), 0
       'inline-results:copy': (e) ->
-        plaintext = e.currentTarget.result.view.getAttribute('plain')
+        plaintext = e.currentTarget.result.plainresult
         if plaintext then atom.clipboard.write(plaintext)
 
   deactivate: ->
@@ -33,7 +33,6 @@ module.exports =
     view.classList.add 'ink', 'inline', 'result'
     if error then view.classList.add 'error'
     if clas then view.classList.add clas
-    if plainresult then view.setAttribute 'plain', plainresult
     if @monotypeResults then view.style.font = 'inherit'
     view.style.position = 'absolute'
     view.style.top = -ed.getLineHeightInPixels() + 'px'
@@ -56,6 +55,7 @@ module.exports =
     mark.result = result
     result.editor = ed
     result.marker = mark
+    if plainresult? then result.plainresult = plainresult
     result.text = @text result
     result.decorator = ed.decorateMarker mark,
       type: 'overlay'
@@ -162,5 +162,5 @@ module.exports =
 
   copyCurrent: ->
     m = @getCurrentMarkers()[0]
-    plaintext = m.view.getAttribute('plain')
+    plaintext = m.plainresult
     if plaintext then atom.clipboard.write(plaintext)
