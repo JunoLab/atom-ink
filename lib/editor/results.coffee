@@ -20,7 +20,8 @@ module.exports =
         result = e.currentTarget.result
         setTimeout (-> result.destroy()), 0
       'inline-results:copy': (e) ->
-        atom.clipboard.write(e.currentTarget.result.view.getAttribute('plain'))
+        plaintext = e.currentTarget.result.view.getAttribute('plain')
+        if plaintext then atom.clipboard.write(plaintext)
 
   deactivate: ->
     @subs.dispose()
@@ -161,4 +162,5 @@ module.exports =
 
   copyCurrent: ->
     m = @getCurrentMarkers()[0]
-    atom.clipboard.write(m.view.getAttribute('plain'))
+    plaintext = m.view.getAttribute('plain')
+    if plaintext then atom.clipboard.write(plaintext)
