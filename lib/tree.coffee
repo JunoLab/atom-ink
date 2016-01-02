@@ -32,11 +32,7 @@ module.exports =
       view.visible = true
       icon.removeClass 'icon-chevron-right'
       icon.addClass 'icon-chevron-down'
-      # unfolded results always have z-index of 5 or more so they are on top of
-      # folded results:
-      view[0].parentElement.parentElement?.style.zIndex = 5
     else
       view.visible = false
       icon.removeClass 'icon-chevron-down'
       icon.addClass 'icon-chevron-right'
-      view[0].parentElement.parentElement?.style.zIndex = ''

@@ -73,10 +73,11 @@ module.exports =
     result.decorator = ed.decorateMarker mark,
       type: 'overlay'
       item: result.view
-      class: 'ink'
     @methods result
     result.ownsMark = true
     result.view.result = content
+    result.view.addEventListener 'click', =>
+      result.view.parentNode.parentNode.appendChild result.view.parentNode
     @watchNewline result
     result
 
