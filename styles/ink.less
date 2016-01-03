@@ -55,6 +55,7 @@ atom-text-editor::shadow {
   cursor: default;
 
   max-width: 800px;
+  max-height: 400px;
   overflow: hidden;
 
   &:hover {
@@ -63,6 +64,11 @@ atom-text-editor::shadow {
 
   .fade {
     color: @text-color-subtle;
+  }
+
+  &.ink-hide {
+    opacity: 0;
+    transform: translate(10px);
   }
 }
 
