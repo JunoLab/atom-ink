@@ -41,7 +41,9 @@ class Console
     @view.add v
     @isInput = true
 
-  done: -> @isInput = false
+  done: ->
+    @view.getInput().querySelector('atom-text-editor').removeAttribute('tabindex')
+    @isInput = false
 
   @debounce: (t, f) ->
     timeout = null
