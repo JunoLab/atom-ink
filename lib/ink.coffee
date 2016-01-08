@@ -8,6 +8,7 @@ results = require './editor/results'
 Spinner = require './editor/spinner'
 Console = require './console/console'
 tree    = require './tree'
+methodview = require './util/method-view'
 
 module.exports = Ink =
   config:
@@ -43,3 +44,4 @@ module.exports = Ink =
     highlights: highlights
     tree: tree
     links: links
+    methodview: methodview
