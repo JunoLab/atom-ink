@@ -1,7 +1,6 @@
 {CompositeDisposable} = require 'atom'
 http = require 'http'
 Loading = require './util/loading'
-links   = require './util/file-links'
 block   = require './editor/block'
 highlights = require './editor/highlights'
 results = require './editor/results'
@@ -42,4 +41,3 @@ module.exports = Ink =
     Console: Console
     highlights: highlights
     tree: tree
-    links: links

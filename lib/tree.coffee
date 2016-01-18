@@ -16,15 +16,6 @@ module.exports =
 
     view
 
-  fromJson: (data) ->
-    if data.constructor == Array && data.length == 2
-      [head, children] = data
-      @treeView head, (@fromJson child for child in children)
-    else
-      view = $$ -> @div()
-      view.append data
-      view
-
   toggle: (view) ->
     view.find('> .body').toggle()
     icon = view.find('> .icon')
