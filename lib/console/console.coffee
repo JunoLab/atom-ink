@@ -42,6 +42,7 @@ class Console
     @isInput = true
 
   done: ->
+    # Makes the editor read-only
     @view.getInput().querySelector('atom-text-editor').removeAttribute('tabindex')
     @isInput = false
 
