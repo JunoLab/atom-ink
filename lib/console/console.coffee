@@ -36,10 +36,11 @@ class Console
     @view.setGrammar g
 
   input: ->
-    v = @view.inputView this
-    @emitter.emit 'new-input', v
-    @view.add v
-    @isInput = true
+    if not @isInput
+      v = @view.inputView this
+      @emitter.emit 'new-input', v
+      @view.add v
+      @isInput = true
 
   done: ->
     # Makes the editor read-only
