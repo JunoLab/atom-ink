@@ -98,10 +98,10 @@ class Result
     ed?.findMarkers().filter((m)->m.result?).map((m)->m.result.remove())
 
   @removeCurrent: (e) ->
-    ed = atom.workspace.getActiveTextEditor()
-    for sel in ed.getSelections()
-      if @removeLines(ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row)
-        done = true
+    if (ed = atom.workspace.getActiveTextEditor())
+      for sel in ed.getSelections()
+        if @removeLines(ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row)
+          done = true
     e.abortKeyBinding() unless done
 
   # Commands
@@ -112,11 +112,6 @@ class Result
       'inline-results:clear-current': (e) => @removeCurrent e
       'inline-results:clear-all': => @removeAll()
       'inline-results:toggle': => @toggleCurrent()
-
-    # @subs.add atom.commands.add '.ink.inline',
-    #   'inline-results:clear': (e) ->
-    #     result = e.currentTarget.result
-    #     setTimeout (-> result.remove()), 0
 
   @deactivate: ->
     @subs.dispose()
