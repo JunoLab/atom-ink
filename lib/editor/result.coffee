@@ -97,7 +97,8 @@ class Result
   @removeAll: (ed = atom.workspace.getActiveTextEditor()) ->
     ed?.findMarkers().filter((m)->m.result?).map((m)->m.result.remove())
 
-  @removeCurrent: (ed = atom.workspace.getActiveTextEditor()) ->
+  @removeCurrent: (e) ->
+    ed = atom.workspace.getActiveTextEditor()
     for sel in ed.getSelections()
       if @removeLines(ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row)
         done = true
@@ -108,7 +109,7 @@ class Result
   @activate: ->
     @subs = new CompositeDisposable
     @subs.add atom.commands.add 'atom-text-editor:not([mini])',
-      'inline-results:clear-current': => @removeCurrent()
+      'inline-results:clear-current': (e) => @removeCurrent e
       'inline-results:clear-all': => @removeAll()
       'inline-results:toggle': => @toggleCurrent()
 
