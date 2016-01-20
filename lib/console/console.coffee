@@ -62,13 +62,13 @@ class Console
       buffer.push(s)
       flush.call this
 
-  out: @buffer (s) -> @view.add @view.outView(s), @isInput
+  out: @buffer (s) -> @view.add(@view.outView(s), @isInput)
 
-  err: @buffer (s) -> @view.add @view.errView(s), @isInput
+  err: @buffer (s) -> @view.add(@view.errView(s), @isInput)
 
-  info: @buffer (s) -> @view.add @view.infoView(s), @isInput
+  info: @buffer (s) -> @view.add(@view.infoView(s), @isInput)
 
-  result: (r, opts) -> @view.add @view.resultView(r, opts), @isInput
+  result: (r, opts) -> @view.add(@view.resultView(r, opts), @isInput)
 
   clear: ->
     @done()
