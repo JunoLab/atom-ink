@@ -104,6 +104,9 @@ class Console
       p = p.splitDown()
       p.setFlexScale 1/2
     p.activateItem @view
+    p.onDidActivate => setTimeout =>
+      if document.activeElement == @view[0]
+          @view.focusInput(true)
 
   toggle: ->
     if atom.workspace.getPaneItems().indexOf(@view) > -1
