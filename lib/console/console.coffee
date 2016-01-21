@@ -21,12 +21,11 @@ class Console
     @evalCmd.dispose()
 
   constructor: ->
-    @view.getModel = -> c
+    @view = new ConsoleView
+    @view.getModel = -> @
     @observeInput (cell) =>
       @watchModes cell
     @onEval => @logInput()
-
-  view: new ConsoleView
 
   isInput: false
 
