@@ -10,7 +10,7 @@ class Console
     @evalCmd = atom.commands.add '.ink-console atom-text-editor',
       'console:evaluate': ->
         ed = @getModel()
-        ed.inkConsole.emitter.emit 'eval', ed
+        ed.inkConsole.eval ed
       'core:backspace': (e) ->
         @getModel().inkConsole.cancelMode e
       'console:previous-in-history': ->
@@ -35,6 +35,16 @@ class Console
   setGrammar: (g) ->
     @view.setGrammar g
 
+  eval: (ed) ->
+    if @isInput
+      input = @view.getInputEd()
+      if ed == input
+        @emitter.emit 'eval', ed
+      else
+        input.setText ed.getText()
+        @view.focusInput true
+        @view.scroll()
+
   input: ->
     if not @isInput
       v = @view.inputView this
@@ -43,9 +53,9 @@ class Console
       @isInput = true
 
   done: ->
-    # Makes the editor read-only
-    @view.getInput().querySelector('atom-text-editor').removeAttribute('tabindex')
-    @isInput = false
+    if @isInput
+      @view.element.focus() # Defocus input
+      @isInput = false
 
   @debounce: (t, f) ->
     timeout = null
@@ -92,7 +102,6 @@ class Console
       p = p.splitDown()
       p.setFlexScale 1/2
     p.activateItem @view
-    p.onDidActivate => setTimeout  => @view.focusInput(true)
 
   toggle: ->
     if atom.workspace.getPaneItems().indexOf(@view) > -1
