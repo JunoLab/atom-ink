@@ -6,7 +6,6 @@ ConsoleView = require './view'
 module.exports =
 class Console
   @activate: ->
-    # TODO: eval only in last editor
     @evalCmd = atom.commands.add '.ink-console atom-text-editor',
       'console:evaluate': ->
         ed = @getModel()
@@ -19,8 +18,7 @@ class Console
         @getModel().inkConsole.next()
 
   @deactivate: ->
-    @openCmd.dispose()
-    @clearCmd.dispose()
+    @evalCmd.dispose()
 
   constructor: ->
     @view.getModel = -> c
