@@ -108,7 +108,7 @@ class Console
     ed.getCursors()[0].getBufferPosition().isEqual [0, 0]
 
   setMode: (cell, mode) ->
-    ed = ed = cell.querySelector('atom-text-editor').getModel()
+    ed = cell.querySelector('atom-text-editor').getModel()
     if not mode
       delete ed.inkConsoleMode
       if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
@@ -122,7 +122,7 @@ class Console
     @edListener?.dispose()
     ed = cell.querySelector('atom-text-editor').getModel()
     @edListener = ed.onWillInsertText (e) =>
-      if (mode = @modes()[e.text]) and @cursorAtBeginning(ed) and not ed.inkConsoleMode
+      if (mode = @modes()[e.text]) and @cursorAtBeginning(ed) and ed.inkConsoleMode isnt mode
         e.cancel()
         @setMode cell, mode
 
