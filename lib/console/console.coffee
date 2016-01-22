@@ -65,7 +65,7 @@ class Console
 
   done: ->
     if @isInput
-      @view.element.focus() # Defocus input
+      @view.items.focus() # Defocus input
       @isInput = false
 
   @debounce: (t, f) ->
