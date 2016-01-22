@@ -197,7 +197,6 @@ class Console
   keyDown: (e, ed) ->
     if ed == @view.getInputEd()
       curs = ed.getCursorsOrderedByBufferPosition()
-      console.log [curs[0].getBufferRow()+1, ed.getLineCount()]
       if curs.length is 1 and curs[0].getBufferRow()+1 == ed.getLineCount()
         e.preventDefault()
         @next()
