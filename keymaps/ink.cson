@@ -10,6 +10,8 @@
 
 '.ink-console atom-text-editor:not([mini])':
   'enter': 'console:evaluate'
+
+'.ink-console':
   'alt-up': 'console:previous-in-history'
   'alt-down': 'console:next-in-history'
 

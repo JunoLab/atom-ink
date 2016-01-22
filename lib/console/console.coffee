@@ -10,12 +10,14 @@ class Console
       'console:evaluate': ->
         ed = @getModel()
         ed.inkConsole.eval ed
+      'core:move-up': (e) ->
+        ed = @getModel()
+        ed.inkConsole.keyUp e, ed
+      'core:move-down': (e) ->
+        ed = @getModel()
+        ed.inkConsole.keyDown e, ed
       'core:backspace': (e) ->
         @getModel().inkConsole.cancelMode e
-      'console:previous-in-history': ->
-        @getModel().inkConsole.previous()
-      'console:next-in-history': ->
-        @getModel().inkConsole.next()
 
     atom.commands.add '.ink-console',
       'core:copy': ->
@@ -31,6 +33,13 @@ class Console
     @observeInput (cell) =>
       @watchModes cell
     @onEval => @logInput()
+
+    @subs = atom.commands.add @view[0],
+      'console:previous-in-history': => @previous()
+      'console:next-in-history': => @next()
+
+  destroy: ->
+    @subs.dispose()
 
   isInput: false
 
@@ -168,9 +177,27 @@ class Console
       @historyPos--
       @view.getInputEd().setText @history[@historyPos].input
       @setMode @view.getInput(), @history[@historyPos].mode
+      @view.getInputEd().setCursorBufferPosition [0, 0]
 
   next: ->
     if @historyPos < @history.length
       @historyPos += 1
-      @view.getInputEd().setText (@history[@historyPos]?.input or "")
+      ed = @view.getInputEd()
+      ed.setText (@history[@historyPos]?.input or "")
       @setMode @view.getInput(), @history[@historyPos]?.mode
+      ed.setCursorBufferPosition [Infinity, Infinity]
+
+  keyUp: (e, ed) ->
+    if ed == @view.getInputEd()
+      curs = ed.getCursorsOrderedByBufferPosition()
+      if curs.length is 1 and curs[0].getBufferRow() == 0
+        e.preventDefault()
+        @previous()
+
+  keyDown: (e, ed) ->
+    if ed == @view.getInputEd()
+      curs = ed.getCursorsOrderedByBufferPosition()
+      console.log [curs[0].getBufferRow()+1, ed.getLineCount()]
+      if curs.length is 1 and curs[0].getBufferRow()+1 == ed.getLineCount()
+        e.preventDefault()
+        @next()
