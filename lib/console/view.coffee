@@ -24,7 +24,7 @@ class ConsoleView extends ScrollView
     "terminal"
 
   addItem: (view, {divider}={divider:true}) ->
-    scroll = @shouldScroll()
+    scroll = @lastCellVisible()
     @fadeIn view
     @items.appendChild view
     if divider then @divider()
@@ -39,7 +39,7 @@ class ConsoleView extends ScrollView
     @getInput()?.querySelector('atom-text-editor')?.getModel()
 
   addBeforeInput: (view, {divider}={divider:true}) ->
-    if @shouldScroll() then @lock 200
+    if @lastCellVisible() then @lock 200
     @items.insertBefore view, @getInput()
     if divider then @divider(true)
     @slideIn view
@@ -177,7 +177,7 @@ class ConsoleView extends ScrollView
 
   last: (xs) -> xs[xs.length-1]
 
-  shouldScroll: ->
+  lastCellVisible: ->
     items = @items.querySelectorAll('.cell')
     return false unless items[0]
     @isVisible @scrollView, @last items
