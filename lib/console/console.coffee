@@ -105,7 +105,7 @@ class Console
       p.setFlexScale 1/2
     p.activateItem @view
     p.onDidActivate => setTimeout =>
-      if document.activeElement == @view[0]
+      if document.activeElement == @view[0] && @view.lastCellVisible()
           @view.focusInput(true)
 
   toggle: ->
