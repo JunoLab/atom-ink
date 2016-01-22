@@ -17,6 +17,11 @@ class Console
       'console:next-in-history': ->
         @getModel().inkConsole.next()
 
+    atom.commands.add '.ink-console',
+      'core:copy': ->
+        if (sel = document.getSelection().toString())
+          atom.clipboard.write sel
+
   @deactivate: ->
     @evalCmd.dispose()
 
