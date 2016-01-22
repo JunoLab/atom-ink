@@ -123,6 +123,7 @@ class Console
 
   setMode: (cell, mode) ->
     ed = cell.querySelector('atom-text-editor').getModel()
+    if mode?.constructor is String then mode = @modes[mode]
     if not mode
       delete ed.inkConsoleMode
       if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
@@ -146,12 +147,20 @@ class Console
     if @cursorAtBeginning(ed) and ed.inkConsoleMode
       @setMode cell
 
+  setHistory: (history) ->
+    @history = history
+    @historyPos = @history.length
+
   logInput: ->
     @history ?= []
     ed = @view.getInputEd()
     input = ed.getText()
     mode = ed.inkConsoleMode
-    if input && input != @history[@history.length-1]?.input then @history.push {input, mode}
+    # TODO: more advanced cycle detection
+    if input && input != @history[@history.length-1]?.input
+      @history.push
+        input: input
+        mode: mode?.name
     @historyPos = @history.length
 
   previous: ->
