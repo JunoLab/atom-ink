@@ -1,8 +1,9 @@
 'context-menu':
   '.ink.inline': [
-    {
-      'label': 'Clear'
-      'command': 'inline-results:clear'
-    }
+    {label: 'Clear', command: 'inline-results:clear'}
+    {type: 'separator'}
+  ]
+  '.ink-console': [
+    {label: 'Copy', command: 'core:copy'}
     {type: 'separator'}
   ]
