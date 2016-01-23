@@ -65,7 +65,7 @@ class Console
 
   done: ->
     if @isInput
-      @view.items.focus() # Defocus input
+      @view.scrollView.focus() # Defocus input
       @isInput = false
 
   @debounce: (t, f) ->
