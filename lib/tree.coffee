@@ -20,6 +20,7 @@ module.exports =
     view = $(view)
     body = view.find('> .body')
     icon = view.find('> .icon')
+    return unless body[0]?
     body.toggle()
     if body.isVisible()
       view.visible = true
