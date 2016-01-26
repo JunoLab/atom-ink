@@ -3,7 +3,6 @@
 
 module.exports =
 class Result
-
   fadeIn: ->
     @view.classList.add 'ink-hide'
     @timeout 20, =>
@@ -19,6 +18,10 @@ class Result
     # @view.style.pointerEvents = 'auto'
     @view.addEventListener 'mousewheel', (e) ->
       e.stopPropagation()
+    # clicking on it will bring the current result to the top of the stack
+    @view.addEventListener 'click', =>
+      @view.parentNode.parentNode.appendChild @view.parentNode
+
     @disposables.add atom.commands.add @view,
       'inline-results:clear': (e) => @remove()
     fade and @fadeIn()
