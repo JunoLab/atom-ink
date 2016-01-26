@@ -56,7 +56,7 @@ class ConsoleView extends ScrollView
     d.classList.add 'divider'
     if not input then @lastDivider = d
     if input then @addBeforeInput(d, {}) else @addItem((@fadeIn d), {})
-    @updateLoading()
+    @loading()
 
   clear: ->
     while @items.hasChildNodes()
@@ -153,15 +153,13 @@ class ConsoleView extends ScrollView
     if force or @hasFocus()
       @getInput()?.querySelector('atom-text-editor')?.focus()
 
-  loading: (l) ->
+  loading: (l = @isLoading) ->
     if l
       @loading false
-      @items.querySelector('.divider:last-child').classList.add 'loading'
+      @items.querySelector('.divider:last-child')?.classList.add 'loading'
     else
       @items.querySelector('.divider.loading')?.classList.remove 'loading'
-
-  updateLoading: ->
-    if document.querySelector('.divider.loading')? then @loading true
+    @isLoading = l
 
   scrollValue: ->
     @scrollView.scrollTop
