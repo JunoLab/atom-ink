@@ -6,7 +6,7 @@ by the likes of SmallTalk, Lisp, LightTable, DevTools, Swift, and others.
 
 Ink is currently used primarily from the
 [julia-client](https://github.com/JunoLab/atom-julia-client) plugin as an IDE for the
-[Julia](http://julialang.org) language. Although Ink is in an early state, people interested in
+Julia language, as well as the awesome [proto-repl](https://github.com/jasongilman/proto-repl) for Clojure. Although Ink is in an early state, people interested in
 getting it running with other languages are welcome to reach out.
 
 <div align="center"><img src="demos/full.gif" /></div>
