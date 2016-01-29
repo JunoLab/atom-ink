@@ -20,8 +20,8 @@ goto: (promise) ->
   @view ?= new MethodView()
   @view.setLoading "Loading..."
   @view.show()
-  promise.then (items) -> @view.setItems(items),
-               (error) -> @view.setError(error)
+  promise.then ((items) -> @view.setItems items),
+                (error) -> @view.setError error
 
 class goToView extends SelectListView
   initialize: ->
