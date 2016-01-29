@@ -29,7 +29,7 @@ module.exports = Ink =
         http.get "http://data.junolab.org/hit?id=#{id}&app=ink"
 
   deactivate: ->
-    results.deactivate()
+    Result.deactivate()
     Console.deactivate()
 
   provide: ->
