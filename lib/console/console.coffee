@@ -63,6 +63,7 @@ class Console
       v = @view.inputView this
       @emitter.emit 'new-input', v
       @view.add v
+      @setMode v, @defaultMode()
       @isInput = true
 
   done: ->
@@ -128,6 +129,11 @@ class Console
 
   modes: -> {}
 
+  defaultMode: ->
+    for char, mode of @modes()
+      if char is 'default'
+        return mode
+
   modeByName: (name) ->
     for char, mode of @modes()
       return mode if mode.name is name
@@ -139,6 +145,7 @@ class Console
   setMode: (cell, mode) ->
     ed = cell.querySelector('atom-text-editor').getModel()
     if mode?.constructor is String then mode = @modeByName(mode)
+    mode ?= @defaultMode()
     if not mode
       delete ed.inkConsoleMode
       if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
@@ -146,7 +153,7 @@ class Console
     else
       ed.inkConsoleMode = mode
       if mode.grammar then ed.setGrammar mode.grammar
-      @view.setIcon cell, mode.icon
+      @view.setIcon cell, mode.icon or 'chevron-right'
 
   watchModes: (cell) ->
     @edListener?.dispose()
