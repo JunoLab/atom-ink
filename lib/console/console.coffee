@@ -126,13 +126,17 @@ class Console
 
   modes: -> {}
 
+  modeByName: (name) ->
+    for char, mode of @modes()
+      return mode if mode.name is name
+
   cursorAtBeginning: (ed) ->
     ed.getCursors().length == 1 and
     ed.getCursors()[0].getBufferPosition().isEqual [0, 0]
 
   setMode: (cell, mode) ->
     ed = cell.querySelector('atom-text-editor').getModel()
-    if mode?.constructor is String then mode = @modes[mode]
+    if mode?.constructor is String then mode = @modeByName(mode)
     if not mode
       delete ed.inkConsoleMode
       if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
