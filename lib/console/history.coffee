@@ -9,16 +9,21 @@ class HistoryProvider
     @position = @items.length
 
   push: (x) ->
+    @lastPosition = @position
     @items.push x
     @position = @items.length
     @removeCycles()
 
   getPrevious: ->
+    delete @lastPosition
     if @position > 0
       @position--
       @items[@position]
 
   getNext: ->
+    if @lastPosition?
+      @position = @lastPosition
+      delete @lastPosition
     if not @isAtEnd()
       @position++
     @items[@position] or input: ""
