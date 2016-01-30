@@ -2,6 +2,7 @@
 
 {Emitter} = require 'atom'
 ConsoleView = require './view'
+HistoryProvider = require './history'
 
 module.exports =
 class Console
@@ -32,6 +33,7 @@ class Console
     @view.getModel = -> @
     @observeInput (cell) =>
       @watchModes cell
+    @history = new HistoryProvider
     @onEval => @logInput()
 
     @subs = atom.commands.add @view[0],
@@ -160,36 +162,28 @@ class Console
     if @cursorAtBeginning(ed) and ed.inkConsoleMode
       @setMode cell
 
-  setHistory: (history) ->
-    @history = history
-    @historyPos = @history.length
-
   logInput: ->
-    @history ?= []
     ed = @view.getInputEd()
     input = ed.getText()
     mode = ed.inkConsoleMode
-    # TODO: more advanced cycle detection
-    if input && input != @history[@history.length-1]?.input
-      @history.push
-        input: input
-        mode: mode?.name
-    @historyPos = @history.length
+    @history.push
+      input: input
+      mode: mode?.name
 
   previous: ->
-    if @historyPos > 0
-      @historyPos--
-      @view.getInputEd().setText @history[@historyPos].input
-      @setMode @view.getInput(), @history[@historyPos].mode
-      @view.getInputEd().setCursorBufferPosition [0, 0]
+    prev = @history.getPrevious()
+    if prev?
+      ed = @view.getInputEd()
+      ed.setText prev.input
+      @setMode @view.getInput(), prev.mode
+      ed.setCursorBufferPosition [0, 0]
 
   next: ->
-    if @historyPos < @history.length
-      @historyPos += 1
-      ed = @view.getInputEd()
-      ed.setText (@history[@historyPos]?.input or "")
-      @setMode @view.getInput(), @history[@historyPos]?.mode
-      ed.setCursorBufferPosition [Infinity, Infinity]
+    ed = @view.getInputEd()
+    next = @history.getNext()
+    ed.setText next.input
+    @setMode @view.getInput(), next.mode
+    ed.setCursorBufferPosition [Infinity, Infinity]
 
   keyUp: (e, ed) ->
     if ed == @view.getInputEd()
