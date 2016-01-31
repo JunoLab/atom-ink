@@ -28,7 +28,7 @@ class goToView extends SelectListView
     super
     @panel = atom.workspace.addModalPanel(item: this, visible: false)
     @addClass('command-palette')
-    @addClass('method-panel')
+    @addClass('gotodef-panel')
 
   destroy: ->
     @cancel()
