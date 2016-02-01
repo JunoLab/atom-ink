@@ -3,18 +3,31 @@
 
 module.exports =
 class Result
+  constructor: (@editor, range, opts={}) ->
+    if not opts.type then opts.type = 'inline'
+    @type = opts.type
+    @disposables = new CompositeDisposable
+    @createView opts
+    @initMarker range
+    @text = @getText()
+    @disposables.add @editor.onDidChange (e) => @validateText e
+
   fadeIn: ->
     @view.classList.add 'ink-hide'
     @timeout 20, =>
       @view.classList.remove 'ink-hide'
 
-  inlineView: ({error, content, fade}) ->
+  createView: ({error, content, fade}) ->
     @view = document.createElement 'div'
-    @view.classList.add 'ink', 'inline', 'result'
+    @view.classList.add 'ink', 'result'
+    switch @type
+      when 'inline'
+        @view.classList.add 'inline'
+        @view.style.position = 'absolute'
+        @view.style.top = -@editor.getLineHeightInPixels() + 'px'
+        @view.style.left = '10px'
+      when 'block' then @view.classList.add 'under'
     if error then @view.classList.add 'error'
-    @view.style.position = 'absolute'
-    @view.style.top = -@editor.getLineHeightInPixels() + 'px'
-    @view.style.left = '10px'
     # @view.style.pointerEvents = 'auto'
     @view.addEventListener 'mousewheel', (e) ->
       e.stopPropagation()
@@ -34,17 +47,13 @@ class Result
     @marker = @editor.markBufferRange @lineRange(start, end),
       persistent: false
     @marker.result = @
-    @editor.decorateMarker @marker,
-      type: 'overlay'
+    mark =
       item: @view
+    switch @type
+      when 'inline' then mark.type = 'overlay'
+      when 'block' then mark.type = 'block'; mark.position = 'after'
+    @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
-
-  constructor: (@editor, range, opts={}) ->
-    @disposables = new CompositeDisposable
-    @inlineView opts
-    @initMarker range
-    @text = @getText()
-    @disposables.add @editor.onDidChange (e) => @validateText e
 
   remove: ->
     @view.classList.add 'ink-hide'
@@ -87,18 +96,19 @@ class Result
 
   # Bulk Actions
 
-  @forLines: (ed, start, end) ->
-    ed.findMarkers().filter((m)->m.result? &&
-                                 m.getBufferRange().intersectsRowRange(start, end))
-                    .map((m)->m.result)
+  @forLines: (ed, start, end, type = 'any') ->
+    ed.findMarkers().filter((m) -> m.result? &&
+                                   m.getBufferRange().intersectsRowRange(start, end) &&
+                                  (m.result.type == type || type == 'any'))
+                    .map((m) -> m.result)
 
-  @removeLines: (ed, start, end) ->
-    rs = @forLines(ed, start, end)
+  @removeLines: (ed, start, end, type = 'any') ->
+    rs = @forLines(ed, start, end, type)
     rs.map (r) -> r.remove()
     rs.length > 0
 
   @removeAll: (ed = atom.workspace.getActiveTextEditor()) ->
-    ed?.findMarkers().filter((m)->m.result?).map((m)->m.result.remove())
+    ed?.findMarkers().filter((m) -> m.result?).map((m) -> m.result.remove())
 
   @removeCurrent: (e) ->
     if (ed = atom.workspace.getActiveTextEditor())
