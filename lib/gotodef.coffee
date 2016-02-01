@@ -1,5 +1,6 @@
 {$$, SelectListView} = require 'atom-space-pen-views'
 fuzzaldrinPlus = require 'fuzzaldrin-plus'
+loading = require 'util/loading'
 
 # ## GoToDef-Panel
 #
@@ -13,17 +14,24 @@ fuzzaldrinPlus = require 'fuzzaldrin-plus'
 #     .line:      Line of definition.
 #     .dispfile:  Humanized file path, displayed.
 #
-# On rejection, the `goToView` will only shown the error message provided.
+# On rejection, the `GotoView` will only shown the error message provided.
 
 module.exports =
 goto: (promise) ->
-  @view ?= new MethodView()
-  @view.setLoading "Loading..."
-  @view.show()
-  promise.then ((items) -> @view.setItems items),
-                (error) -> @view.setError error
+  @view ?= new GotoView()
 
-class goToView extends SelectListView
+  promise
+    .then (items) ->
+      if items.length == 1
+        GotoView.openItem items[0]
+      else if items.length > 1
+        @view.setItems items
+        @view.show()
+
+    .catch (error) ->
+      @view.setError error
+
+class GotoView extends SelectListView
   initialize: ->
     super
     @panel = atom.workspace.addModalPanel(item: this, visible: false)
@@ -79,10 +87,13 @@ class goToView extends SelectListView
 
   # Jump to `item.file` at line `item.line`, when an item was selected.
   confirmed: (item) ->
-    atom.workspace.open item.file,
-      initialLine: item.line
+    @openItem item
     @hide()
 
   # Return to previously focused element when the modal panel is cancelled.
   cancelled: ->
     @hide()
+
+  @openItem: (item) ->
+    atom.workspace.open item.file,
+      initialLine: item.line
