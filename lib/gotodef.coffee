@@ -1,20 +1,20 @@
 {$$, SelectListView} = require 'atom-space-pen-views'
 fuzzaldrinPlus = require 'fuzzaldrin-plus'
-loading = require 'util/loading'
 
 # ## GoToDef-Panel
 #
 # `goto` takes a promise as its argument, which can either be fulfilled or rejected.
 # Both modes will be handled by `goto` as follows:
-# On fulfillment, a `goToView` will be shown and populated by the array `items`
-# returned by the promise.
+# On fulfillment, a `GotoView` will be shown and populated by the array `items`
+# returned by the promise if there's more than one item in it. Otherwise, Atom
+# jumps straight to the definition.
 #   `items` conatins objects with the fields:
 #     .text:      Displayed text, searchable.
 #     .file:      File in which this method is defined, not displayed.
 #     .line:      Line of definition.
 #     .dispfile:  Humanized file path, displayed.
 #
-# On rejection, the `GotoView` will only shown the error message provided.
+# On rejection, the `GotoView` will only show the error message provided.
 
 module.exports =
 goto: (promise) ->
@@ -30,6 +30,7 @@ goto: (promise) ->
 
     .catch (error) ->
       @view.setError error
+      @view.show()
 
 class GotoView extends SelectListView
   initialize: ->
