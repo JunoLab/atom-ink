@@ -17,6 +17,10 @@ class Console
       'core:move-down': (e) ->
         ed = @getModel()
         ed.inkConsole.keyDown e, ed
+      'core:move-left': (e) ->
+        delete @getModel().inkConsole.prefix
+      'core:move-right': (e) ->
+        delete @getModel().inkConsole.prefix
       'core:backspace': (e) ->
         @getModel().inkConsole.cancelMode e
 
@@ -34,7 +38,6 @@ class Console
     @observeInput (cell) =>
       @watchModes cell
     @history = new HistoryProvider
-    @onEval => @logInput()
 
     @subs = atom.commands.add @view[0],
       'console:previous-in-history': => @previous()
@@ -59,6 +62,7 @@ class Console
         @view.scroll()
 
   input: ->
+    delete @prefix
     if not @isInput
       v = @view.inputView this
       @emitter.emit 'new-input', v
@@ -177,31 +181,33 @@ class Console
       input: input
       mode: mode?.name
 
-  previous: ->
-    prev = @history.getPrevious()
-    if prev?
-      ed = @view.getInputEd()
-      ed.setText prev.input
-      @setMode @view.getInput(), prev.mode
-      ed.setCursorBufferPosition [0, 0]
-
-  next: ->
+  moveHistory: (up) ->
     ed = @view.getInputEd()
-    next = @history.getNext()
+    if ed.getText() or not @prefix?
+      pos = ed.getCursorBufferPosition()
+      text = ed.getTextInRange [[0,0], pos]
+      @prefix = {pos, text}
+    next = if up
+      @history.getPrevious @prefix.text
+    else
+      @history.getNext @prefix.text
     ed.setText next.input
     @setMode @view.getInput(), next.mode
-    ed.setCursorBufferPosition [Infinity, Infinity]
+    ed.setCursorBufferPosition @prefix.pos or [0, 0]
+
+  previous: -> @moveHistory true
+  next: -> @moveHistory false
 
   keyUp: (e, ed) ->
     if ed == @view.getInputEd()
       curs = ed.getCursorsOrderedByBufferPosition()
-      if curs.length is 1 and curs[0].getBufferRow() == 0
-        e.preventDefault()
+      if curs.length is 1 and (@prefix? or curs[0].getBufferRow() == 0)
+        e.stopImmediatePropagation()
         @previous()
 
   keyDown: (e, ed) ->
     if ed == @view.getInputEd()
       curs = ed.getCursorsOrderedByBufferPosition()
-      if curs.length is 1 and curs[0].getBufferRow()+1 == ed.getLineCount()
-        e.preventDefault()
+      if curs.length is 1 and (@prefix? or curs[0].getBufferRow()+1 == ed.getLineCount())
+        e.stopImmediatePropagation()
         @next()

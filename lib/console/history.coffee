@@ -14,22 +14,31 @@ class HistoryProvider
     @position = @items.length
     @removeCycles()
 
-  getPrevious: ->
-    delete @lastPosition
-    if @position > 0
-      @position--
-      @items[@position]
+  getCurrent: -> @items[@position] or input: ""
 
-  getNext: ->
+  isAtEnd: ->
+    @position is @items.length
+
+  matchesPrefix: ({input}, pre) ->
+    not pre? or input.startsWith pre
+
+  getPrevious: (prefix) ->
+    delete @lastPosition
+    if @position >= 0
+      @position--
+    while @position >= 0 and not @matchesPrefix(@getCurrent(), prefix)
+      @position--
+    @getCurrent()
+
+  getNext: (prefix) ->
     if @lastPosition?
       @position = @lastPosition
       delete @lastPosition
     if not @isAtEnd()
       @position++
-    @items[@position] or input: ""
-
-  isAtEnd: ->
-    @position is @items.length
+    while not @isAtEnd() and not @matchesPrefix(@getCurrent(), prefix)
+      @position++
+    @getCurrent()
 
   isEquiv: (a, b) ->
     a.mode is b.mode and a.input is b.input
