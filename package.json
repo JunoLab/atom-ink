@@ -2,7 +2,7 @@
   "name": "ink",
   "main": "./lib/ink",
   "version": "0.3.2",
-  "description": "An IDE toolkit for Julia",
+  "description": "Ink is a toolkit for building IDEs in Atom",
   "keywords": [],
   "repository": "https://github.com/JunoLab/atom-ink",
   "license": "MIT",
