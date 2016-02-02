@@ -76,6 +76,7 @@ class Console
     @done()
     @clear()
     @input()
+    @focusInput true
 
   eval: (ed) ->
     if (input = @getInput()?.view.getModel())
@@ -105,9 +106,10 @@ class Console
       @openInTab()
       @focusInput()
 
-  focusInput: ->
-    if @getInput()?
-      @view.focusVisible @getInput().view
+  focusInput: (force) ->
+    if @getInput()? then @emitter.emit 'focus-input', force
+
+  onFocusInput: (f) -> @emitter.on 'focus-input', f
 
   # Output
 

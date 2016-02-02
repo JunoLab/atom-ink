@@ -17,6 +17,9 @@ class ConsoleElement extends HTMLElement
     @getModel = -> @model
     @model.onDidAddItem (cell) => @addItem cell
     @model.onDidClear => @clear()
+    @model.onFocusInput (force) =>
+      if @hasFocus() and (view = @model.items[@model.items.length-1]?.view)
+        @focusVisible view, force
     @
 
   getModel: -> @model
@@ -61,8 +64,8 @@ class ConsoleElement extends HTMLElement
     view = view.getBoundingClientRect()
     pane.bottom >= view.top >= pane.top && pane.bottom >= view.bottom >= pane.top
 
-  focusVisible: (view) ->
-    if @isVisible view
+  focusVisible: (view, force) ->
+    if force or @isVisible view
       view.focus()
 
   # Various cell views
