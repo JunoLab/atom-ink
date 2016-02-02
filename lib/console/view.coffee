@@ -9,8 +9,13 @@ class ConsoleElement extends HTMLElement
     @items.classList.add 'items'
     @appendChild @items
 
+    @views =
+      input: @inputView.bind this
+
   initialize: (@model) ->
     @getModel = -> @model
+    @model.onDidAddItem (cell) => @addItem cell
+    @model.onDidClear => @clear()
     @
 
   getModel: -> @model
@@ -21,13 +26,17 @@ class ConsoleElement extends HTMLElement
   getIconName: ->
     "terminal"
 
-  addItem: (view, {divider}={divider:true}) ->
+  initView: (item) ->
+    item.view ?= @views[item.type](item)
+    item.cell ?= @cellView item
+    item
+
+  addItem: (item) ->
+    {cell} = @initView item
     scroll = @lastCellVisible()
-    @fadeIn view
-    @items.appendChild view
-    if divider then @divider()
+    @items.appendChild @fadeIn cell
+    @items.appendChild @fadeIn @divider()
     if scroll then @scroll()
-    view
 
   getInput: ->
     items = @items.querySelectorAll '.cell'
@@ -36,25 +45,10 @@ class ConsoleElement extends HTMLElement
   getInputEd: ->
     @getInput()?.querySelector('atom-text-editor')?.getModel()
 
-  addBeforeInput: (view, {divider}={divider:true}) ->
-    if @lastCellVisible() then @lock 200
-    @items.insertBefore view, @getInput()
-    if divider then @divider(true)
-    @slideIn view
-    view
-
-  add: (item, isInput, opts) ->
-    if !isInput
-      @addItem item, opts
-    else
-      @addBeforeInput item, opts
-
-  divider: (input) ->
+  divider: ->
     d = document.createElement 'div'
     d.classList.add 'divider'
-    if not input then @lastDivider = d
-    if input then @addBeforeInput(d, {}) else @addItem(@fadeIn(d), {})
-    @loading()
+    d
 
   clear: ->
     while @items.hasChildNodes()
@@ -64,55 +58,60 @@ class ConsoleElement extends HTMLElement
   setGrammar: (g) ->
     @defaultGrammar = g
 
+  # Various cell views
+
   iconView: (name) ->
     icon = document.createElement 'span'
     icon.classList.add 'icon', 'icon-'+name
     icon
 
-  cellView: (v, {icon, gutterText}={}) ->
+  cellView: ({view, icon}) ->
     cell = document.createElement 'div'
     cell.classList.add 'cell'
+
     gutter = document.createElement 'div'
     gutter.classList.add 'gutter'
-    if icon then gutter.innerHTML = "<span class='icon icon-#{icon}'></span>"
+    if icon then gutter.appendChild @iconView icon
+    cell.appendChild gutter
+
     content = document.createElement 'div'
     content.classList.add 'content'
-    content.appendChild v
-    cell.appendChild gutter
+    content.appendChild view
     cell.appendChild content
+
     cell
 
-  streamView: (text, type, icon) ->
-    out = document.createElement 'div'
-    out.style.fontSize = atom.config.get('editor.fontSize') + 'px'
-    out.style.fontFamily = atom.config.get('editor.fontFamily')
-    out.innerText = text
-    out.classList.add type, 'stream'
-    @cellView out,
-      icon: icon
-
-  outView: (s) -> @streamView s, 'output', 'quote'
-
-  errView: (s) -> @streamView s, 'err', 'alert'
-
-  infoView: (s) -> @streamView s, 'info', 'info'
-
-  resultView: (r, {icon, error}={}) ->
-    icon ?= if error then 'x' else 'check'
-    view = document.createElement 'div'
-    view.classList.add 'result'
-    if error then view.classList.add 'error'
-    view.appendChild r
-    @cellView view,
-      icon: icon
-
-  inputView: (con) ->
+  inputView: (item) ->
     ed = document.createElement 'atom-text-editor'
-    if @defaultGrammar? then ed.getModel().setGrammar @defaultGrammar
     ed.getModel().setLineNumberGutterVisible(false)
-    ed.getModel().inkConsole = con
-    @cellView ed,
-      icon: 'chevron-right'
+    ed.getModel().inkConsole = @model
+    ed
+
+  # streamView: (text, type, icon) ->
+  #   out = document.createElement 'div'
+  #   out.style.fontSize = atom.config.get('editor.fontSize') + 'px'
+  #   out.style.fontFamily = atom.config.get('editor.fontFamily')
+  #   out.innerText = text
+  #   out.classList.add type, 'stream'
+  #   @cellView out,
+  #     icon: icon
+  #
+  # outView: (s) -> @streamView s, 'output', 'quote'
+  #
+  # errView: (s) -> @streamView s, 'err', 'alert'
+  #
+  # infoView: (s) -> @streamView s, 'info', 'info'
+  #
+  # resultView: (r, {icon, error}={}) ->
+  #   icon ?= if error then 'x' else 'check'
+  #   view = document.createElement 'div'
+  #   view.classList.add 'result'
+  #   if error then view.classList.add 'error'
+  #   view.appendChild r
+  #   @cellView view,
+  #     icon: icon
+
+  # Animations
 
   visible: ->
     document.contains @
@@ -158,6 +157,8 @@ class ConsoleElement extends HTMLElement
     else
       @items.querySelector('.divider.loading')?.classList.remove 'loading'
     @isLoading = l
+
+  # Scrolling
 
   scrollValue: ->
     @scrollTop

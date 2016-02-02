@@ -36,12 +36,43 @@ class Console
     @subs.dispose()
 
   constructor: ->
-    @view = new ConsoleView().initialize @
-    @observeInput (cell) =>
-      @watchModes cell
+    @items = []
     @history = new HistoryProvider
+    @emitter = new Emitter
+    @view = new ConsoleView().initialize @
+
+  # Basic item / input logic
+
+  push: (cell) ->
+    @items.push cell
+    @emitter.emit 'did-add-item', cell
+
+  onDidAddItem: (f) -> @emitter.on 'did-add-item', f
+
+  clear: (cell) ->
+    @items = []
+    @emitter.emit 'did-clear'
+
+  onDidClear: (f) -> @emitter.on 'did-clear', f
 
   isInput: false
+
+  input: ->
+    delete @prefix
+    if not @isInput
+      @isInput = true
+      @push type: 'input', icon: 'chevron-right'
+
+  done: ->
+    if @isInput
+      @view.focus() # Defocus input
+      @isInput = false
+
+  reset: ->
+    @done()
+    @clear()
+    @input()
+    @view.focusInput()
 
   setGrammar: (g) ->
     @view.setGrammar g
@@ -55,20 +86,6 @@ class Console
         input.setText ed.getText()
         @view.focusInput true
         @view.scroll()
-
-  input: ->
-    delete @prefix
-    if not @isInput
-      v = @view.inputView this
-      @emitter.emit 'new-input', v
-      @view.add v
-      @setMode v, @defaultMode()
-      @isInput = true
-
-  done: ->
-    if @isInput
-      @view.focus() # Defocus input
-      @isInput = false
 
   @debounce: (t, f) ->
     timeout = null
@@ -93,18 +110,6 @@ class Console
 
   result: (r, opts) -> @view.add(@view.resultView(r, opts), @isInput)
 
-  clear: ->
-    @done()
-    @view.clear()
-
-  reset: ->
-    focus = @view.hasFocus()
-    @clear()
-    @input()
-    @view.focusInput focus
-
-  emitter: new Emitter
-
   onEval: (f) -> @emitter.on 'eval', f
 
   observeInput: (f) -> @emitter.on 'new-input', f
@@ -125,6 +130,8 @@ class Console
     else
       @openInTab()
       @view.focusInput()
+
+  # Input Modes
 
   modes: -> {}
 
@@ -167,6 +174,8 @@ class Console
     cell = e.currentTarget.parentElement.parentElement
     if @cursorAtBeginning(ed) and ed.inkConsoleMode
       @setMode cell
+
+  # History
 
   logInput: ->
     ed = @view.getInputEd()
