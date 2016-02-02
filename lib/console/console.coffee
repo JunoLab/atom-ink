@@ -51,6 +51,15 @@ class Console
 
   onDidAddItem: (f) -> @emitter.on 'did-add-item', f
 
+  insert: (cell, i) ->
+    if i >= @items.length or @items.length is 0
+      @push cell
+    else
+      @items.splice(i, 0, cell)
+      @emitter.emit 'did-insert-item', [cell, i]
+
+  onDidInsertItem: (f) -> @emitter.on 'did-insert-item', f
+
   clear: (cell) ->
     @items = []
     @emitter.emit 'did-clear'
@@ -72,6 +81,12 @@ class Console
       @view.focus() if @view.hasFocus() # Defocus input
       @getInput().input = false
 
+  output: (cell) ->
+    if @getInput()?
+      @insert cell, @items.length-1
+    else
+      @push cell
+
   reset: ->
     @done()
     @clear()
@@ -84,7 +99,7 @@ class Console
         @emitter.emit 'eval', ed
       else
         input.setText ed.getText()
-        @focusInput()
+        @focusInput true
         @view.scroll()
 
   onEval: (f) -> @emitter.on 'eval', f
@@ -113,14 +128,14 @@ class Console
 
   # Output
 
-  stdout: (s) -> @push type: 'stdout', icon: 'quote', text: s
+  stdout: (s) -> @output type: 'stdout', icon: 'quote', text: s
 
-  stderr: (s) -> @push type: 'stderr', icon: 'alert', text: s
+  stderr: (s) -> @output type: 'stderr', icon: 'alert', text: s
 
-  info: (s) -> @push type: 'info', icon: 'info', text: s
+  info: (s) -> @output type: 'info', icon: 'info', text: s
 
   result: (r, {error}) ->
-    @push
+    @output
       type: 'result'
       icon: if error then 'x' else 'check'
       result: r

@@ -15,11 +15,10 @@ class ConsoleElement extends HTMLElement
 
   initialize: (@model) ->
     @getModel = -> @model
-    @model.onDidAddItem (cell) => @addItem cell
+    @model.onDidAddItem (item) => @addItem item
+    @model.onDidInsertItem ([item, i]) => @insertItem [item, i]
     @model.onDidClear => @clear()
-    @model.onFocusInput (force) =>
-      if @hasFocus() and (view = @model.items[@model.items.length-1]?.view)
-        @focusVisible view, force
+    @model.onFocusInput (force) => @focusLast force
     @
 
   getModel: -> @model
@@ -42,6 +41,13 @@ class ConsoleElement extends HTMLElement
     @items.appendChild @fadeIn @divider()
     if scroll then @scroll()
 
+  insertItem: ([item, i]) ->
+    if @isVisible(@lastCell()) then @scroll()
+    {cell} = @initView item
+    before = @model.items[i+1].cell
+    @items.insertBefore @slideIn(cell), before
+    @items.insertBefore @fadeIn(@divider()), before
+
   divider: ->
     d = document.createElement 'div'
     d.classList.add 'divider'
@@ -51,11 +57,13 @@ class ConsoleElement extends HTMLElement
     while @items.hasChildNodes()
       @items.removeChild @items.lastChild
 
-  lastCell: ->
-    @items.querySelector('.cell:last-of-type')
+  queryLast: (view, q) ->
+    items = view.querySelectorAll q
+    items[items.length - 1]
 
-  lastDivider: ->
-    @items.querySelector('.divider:last-of-type')
+  lastCell: -> @queryLast @items, '.cell'
+
+  lastDivider: -> @queryLast @items, '.divider'
 
   isVisible: (pane, view) ->
     if !view? then [pane, view] = [@, pane]
@@ -67,6 +75,10 @@ class ConsoleElement extends HTMLElement
   focusVisible: (view, force) ->
     if force or @isVisible view
       view.focus()
+
+  focusLast: (force) ->
+    if @hasFocus() and (view = @model.items[@model.items.length-1]?.view)
+      @focusVisible view, force
 
   # Various cell views
 
@@ -174,6 +186,7 @@ class ConsoleElement extends HTMLElement
       requestAnimationFrame => @_scroll()
     else
       @isScrolling = false
+      @focusLast()
 
   scroll: ->
     if not @isScrolling
@@ -196,7 +209,7 @@ class ConsoleElement extends HTMLElement
     scrolling = @isScrolling
     @isScrolling = performance.now() + time
     if not scrolling
-      input = @getInput()
+      input = @lastCell()
       target = input.offsetTop - @scrollTop
       @_lock input, target
 
