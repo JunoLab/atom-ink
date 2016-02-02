@@ -13,6 +13,8 @@ class ConsoleElement extends HTMLElement
     @getModel = -> @model
     @
 
+  getModel: -> @model
+
   getTitle: ->
     "Console"
 

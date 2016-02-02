@@ -1,13 +1,14 @@
 # TODO: autocomplete
 
-{Emitter} = require 'atom'
+{Emitter, CompositeDisposable} = require 'atom'
 ConsoleView = require './view'
 HistoryProvider = require './history'
 
 module.exports =
 class Console
   @activate: ->
-    @evalCmd = atom.commands.add 'ink-console atom-text-editor:not([mini])',
+    @subs = new CompositeDisposable
+    @subs.add atom.commands.add 'ink-console atom-text-editor:not([mini])',
       'console:evaluate': ->
         ed = @getModel()
         ed.inkConsole.eval ed
@@ -24,26 +25,21 @@ class Console
       'core:backspace': (e) ->
         @getModel().inkConsole.cancelMode e
 
-    atom.commands.add 'ink-console',
+    @subs.add atom.commands.add 'ink-console',
       'core:copy': ->
         if (sel = document.getSelection().toString())
           atom.clipboard.write sel
+      'console:previous-in-history': -> @getModel().previous()
+      'console:next-in-history': -> @getModel().next()
 
   @deactivate: ->
-    @evalCmd.dispose()
+    @subs.dispose()
 
   constructor: ->
     @view = new ConsoleView().initialize @
     @observeInput (cell) =>
       @watchModes cell
     @history = new HistoryProvider
-
-    @subs = atom.commands.add @view,
-      'console:previous-in-history': => @previous()
-      'console:next-in-history': => @next()
-
-  destroy: ->
-    @subs.dispose()
 
   isInput: false
 
