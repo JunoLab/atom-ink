@@ -37,16 +37,16 @@ class ConsoleElement extends HTMLElement
   addItem: (item) ->
     {cell} = @initView item
     scroll = @isVisible @lastCell()
-    @items.appendChild @fadeIn cell
-    @items.appendChild @fadeIn @divider()
+    @items.appendChild cell
+    @items.appendChild @divider()
     if scroll then @scroll()
 
   insertItem: ([item, i]) ->
-    if @isVisible(@lastCell()) then @scroll()
+    if @isVisible(@lastCell()) then @lock 200
     {cell} = @initView item
     before = @model.items[i+1].cell
-    @items.insertBefore @slideIn(cell), before
-    @items.insertBefore @fadeIn(@divider()), before
+    @items.insertBefore cell, before
+    @items.insertBefore @divider(), before
 
   divider: ->
     d = document.createElement 'div'
@@ -130,25 +130,6 @@ class ConsoleElement extends HTMLElement
     view.appendChild result
     view
 
-  # Animations
-
-  fadeIn: (view) ->
-    view.classList.add 'ink-hide'
-    setTimeout (-> view.classList.remove 'ink-hide'), 0
-    view
-
-  fadeOut: (view) ->
-    view.classList.add 'ink-hide'
-    setTimeout (-> view.parentElement?.removeChild(view)), 100
-    view
-
-  slideIn: (view) ->
-    h = view.clientHeight
-    view.style.height = '0'
-    setTimeout (-> view.style.height = h + 'px'), 0
-    setTimeout (-> view.style.height = ''), 100
-    view
-
   setIcon: (cell, name) ->
     gutter = cell.querySelector '.gutter'
     icon = cell.querySelector '.icon'
@@ -173,24 +154,13 @@ class ConsoleElement extends HTMLElement
     return 0 unless @lastDivider()?
     @lastDivider().offsetTop - @clientHeight + 8
 
-  isScrolling: false
-
-  _scroll: ->
+  scroll: ->
     target = @scrollEndValue()
     delta = target-@scrollTop
-    mov = Math.max delta/2, 5
-    mov = Math.min delta, mov
-    if delta > 0
-      @isScrolling = true
-      @scrollTop += mov
-      requestAnimationFrame => @_scroll()
-    else
-      @isScrolling = false
-      @focusLast()
+    if delta > 0 then @scrollTop += delta
+    @focusLast()
 
-  scroll: ->
-    if not @isScrolling
-      @_scroll()
+  isLocked: false
 
   _lock: (input, target) ->
     if input.offsetTop + input.clientHeight + 10 <
@@ -200,17 +170,18 @@ class ConsoleElement extends HTMLElement
       delta = input.offsetTop - @scrollTop - target
       @scrollTop += delta
     requestAnimationFrame (t) =>
-      if t > @isScrolling
-        @isScrolling = false
+      if t > @isLocked
+        @isLocked = false
       else
         @_lock input, target
 
   lock: (time) ->
-    scrolling = @isScrolling
-    @isScrolling = performance.now() + time
-    if not scrolling
+    if not @isLocked
+      @isLocked = performance.now() + time
       input = @lastCell()
       target = input.offsetTop - @scrollTop
       @_lock input, target
+    else
+      @isLocked = Math.max(@isLocked, performance.now() + time)
 
 module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype
