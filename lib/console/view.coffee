@@ -9,6 +9,9 @@ class ConsoleElement extends HTMLElement
     @items.classList.add 'items'
     @appendChild @items
 
+    @style.fontSize = atom.config.get('editor.fontSize') + 'px'
+    @style.fontFamily = atom.config.get('editor.fontFamily')
+
     @views = {}
     for view in ['input', 'stdout', 'stderr', 'info', 'result']
       @views[view] = this["#{view}View"].bind this
@@ -111,8 +114,6 @@ class ConsoleElement extends HTMLElement
 
   streamView: (text, type) ->
     out = document.createElement 'div'
-    out.style.fontSize = atom.config.get('editor.fontSize') + 'px'
-    out.style.fontFamily = atom.config.get('editor.fontFamily')
     out.innerText = text
     out.classList.add type, 'stream'
     out
