@@ -7,7 +7,7 @@ HistoryProvider = require './history'
 module.exports =
 class Console
   @activate: ->
-    @evalCmd = atom.commands.add 'ink-console atom-text-editor',
+    @evalCmd = atom.commands.add 'ink-console atom-text-editor:not([mini])',
       'console:evaluate': ->
         ed = @getModel()
         ed.inkConsole.eval ed
