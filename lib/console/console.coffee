@@ -69,14 +69,13 @@ class Console
 
   done: ->
     if @getInput()
-      @view.focus() # Defocus input
+      @view.focus() if @view.hasFocus() # Defocus input
       @getInput().input = false
 
   reset: ->
     @done()
     @clear()
     @input()
-    @focusInput()
 
   eval: (ed) ->
     if (input = @getInput()?.view.getModel())
