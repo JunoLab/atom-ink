@@ -9,8 +9,9 @@ class ConsoleElement extends HTMLElement
     @items.classList.add 'items'
     @appendChild @items
 
-    @views =
-      input: @inputView.bind this
+    @views = {}
+    for view in ['input', 'stdout', 'stderr', 'info', 'result']
+      @views[view] = this["#{view}View"].bind this
 
   initialize: (@model) ->
     @getModel = -> @model
@@ -93,29 +94,26 @@ class ConsoleElement extends HTMLElement
     ed.getModel().inkConsole = @model
     ed
 
-  # streamView: (text, type, icon) ->
-  #   out = document.createElement 'div'
-  #   out.style.fontSize = atom.config.get('editor.fontSize') + 'px'
-  #   out.style.fontFamily = atom.config.get('editor.fontFamily')
-  #   out.innerText = text
-  #   out.classList.add type, 'stream'
-  #   @cellView out,
-  #     icon: icon
-  #
-  # outView: (s) -> @streamView s, 'output', 'quote'
-  #
-  # errView: (s) -> @streamView s, 'err', 'alert'
-  #
-  # infoView: (s) -> @streamView s, 'info', 'info'
-  #
-  # resultView: (r, {icon, error}={}) ->
-  #   icon ?= if error then 'x' else 'check'
-  #   view = document.createElement 'div'
-  #   view.classList.add 'result'
-  #   if error then view.classList.add 'error'
-  #   view.appendChild r
-  #   @cellView view,
-  #     icon: icon
+  streamView: (text, type) ->
+    out = document.createElement 'div'
+    out.style.fontSize = atom.config.get('editor.fontSize') + 'px'
+    out.style.fontFamily = atom.config.get('editor.fontFamily')
+    out.innerText = text
+    out.classList.add type, 'stream'
+    out
+
+  stdoutView: ({text}) -> @streamView text, 'output'
+
+  stderrView: ({text}) -> @streamView text, 'err'
+
+  infoView: ({text}) -> @streamView text, 'info'
+
+  resultView: ({result, error}) ->
+    view = document.createElement 'div'
+    view.classList.add 'result'
+    if error then view.classList.add 'error'
+    view.appendChild result
+    view
 
   # Animations
 
@@ -155,9 +153,6 @@ class ConsoleElement extends HTMLElement
     @isLoading = l
 
   # Scrolling
-
-  scrollValue: ->
-    @scrollTop
 
   scrollEndValue: ->
     return 0 unless @lastDivider()?

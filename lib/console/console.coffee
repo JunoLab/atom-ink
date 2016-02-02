@@ -111,28 +111,17 @@ class Console
 
   # Output
 
-  @debounce: (t, f) ->
-    timeout = null
-    (args...) ->
-      if timeout? then clearTimeout timeout
-      timeout = setTimeout (=> f.call this, args...), t
+  stdout: (s) -> @push type: 'stdout', icon: 'quote', text: s
 
-  @buffer: (f) ->
-    buffer = []
-    flush = @debounce 10, ->
-      f.call this, buffer.join('').trim()
-      buffer = []
-    (s) ->
-      buffer.push(s)
-      flush.call this
+  stderr: (s) -> @push type: 'stderr', icon: 'alert', text: s
 
-  out: @buffer (s) -> @push type: 'out', value: s
+  info: (s) -> @push type: 'info', icon: 'info', text: s
 
-  err: @buffer (s) -> @view.add(@view.errView(s))
-
-  info: @buffer (s) -> @view.add(@view.infoView(s))
-
-  result: (r, opts) -> @view.add(@view.resultView(r, opts))
+  result: (r, {error}) ->
+    @push
+      type: 'result'
+      icon: if error then 'x' else 'check'
+      result: r
 
   # Input Modes
 
