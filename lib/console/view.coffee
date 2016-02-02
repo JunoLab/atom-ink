@@ -1,21 +1,17 @@
-{$, $$, ScrollView, TextEditorView} = require 'atom-space-pen-views'
+class ConsoleElement extends HTMLElement
 
-module.exports =
-class ConsoleView extends ScrollView
+  createdCallback: ->
+    @setAttribute 'tabindex', -1
+    @gutter = document.createElement 'div'
+    @gutter.classList.add 'gutter'
+    @appendChild @gutter
+    @items = document.createElement 'div'
+    @items.classList.add 'items'
+    @appendChild @items
 
-  @content: ->
-    @div class: 'pane-item', tabindex: -1, =>
-      @div class: 'ink-console', =>
-        @div class: 'gutter'
-        @div class: 'items-scroll', tabindex: -1, =>
-          @div class: 'items', =>
-          @div class: 'spacer'
-
-  initialize: ->
-    super
-    @items = @element.querySelector '.items'
-    @scrollView = @element.querySelector '.items-scroll'
-    @element.querySelector('.spacer').onclick = => @focusInput()
+  initialize: (@model) ->
+    @getModel = -> @model
+    @
 
   getTitle: ->
     "Console"
@@ -55,7 +51,7 @@ class ConsoleView extends ScrollView
     d = document.createElement 'div'
     d.classList.add 'divider'
     if not input then @lastDivider = d
-    if input then @addBeforeInput(d, {}) else @addItem((@fadeIn d), {})
+    if input then @addBeforeInput(d, {}) else @addItem(@fadeIn(d), {})
     @loading()
 
   clear: ->
@@ -101,11 +97,11 @@ class ConsoleView extends ScrollView
 
   resultView: (r, {icon, error}={}) ->
     icon ?= if error then 'x' else 'check'
-    view = $$ ->
-      @div class: 'result'
-    if error then view.addClass 'error'
-    view.append r
-    @cellView view[0],
+    view = document.createElement 'div'
+    view.classList.add 'result'
+    if error then view.classList.add 'error'
+    view.appendChild r
+    @cellView view,
       icon: icon
 
   inputView: (con) ->
@@ -117,7 +113,7 @@ class ConsoleView extends ScrollView
       icon: 'chevron-right'
 
   visible: ->
-    document.contains @element
+    document.contains @
 
   fadeIn: (view) ->
     if @visible()
@@ -147,7 +143,7 @@ class ConsoleView extends ScrollView
     gutter.appendChild icon2
 
   hasFocus: ->
-    @element.contains document.activeElement
+    @contains document.activeElement
 
   focusInput: (force) ->
     if force or @hasFocus()
@@ -162,14 +158,14 @@ class ConsoleView extends ScrollView
     @isLoading = l
 
   scrollValue: ->
-    @scrollView.scrollTop
+    @scrollTop
 
   scrollEndValue: ->
     return 0 unless @lastDivider
-    @lastDivider.offsetTop - @scrollView.clientHeight + 8
+    @lastDivider.offsetTop - @clientHeight + 8
 
   isVisible: (pane, view) ->
-    [top, bottom] = [pane.scrollTop, bottom = pane.scrollTop + pane.clientHeight]
+    [top, bottom] = [pane.scrollTop, pane.scrollTop + pane.clientHeight]
     [ptop, pbottom] = [view.offsetTop, view.offsetTop + view.clientHeight]
     bottom >= ptop >= top || bottom >= pbottom >= top
 
@@ -178,18 +174,18 @@ class ConsoleView extends ScrollView
   lastCellVisible: ->
     items = @items.querySelectorAll('.cell')
     return false unless items[0]
-    @isVisible @scrollView, @last items
+    @isVisible @, @last items
 
   isScrolling: false
 
   _scroll: ->
     target = @scrollEndValue()
-    delta = target-@scrollView.scrollTop
+    delta = target-@scrollTop
     mov = Math.max delta/2, 5
     mov = Math.min delta, mov
     if delta > 0
       @isScrolling = true
-      @scrollView.scrollTop += mov
+      @scrollTop += mov
       requestAnimationFrame => @_scroll()
     else
       @isScrolling = false
@@ -201,11 +197,11 @@ class ConsoleView extends ScrollView
 
   _lock: (input, target) ->
     if input.offsetTop + input.clientHeight + 10 <
-         @scrollView.scrollTop + @scrollView.clientHeight
-      target = input.offsetTop - @scrollView.scrollTop
+         @scrollTop + @clientHeight
+      target = input.offsetTop - @scrollTop
     else
-      delta = input.offsetTop - @scrollView.scrollTop - target
-      @scrollView.scrollTop += delta
+      delta = input.offsetTop - @scrollTop - target
+      @scrollTop += delta
     requestAnimationFrame (t) =>
       if t > @isScrolling
         @isScrolling = false
@@ -217,5 +213,7 @@ class ConsoleView extends ScrollView
     @isScrolling = performance.now() + time
     if not scrolling
       input = @getInput()
-      target = input.offsetTop - @scrollView.scrollTop
+      target = input.offsetTop - @scrollTop
       @_lock input, target
+
+module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype

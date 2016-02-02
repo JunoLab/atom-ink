@@ -8,11 +8,16 @@
   to   { background-color: @background-color-info; }
 }
 
-.ink-console {
+ink-console {
   width: 100%;
   height: 100%;
   background-color: @syntax-background-color;
   color: @syntax-text-color;
+  overflow: auto;
+
+  .items {
+    margin-bottom: 100px;
+  }
 
   atom-text-editor::shadow {
     .cursor-line {
@@ -44,11 +49,6 @@
     &.loading {
       -webkit-animation: divider-pulse 2s infinite alternate ease-in-out;
     }
-  }
-  .items-scroll {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
   }
   .spacer {
     width: 100%;

@@ -3,7 +3,7 @@
     {label: 'Clear', command: 'inline-results:clear'}
     {type: 'separator'}
   ]
-  '.ink-console': [
+  'ink-console': [
     {label: 'Copy', command: 'core:copy'}
     {type: 'separator'}
   ]

@@ -7,7 +7,7 @@ HistoryProvider = require './history'
 module.exports =
 class Console
   @activate: ->
-    @evalCmd = atom.commands.add '.ink-console atom-text-editor',
+    @evalCmd = atom.commands.add 'ink-console atom-text-editor',
       'console:evaluate': ->
         ed = @getModel()
         ed.inkConsole.eval ed
@@ -24,7 +24,7 @@ class Console
       'core:backspace': (e) ->
         @getModel().inkConsole.cancelMode e
 
-    atom.commands.add '.ink-console',
+    atom.commands.add 'ink-console',
       'core:copy': ->
         if (sel = document.getSelection().toString())
           atom.clipboard.write sel
@@ -33,13 +33,12 @@ class Console
     @evalCmd.dispose()
 
   constructor: ->
-    @view = new ConsoleView
-    @view.getModel = -> @
+    @view = new ConsoleView().initialize @
     @observeInput (cell) =>
       @watchModes cell
     @history = new HistoryProvider
 
-    @subs = atom.commands.add @view[0],
+    @subs = atom.commands.add @view,
       'console:previous-in-history': => @previous()
       'console:next-in-history': => @next()
 
@@ -72,7 +71,7 @@ class Console
 
   done: ->
     if @isInput
-      @view.scrollView.focus() # Defocus input
+      @view.focus() # Defocus input
       @isInput = false
 
   @debounce: (t, f) ->
@@ -121,12 +120,12 @@ class Console
       p.setFlexScale 1/2
     p.activateItem @view
     p.onDidActivate => setTimeout =>
-      if document.activeElement == @view[0] && @view.lastCellVisible() && @isInput
+      if document.activeElement == @view && @view.lastCellVisible() && @isInput
           @view.focusInput(true)
 
   toggle: ->
     if atom.workspace.getPaneItems().indexOf(@view) > -1
-      @view[0].parentElement.parentElement.getModel().removeItem @view
+      @view.parentElement.parentElement.getModel().removeItem @view
     else
       @openInTab()
       @view.focusInput()

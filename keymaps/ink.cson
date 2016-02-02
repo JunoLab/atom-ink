@@ -8,10 +8,10 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 
-'.ink-console atom-text-editor:not([mini])':
+'ink-console atom-text-editor:not([mini])':
   'enter': 'console:evaluate'
 
-'.ink-console':
+'ink-console':
   'alt-up': 'console:previous-in-history'
   'alt-down': 'console:next-in-history'
 
