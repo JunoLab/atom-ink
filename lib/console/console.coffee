@@ -39,7 +39,9 @@ class Console
     @items = []
     @history = new HistoryProvider
     @emitter = new Emitter
+    # TODO: we shouldn't need to know about the view at all
     @view = new ConsoleView().initialize @
+    @input()
 
   # Basic item / input logic
 
@@ -55,37 +57,60 @@ class Console
 
   onDidClear: (f) -> @emitter.on 'did-clear', f
 
-  isInput: false
+  getInput: ->
+    last = @items[@items.length-1]
+    if last?.input then last
 
   input: ->
     delete @prefix
-    if not @isInput
-      @isInput = true
-      @push type: 'input', icon: 'chevron-right'
+    if not @getInput()
+      @push type: 'input', icon: 'chevron-right', input: true
+      @focusInput()
 
   done: ->
-    if @isInput
+    if @getInput()
       @view.focus() # Defocus input
-      @isInput = false
+      @getInput().input = false
 
   reset: ->
     @done()
     @clear()
     @input()
-    @view.focusInput()
-
-  setGrammar: (g) ->
-    @view.setGrammar g
+    @focusInput()
 
   eval: (ed) ->
-    if @isInput
-      input = @view.getInputEd()
+    if (input = @getInput()?.view.getModel())
       if ed == input
         @emitter.emit 'eval', ed
       else
         input.setText ed.getText()
-        @view.focusInput true
+        @focusInput()
         @view.scroll()
+
+  onEval: (f) -> @emitter.on 'eval', f
+
+  openInTab: ->
+    p = atom.workspace.getActivePane()
+    if p.items.length > 0
+      p = p.splitDown()
+      p.setFlexScale 1/2
+    p.activateItem @view
+    p.onDidActivate => setTimeout =>
+      if document.activeElement == @view
+          @focusInput()
+
+  toggle: ->
+    if atom.workspace.getPaneItems().indexOf(@view) > -1
+      @view.parentElement.parentElement.getModel().removeItem @view
+    else
+      @openInTab()
+      @focusInput()
+
+  focusInput: ->
+    if @getInput()?
+      @view.focusVisible @getInput().view
+
+  # Output
 
   @debounce: (t, f) ->
     timeout = null
@@ -102,34 +127,13 @@ class Console
       buffer.push(s)
       flush.call this
 
-  out: @buffer (s) -> @view.add(@view.outView(s), @isInput)
+  out: @buffer (s) -> @push type: 'out', value: s
 
-  err: @buffer (s) -> @view.add(@view.errView(s), @isInput)
+  err: @buffer (s) -> @view.add(@view.errView(s))
 
-  info: @buffer (s) -> @view.add(@view.infoView(s), @isInput)
+  info: @buffer (s) -> @view.add(@view.infoView(s))
 
-  result: (r, opts) -> @view.add(@view.resultView(r, opts), @isInput)
-
-  onEval: (f) -> @emitter.on 'eval', f
-
-  observeInput: (f) -> @emitter.on 'new-input', f
-
-  openInTab: ->
-    p = atom.workspace.getActivePane()
-    if p.items.length > 0
-      p = p.splitDown()
-      p.setFlexScale 1/2
-    p.activateItem @view
-    p.onDidActivate => setTimeout =>
-      if document.activeElement == @view && @view.lastCellVisible() && @isInput
-          @view.focusInput(true)
-
-  toggle: ->
-    if atom.workspace.getPaneItems().indexOf(@view) > -1
-      @view.parentElement.parentElement.getModel().removeItem @view
-    else
-      @openInTab()
-      @view.focusInput()
+  result: (r, opts) -> @view.add(@view.resultView(r, opts))
 
   # Input Modes
 
@@ -178,7 +182,7 @@ class Console
   # History
 
   logInput: ->
-    ed = @view.getInputEd()
+    ed = @getInput().view.getModel()
     input = ed.getText()
     mode = ed.inkConsoleMode
     @history.push
@@ -186,7 +190,7 @@ class Console
       mode: mode?.name
 
   moveHistory: (up) ->
-    ed = @view.getInputEd()
+    ed = @getInput().view.getModel()
     if ed.getText() or not @prefix?
       pos = ed.getCursorBufferPosition()
       text = ed.getTextInRange [[0,0], pos]
@@ -196,21 +200,21 @@ class Console
     else
       @history.getNext @prefix.text
     ed.setText next.input
-    @setMode @view.getInput(), next.mode
+    # @setMode @view.getInput(), next.mode
     ed.setCursorBufferPosition @prefix.pos or [0, 0]
 
   previous: -> @moveHistory true
   next: -> @moveHistory false
 
   keyUp: (e, ed) ->
-    if ed == @view.getInputEd()
+    if ed == @getInput()?.view.getModel()
       curs = ed.getCursorsOrderedByBufferPosition()
       if curs.length is 1 and (@prefix? or curs[0].getBufferRow() == 0)
         e.stopImmediatePropagation()
         @previous()
 
   keyDown: (e, ed) ->
-    if ed == @view.getInputEd()
+    if ed == @getInput()?.view.getModel()
       curs = ed.getCursorsOrderedByBufferPosition()
       if curs.length is 1 and (@prefix? or curs[0].getBufferRow()+1 == ed.getLineCount())
         e.stopImmediatePropagation()

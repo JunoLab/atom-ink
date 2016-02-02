@@ -33,17 +33,10 @@ class ConsoleElement extends HTMLElement
 
   addItem: (item) ->
     {cell} = @initView item
-    scroll = @lastCellVisible()
+    scroll = @isVisible @lastCell()
     @items.appendChild @fadeIn cell
     @items.appendChild @fadeIn @divider()
     if scroll then @scroll()
-
-  getInput: ->
-    items = @items.querySelectorAll '.cell'
-    items[items.length-1]
-
-  getInputEd: ->
-    @getInput()?.querySelector('atom-text-editor')?.getModel()
 
   divider: ->
     d = document.createElement 'div'
@@ -53,10 +46,23 @@ class ConsoleElement extends HTMLElement
   clear: ->
     while @items.hasChildNodes()
       @items.removeChild @items.lastChild
-    delete @lastDivider
 
-  setGrammar: (g) ->
-    @defaultGrammar = g
+  lastCell: ->
+    @items.querySelector('.cell:last-of-type')
+
+  lastDivider: ->
+    @items.querySelector('.divider:last-of-type')
+
+  isVisible: (pane, view) ->
+    if !view? then [pane, view] = [@, pane]
+    return true unless view?
+    pane = pane.getBoundingClientRect()
+    view = view.getBoundingClientRect()
+    pane.bottom >= view.top >= pane.top && pane.bottom >= view.bottom >= pane.top
+
+  focusVisible: (view) ->
+    if @isVisible view
+      view.focus()
 
   # Various cell views
 
@@ -113,27 +119,21 @@ class ConsoleElement extends HTMLElement
 
   # Animations
 
-  visible: ->
-    document.contains @
-
   fadeIn: (view) ->
-    if @visible()
-      view.classList.add 'ink-hide'
-      setTimeout (-> view.classList.remove 'ink-hide'), 0
+    view.classList.add 'ink-hide'
+    setTimeout (-> view.classList.remove 'ink-hide'), 0
     view
 
   fadeOut: (view) ->
-    if @visible()
-      view.classList.add 'ink-hide'
-      setTimeout (-> view.parentElement?.removeChild(view)), 100
+    view.classList.add 'ink-hide'
+    setTimeout (-> view.parentElement?.removeChild(view)), 100
     view
 
   slideIn: (view) ->
-    if @visible()
-      h = view.clientHeight
-      view.style.height = '0'
-      setTimeout (-> view.style.height = h + 'px'), 0
-      setTimeout (-> view.style.height = ''), 100
+    h = view.clientHeight
+    view.style.height = '0'
+    setTimeout (-> view.style.height = h + 'px'), 0
+    setTimeout (-> view.style.height = ''), 100
     view
 
   setIcon: (cell, name) ->
@@ -146,14 +146,10 @@ class ConsoleElement extends HTMLElement
   hasFocus: ->
     @contains document.activeElement
 
-  focusInput: (force) ->
-    if force or @hasFocus()
-      @getInput()?.querySelector('atom-text-editor')?.focus()
-
   loading: (l = @isLoading) ->
     if l
       @loading false
-      @items.querySelector('.divider:last-child')?.classList.add 'loading'
+      @lastDivider()?.classList.add 'loading'
     else
       @items.querySelector('.divider.loading')?.classList.remove 'loading'
     @isLoading = l
@@ -164,20 +160,8 @@ class ConsoleElement extends HTMLElement
     @scrollTop
 
   scrollEndValue: ->
-    return 0 unless @lastDivider
-    @lastDivider.offsetTop - @clientHeight + 8
-
-  isVisible: (pane, view) ->
-    [top, bottom] = [pane.scrollTop, pane.scrollTop + pane.clientHeight]
-    [ptop, pbottom] = [view.offsetTop, view.offsetTop + view.clientHeight]
-    bottom >= ptop >= top || bottom >= pbottom >= top
-
-  last: (xs) -> xs[xs.length-1]
-
-  lastCellVisible: ->
-    items = @items.querySelectorAll('.cell')
-    return false unless items[0]
-    @isVisible @, @last items
+    return 0 unless @lastDivider()?
+    @lastDivider().offsetTop - @clientHeight + 8
 
   isScrolling: false
 
@@ -192,7 +176,6 @@ class ConsoleElement extends HTMLElement
       requestAnimationFrame => @_scroll()
     else
       @isScrolling = false
-      @focusInput()
 
   scroll: ->
     if not @isScrolling
