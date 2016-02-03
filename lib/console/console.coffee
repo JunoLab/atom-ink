@@ -169,6 +169,7 @@ class Console
       return mode if mode.prefix is prefix or mode.prefix is prefix
 
   setMode: (item, mode = @defaultMode()) ->
+    mode = @getMode mode
     item.mode = mode
     item.icon = mode.icon or 'chevron-right'
     item.grammar = mode.grammar
@@ -196,26 +197,24 @@ class Console
   # History
 
   logInput: ->
-    ed = @getInput().view.getModel()
-    input = ed.getText()
-    mode = ed.inkConsoleMode
+    {editor, mode} = @getInput()
     @history.push
-      input: input
+      input: editor.getText()
       mode: mode?.name
 
   moveHistory: (up) ->
-    ed = @getInput().view.getModel()
-    if ed.getText() or not @prefix?
-      pos = ed.getCursorBufferPosition()
-      text = ed.getTextInRange [[0,0], pos]
+    {editor} = @getInput()
+    if editor.getText() or not @prefix?
+      pos = editor.getCursorBufferPosition()
+      text = editor.getTextInRange [[0,0], pos]
       @prefix = {pos, text}
     next = if up
       @history.getPrevious @prefix.text
     else
       @history.getNext @prefix.text
-    ed.setText next.input
-    # @setMode @view.getInput(), next.mode
-    ed.setCursorBufferPosition @prefix.pos or [0, 0]
+    editor.setText next.input
+    @setMode @getInput(), next.mode
+    editor.setCursorBufferPosition @prefix.pos or [0, 0]
 
   previous: -> @moveHistory true
   next: -> @moveHistory false
