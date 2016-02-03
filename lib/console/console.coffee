@@ -23,7 +23,7 @@ class Console
       'core:move-right': (e) ->
         delete getConsole(this).prefix
       'core:backspace': (e) ->
-        getConsole(this).cancelMode e
+        getConsole(this).cancelMode this
 
     @subs.add atom.commands.add 'ink-console',
       'core:copy': ->
@@ -41,7 +41,8 @@ class Console
     @emitter = new Emitter
     # TODO: we shouldn't need to know about the view at all
     @view = new ConsoleView().initialize @
-    @input()
+    @onDidAddItem (item) => @watchModes item
+    setTimeout (=> @input()), 100 # Wait for grammars to load
 
   # Basic item / input logic
 
@@ -73,7 +74,7 @@ class Console
   input: ->
     delete @prefix
     if not @getInput()
-      @push type: 'input', icon: 'chevron-right', input: true
+      @push @setMode type: 'input', input: true
       @focusInput()
 
   done: ->
@@ -148,47 +149,49 @@ class Console
 
   # Input Modes
 
-  modes: -> {}
+  getModes: -> []
+
+  setModes: (modes) -> @getModes = -> modes
 
   defaultMode: ->
-    for char, mode of @modes()
-      if char is 'default'
-        return mode
+    for mode in @getModes()
+      return mode if mode.default
+    return {}
 
-  modeByName: (name) ->
-    for char, mode of @modes()
+  getMode: (name) ->
+    return name if name instanceof Object
+    for mode in @getModes()
       return mode if mode.name is name
+    return @defaultMode()
+
+  modeForPrefix: (prefix) ->
+    for mode in @getModes()
+      return mode if mode.prefix is prefix or mode.prefix is prefix
+
+  setMode: (item, mode = @defaultMode()) ->
+    item.mode = mode
+    item.icon = mode.icon or 'chevron-right'
+    item.grammar = mode.grammar
+    item
 
   cursorAtBeginning: (ed) ->
     ed.getCursors().length == 1 and
     ed.getCursors()[0].getBufferPosition().isEqual [0, 0]
 
-  setMode: (cell, mode) ->
-    ed = cell.querySelector('atom-text-editor').getModel()
-    if mode?.constructor is String then mode = @modeByName(mode)
-    mode ?= @defaultMode()
-    if not mode
-      delete ed.inkConsoleMode
-      if @view.defaultGrammar then ed.setGrammar @view.defaultGrammar
-      @view.setIcon cell, 'chevron-right'
-    else
-      ed.inkConsoleMode = mode
-      if mode.grammar then ed.setGrammar mode.grammar
-      @view.setIcon cell, mode.icon or 'chevron-right'
-
-  watchModes: (cell) ->
+  watchModes: (item) ->
+    {editor, mode} = item
+    return unless editor?
     @edListener?.dispose()
-    ed = cell.querySelector('atom-text-editor').getModel()
-    @edListener = ed.onWillInsertText (e) =>
-      if (mode = @modes()[e.text]) and @cursorAtBeginning(ed) and ed.inkConsoleMode isnt mode
+    @edListener = editor.onWillInsertText (e) =>
+      newmode = @modeForPrefix e.text
+      if newmode? and @cursorAtBeginning(editor) and newmode isnt mode
         e.cancel()
-        @setMode cell, mode
+        @setMode item, newmode
 
-  cancelMode: (e) ->
-    ed = e.currentTarget.getModel()
-    cell = e.currentTarget.parentElement.parentElement
-    if @cursorAtBeginning(ed) and ed.inkConsoleMode
-      @setMode cell
+  cancelMode: (item) ->
+    {editor} = item = @itemForView item
+    if @cursorAtBeginning(editor)
+      @setMode item
 
   # History
 

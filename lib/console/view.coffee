@@ -85,19 +85,29 @@ class ConsoleElement extends HTMLElement
 
   # Various cell views
 
+  observeKey: (obj, key, cb) ->
+    Object.observe obj, (changes) ->
+      for change in changes
+        if change.name is key
+          cb(change.object[key])
+          return
+
   iconView: (name) ->
     icon = document.createElement 'span'
     icon.classList.add 'icon', 'icon-'+name
     icon
 
-  cellView: ({view, icon}) ->
+  cellView: (item) ->
+    {view, icon} = item
     cell = document.createElement 'div'
     cell.classList.add 'cell'
 
     gutter = document.createElement 'div'
     gutter.classList.add 'gutter'
-    if icon then gutter.appendChild @iconView icon
     cell.appendChild gutter
+
+    @observeKey item, 'icon', => @updateIcon item
+    @updateIcon {cell, icon: item.icon}
 
     content = document.createElement 'div'
     content.classList.add 'content'
@@ -108,9 +118,14 @@ class ConsoleElement extends HTMLElement
 
   inputView: (item) ->
     ed = document.createElement 'atom-text-editor'
-    ed.getModel().setLineNumberGutterVisible(false)
     item.editor = ed.getModel()
+    item.editor.setLineNumberGutterVisible(false)
+    @updateGrammar item
+    @observeKey item, 'grammar', => @updateGrammar item
     ed
+
+  updateGrammar: ({editor, grammar}) ->
+    editor.setGrammar atom.grammars.grammarForScopeName grammar
 
   streamView: (text, type) ->
     out = document.createElement 'div'
@@ -131,11 +146,11 @@ class ConsoleElement extends HTMLElement
     view.appendChild result
     view
 
-  setIcon: (cell, name) ->
+  updateIcon: ({cell, icon}) ->
     gutter = cell.querySelector '.gutter'
-    icon = cell.querySelector '.icon'
-    gutter.removeChild icon
-    icon2 = @iconView name
+    iconView = cell.querySelector '.icon'
+    if iconView? then gutter.removeChild iconView
+    icon2 = @iconView icon
     gutter.appendChild icon2
 
   hasFocus: ->
