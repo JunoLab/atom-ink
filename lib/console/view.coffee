@@ -43,6 +43,7 @@ class ConsoleElement extends HTMLElement
     @items.appendChild cell
     @items.appendChild @divider()
     if scroll then @scroll()
+    @loading()
 
   insertItem: ([item, i]) ->
     if @isVisible(@lastCell()) then @lock 200
@@ -50,6 +51,7 @@ class ConsoleElement extends HTMLElement
     before = @model.items[i+1].cell
     @items.insertBefore cell, before
     @items.insertBefore @divider(), before
+    @loading()
 
   divider: ->
     d = document.createElement 'div'
@@ -127,17 +129,20 @@ class ConsoleElement extends HTMLElement
   updateGrammar: ({editor, grammar}) ->
     editor.setGrammar atom.grammars.grammarForScopeName grammar
 
-  streamView: (text, type) ->
+  streamView: (item, type) ->
     out = document.createElement 'div'
-    out.innerText = text
+    out.innerText = item.text
+    @observeKey item, 'text', (text) =>
+      @lock 200
+      out.innerText = text
     out.classList.add type, 'stream'
     out
 
-  stdoutView: ({text}) -> @streamView text, 'output'
+  stdoutView: (item) -> @streamView item, 'output'
 
-  stderrView: ({text}) -> @streamView text, 'err'
+  stderrView: (item) -> @streamView item, 'err'
 
-  infoView: ({text}) -> @streamView text, 'info'
+  infoView: (item) -> @streamView item, 'info'
 
   resultView: ({result, error}) ->
     view = document.createElement 'div'

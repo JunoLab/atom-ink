@@ -71,6 +71,8 @@ class Console
     last = @items[@items.length-1]
     if last?.input then last
 
+  lastOutput: -> @items[@items.length - (if @getInput() then 2 else 1)]
+
   input: ->
     delete @prefix
     if not @getInput()
@@ -135,11 +137,20 @@ class Console
 
   # Output
 
-  stdout: (s) -> @output type: 'stdout', icon: 'quote', text: s
+  bufferOut: (item) ->
+    {type, text} = item
+    last = @lastOutput()
+    if last?.type is type and last.expires > performance.now()
+      last.text += text
+    else
+      @output item
+    @lastOutput().expires = performance.now() + 100
 
-  stderr: (s) -> @output type: 'stderr', icon: 'alert', text: s
+  stdout: (s) -> @bufferOut type: 'stdout', icon: 'quote', text: s
 
-  info: (s) -> @output type: 'info', icon: 'info', text: s
+  stderr: (s) -> @bufferOut type: 'stderr', icon: 'alert', text: s
+
+  info: (s) -> @bufferOut type: 'info', icon: 'info', text: s
 
   result: (r, {error}) ->
     @output
