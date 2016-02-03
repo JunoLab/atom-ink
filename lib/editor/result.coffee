@@ -1,6 +1,36 @@
 # TODO: better scrolling behaviour
 {CompositeDisposable} = require 'atom'
 
+# ## Result API
+# `Result`s are DOM elements which represent the result of some operation. They
+# can be created by something like
+#
+# ```coffeescript
+# new ink.Result(ed, range, options)
+# ```
+# where `ed` is the current text editor and `range` is a line range compatible array,
+# e.g. `[3, 4]`. `options` is an object with the mandatory field
+#   `content`: DOM-node that will be diplayed inside of the `Result`.
+# and the optional fields
+# - `error`: Default `false`. If true, adds the `error`-style to the `Result`.
+# - `fade`:  Default `false`. If true, the `Result` will fade in on creation.
+# - `type`:  Default `inline`, can also be `block`. Inline-`Result`s will be
+#            displayed after the end of the last line contained in `range`,
+#            whereas block-`Result`s will be displayed below it and span the
+#            whole width of the current editor.
+#
+# #### Static Methods
+# There are also some static methods provided to deal with `Result`s without
+# addressing a specific object.
+#
+# - `removeLines(start, end, type = 'any')` removes all results with the specified
+# type (or any of them, if no type is given) in the line range `[start, end]`.
+# - `removeAll(ed)` removes all `Result`s in the editor `ed`, which defaults to the
+# currently active editor.
+# - `removeCurrent()` removes all `Result`s for all selected lines in the currently
+# active editor.
+
+
 module.exports =
 class Result
   constructor: (@editor, range, opts={}) ->
