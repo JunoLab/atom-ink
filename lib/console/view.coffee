@@ -39,18 +39,17 @@ class ConsoleElement extends HTMLElement
 
   addItem: (item) ->
     {cell} = @initView item
-    scroll = @isVisible @lastCell()
-    @items.appendChild cell
-    @items.appendChild @divider()
-    if scroll then @scroll()
+    @lock =>
+      @items.appendChild cell
+      @items.appendChild @divider()
     @loading()
 
   insertItem: ([item, i]) ->
-    if @isVisible(@lastCell()) then @lock 200
     {cell} = @initView item
     before = @model.items[i+1].cell
-    @items.insertBefore cell, before
-    @items.insertBefore @divider(), before
+    @lock =>
+      @items.insertBefore cell, before
+      @items.insertBefore @divider(), before
     @loading()
 
   divider: ->
@@ -72,10 +71,10 @@ class ConsoleElement extends HTMLElement
 
   isVisible: (pane, view) ->
     if !view? then [pane, view] = [@, pane]
-    return true unless view?
+    return unless view?
     pane = pane.getBoundingClientRect()
     view = view.getBoundingClientRect()
-    pane.bottom >= view.top >= pane.top && pane.bottom >= view.bottom >= pane.top
+    pane.bottom >= view.top >= pane.top or pane.bottom >= view.bottom >= pane.top
 
   focusVisible: (view, force) ->
     if force or @isVisible view
@@ -133,8 +132,7 @@ class ConsoleElement extends HTMLElement
     out = document.createElement 'div'
     out.innerText = item.text
     @observeKey item, 'text', (text) =>
-      @lock 200
-      out.innerText = text
+      @lock -> out.innerText = text
     out.classList.add type, 'stream'
     out
 
@@ -171,38 +169,15 @@ class ConsoleElement extends HTMLElement
 
   # Scrolling
 
-  scrollEndValue: ->
-    return 0 unless @lastDivider()?
-    @lastDivider().offsetTop - @clientHeight + 8
-
-  scroll: ->
-    target = @scrollEndValue()
-    delta = target-@scrollTop
-    if delta > 0 then @scrollTop += delta
-    @focusLast()
-
-  isLocked: false
-
-  _lock: (input, target) ->
-    if input.offsetTop + input.clientHeight + 10 <
-         @scrollTop + @clientHeight
-      target = input.offsetTop - @scrollTop
-    else
-      delta = input.offsetTop - @scrollTop - target
+  lock: (f) ->
+    last = @lastCell()
+    if @isVisible last
+      target = last.offsetTop + last.clientHeight - @scrollTop
+      f()
+      last = @lastCell()
+      delta = last.offsetTop + last.clientHeight - @scrollTop - target
       @scrollTop += delta
-    requestAnimationFrame (t) =>
-      if t > @isLocked
-        @isLocked = false
-      else
-        @_lock input, target
-
-  lock: (time) ->
-    if not @isLocked
-      @isLocked = performance.now() + time
-      input = @lastCell()
-      target = input.offsetTop - @scrollTop
-      @_lock input, target
     else
-      @isLocked = Math.max(@isLocked, performance.now() + time)
+      f()
 
 module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype

@@ -109,7 +109,6 @@ class Console
     else if (input = @getInput())
       input.editor.setText item.editor.getText()
       @focusInput true
-      @view.scroll()
 
   onEval: (f) -> @emitter.on 'eval', f
 
