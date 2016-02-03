@@ -109,6 +109,7 @@ class ConsoleElement extends HTMLElement
   inputView: (item) ->
     ed = document.createElement 'atom-text-editor'
     ed.getModel().setLineNumberGutterVisible(false)
+    item.editor = ed.getModel()
     ed
 
   streamView: (text, type) ->

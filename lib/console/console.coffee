@@ -13,11 +13,11 @@ class Console
     @subs = new CompositeDisposable
     @subs.add atom.commands.add 'ink-console atom-text-editor:not([mini])',
       'console:evaluate': ->
-        getConsole(this).eval @getModel()
+        getConsole(this).eval this
       'core:move-up': (e) ->
-        getConsole(this).keyUp e, @getModel()
+        getConsole(this).keyUp e, this
       'core:move-down': (e) ->
-        getConsole(this).keyDown e, @getModel()
+        getConsole(this).keyDown e, this
       'core:move-left': (e) ->
         delete getConsole(this).prefix
       'core:move-right': (e) ->
@@ -93,14 +93,20 @@ class Console
     @input()
     @focusInput true
 
-  eval: (ed) ->
-    if (input = @getInput()?.view.getModel())
-      if ed == input
-        @emitter.emit 'eval', ed
-      else
-        input.setText ed.getText()
-        @focusInput true
-        @view.scroll()
+  itemForView: (view) ->
+    return view unless view instanceof HTMLElement
+    for item in @items
+      if item.cell.contains view
+        return item
+
+  eval: (item) ->
+    item = @itemForView item
+    if item.input
+      @emitter.emit 'eval', item
+    else if (input = @getInput())
+      input.editor.setText item.editor.getText()
+      @focusInput true
+      @view.scroll()
 
   onEval: (f) -> @emitter.on 'eval', f
 
@@ -211,16 +217,18 @@ class Console
   previous: -> @moveHistory true
   next: -> @moveHistory false
 
-  keyUp: (e, ed) ->
-    if ed == @getInput()?.view.getModel()
-      curs = ed.getCursorsOrderedByBufferPosition()
+  keyUp: (e, item) ->
+    {editor, input} = @itemForView item
+    if input
+      curs = editor.getCursorsOrderedByBufferPosition()
       if curs.length is 1 and (@prefix? or curs[0].getBufferRow() == 0)
         e.stopImmediatePropagation()
         @previous()
 
-  keyDown: (e, ed) ->
-    if ed == @getInput()?.view.getModel()
-      curs = ed.getCursorsOrderedByBufferPosition()
-      if curs.length is 1 and (@prefix? or curs[0].getBufferRow()+1 == ed.getLineCount())
+  keyDown: (e, item) ->
+    {editor, input} = @itemForView item
+    if input
+      curs = editor.getCursorsOrderedByBufferPosition()
+      if curs.length is 1 and (@prefix? or curs[0].getBufferRow()+1 == editor.getLineCount())
         e.stopImmediatePropagation()
         @next()
