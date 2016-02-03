@@ -23,9 +23,7 @@ class Result
     switch @type
       when 'inline'
         @view.classList.add 'inline'
-        @view.style.position = 'absolute'
         @view.style.top = -@editor.getLineHeightInPixels() + 'px'
-        @view.style.left = '10px'
       when 'block' then @view.classList.add 'under'
     if error then @view.classList.add 'error'
     # @view.style.pointerEvents = 'auto'
