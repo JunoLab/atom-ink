@@ -22,15 +22,11 @@ class ConsoleElement extends HTMLElement
     @model.onDidInsertItem ([item, i]) => @insertItem [item, i]
     @model.onDidClear => @clear()
     @model.onFocusInput (force) => @focusLast force
+    for item in @model.items
+      @addItem item
     @
 
   getModel: -> @model
-
-  getTitle: ->
-    "Console"
-
-  getIconName: ->
-    "terminal"
 
   initView: (item) ->
     item.view ?= @views[item.type](item)
@@ -119,7 +115,6 @@ class ConsoleElement extends HTMLElement
 
   inputView: (item) ->
     ed = document.createElement 'atom-text-editor'
-    ed.component.presenter.scrollPastEnd = false
     item.editor = ed.getModel()
     item.editor.setLineNumberGutterVisible(false)
     @updateGrammar item

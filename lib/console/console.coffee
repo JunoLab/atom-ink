@@ -32,6 +32,9 @@ class Console
       'console:previous-in-history': -> @getModel().previous()
       'console:next-in-history': -> @getModel().next()
 
+    @subs.add atom.views.addViewProvider Console, (c) ->
+      new ConsoleView().initialize c
+
   @deactivate: ->
     @subs.dispose()
 
@@ -39,10 +42,13 @@ class Console
     @items = []
     @history = new HistoryProvider
     @emitter = new Emitter
-    # TODO: we shouldn't need to know about the view at all
-    @view = new ConsoleView().initialize @
-    @onDidAddItem (item) => @watchModes item
     setTimeout (=> @input()), 100 # Wait for grammars to load
+
+  getTitle: ->
+    "Console"
+
+  getIconName: ->
+    "terminal"
 
   # Basic item / input logic
 
@@ -76,12 +82,14 @@ class Console
   input: ->
     delete @prefix
     if not @getInput()
-      @push @setMode type: 'input', input: true
+      item = type: 'input', input: true
+      @push item
+      @watchModes @setMode item
       @focusInput()
 
   done: ->
     if @getInput()
-      @view.focus() if @view.hasFocus() # Defocus input
+      # @view.focus() if @view.hasFocus() # Defocus input
       @getInput().input = false
 
   output: (cell) ->
@@ -111,23 +119,6 @@ class Console
       @focusInput true
 
   onEval: (f) -> @emitter.on 'eval', f
-
-  openInTab: ->
-    p = atom.workspace.getActivePane()
-    if p.items.length > 0
-      p = p.splitDown()
-      p.setFlexScale 1/2
-    p.activateItem @view
-    p.onDidActivate => setTimeout =>
-      if document.activeElement == @view
-          @focusInput()
-
-  toggle: ->
-    if atom.workspace.getPaneItems().indexOf(@view) > -1
-      @view.parentElement.parentElement.getModel().removeItem @view
-    else
-      @openInTab()
-      @focusInput()
 
   focusInput: (force) ->
     if @getInput()? then @emitter.emit 'focus-input', force
@@ -198,6 +189,7 @@ class Console
       if newmode? and @cursorAtBeginning(editor) and newmode isnt mode
         e.cancel()
         @setMode item, newmode
+    item
 
   cancelMode: (item) ->
     {editor} = item = @itemForView item
