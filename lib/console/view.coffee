@@ -119,6 +119,7 @@ class ConsoleElement extends HTMLElement
 
   inputView: (item) ->
     ed = document.createElement 'atom-text-editor'
+    ed.component.presenter.scrollPastEnd = false
     item.editor = ed.getModel()
     item.editor.setLineNumberGutterVisible(false)
     @updateGrammar item
