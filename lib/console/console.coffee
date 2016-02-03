@@ -3,6 +3,9 @@
 {Emitter, CompositeDisposable} = require 'atom'
 ConsoleView = require './view'
 HistoryProvider = require './history'
+{closest} = require './helpers'
+
+getConsole = (el) -> closest(el, 'ink-console').getModel()
 
 module.exports =
 class Console
@@ -10,20 +13,17 @@ class Console
     @subs = new CompositeDisposable
     @subs.add atom.commands.add 'ink-console atom-text-editor:not([mini])',
       'console:evaluate': ->
-        ed = @getModel()
-        ed.inkConsole.eval ed
+        getConsole(this).eval @getModel()
       'core:move-up': (e) ->
-        ed = @getModel()
-        ed.inkConsole.keyUp e, ed
+        getConsole(this).keyUp e, @getModel()
       'core:move-down': (e) ->
-        ed = @getModel()
-        ed.inkConsole.keyDown e, ed
+        getConsole(this).keyDown e, @getModel()
       'core:move-left': (e) ->
-        delete @getModel().inkConsole.prefix
+        delete getConsole(this).prefix
       'core:move-right': (e) ->
-        delete @getModel().inkConsole.prefix
+        delete getConsole(this).prefix
       'core:backspace': (e) ->
-        @getModel().inkConsole.cancelMode e
+        getConsole(this).cancelMode e
 
     @subs.add atom.commands.add 'ink-console',
       'core:copy': ->
