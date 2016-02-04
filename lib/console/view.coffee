@@ -23,6 +23,7 @@ class ConsoleElement extends HTMLElement
     @model.onDidClear => @clear()
     @model.onDone => if @hasFocus() then @focus()
     @model.onFocusInput (force) => @focusLast force
+    @model.onLoading (status) => @loading status
     @onfocus = =>
       if document.activeElement == this and @model.getInput()
         @focusLast()

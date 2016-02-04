@@ -127,6 +127,10 @@ class Console
 
   onFocusInput: (f) -> @emitter.on 'focus-input', f
 
+  loading: (status) -> @emitter.emit 'loading', status
+
+  onLoading: (f) -> @emitter.on 'loading', f
+
   # Output
 
   bufferOut: (item) ->
