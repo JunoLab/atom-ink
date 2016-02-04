@@ -165,7 +165,12 @@ class Console
       result: r
       error: error
 
-  # Input Modes
+#                ___                     _ _ _
+#               ( /                _/_  ( / ) )      /
+#                / _ _    ,_   , , /     / / / __ __/ _  (
+#              _/_/ / /__/|_)_(_/_(__   / / (_(_)(_/_(/_/_)_
+#                        /|
+#                       (/
 
   getModes: -> []
 
@@ -213,7 +218,12 @@ class Console
     if @cursorAtBeginning(editor)
       @setMode item
 
-  # History
+#                        __  ___      __
+#                       / / / (_)____/ /_____  _______  __
+#                      / /_/ / / ___/ __/ __ \/ ___/ / / /
+#                     / __  / (__  ) /_/ /_/ / /  / /_/ /
+#                    /_/ /_/_/____/\__/\____/_/   \__, /
+#                                                /____/
 
   logInput: ->
     {editor, mode} = @getInput()
