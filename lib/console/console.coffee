@@ -89,8 +89,10 @@ class Console
 
   done: ->
     if @getInput()
-      # @view.focus() if @view.hasFocus() # Defocus input
       @getInput().input = false
+      @emitter.emit 'done'
+
+  onDone: (f) -> @emitter.on 'done', f
 
   output: (cell) ->
     if @getInput()?
