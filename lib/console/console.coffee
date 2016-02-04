@@ -38,6 +38,15 @@ class Console
   @deactivate: ->
     @subs.dispose()
 
+  activate: ->
+    for pane in atom.workspace.getPanes()
+      for item in pane.getItems()
+        if item is this
+          pane.activate()
+          pane.activateItem this
+          return true
+    return false
+
   constructor: ->
     @items = []
     @history = new HistoryProvider
