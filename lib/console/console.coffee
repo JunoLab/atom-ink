@@ -149,6 +149,7 @@ class Console
       type: 'result'
       icon: if error then 'x' else 'check'
       result: r
+      error: error
 
   # Input Modes
 
