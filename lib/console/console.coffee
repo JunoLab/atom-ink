@@ -158,7 +158,7 @@ class Console
 
   info: (s) -> @bufferOut type: 'info', icon: 'info', text: s
 
-  result: (r, {error}) ->
+  result: (r, {error}={}) ->
     @output
       type: 'result'
       icon: if error then 'x' else 'check'

@@ -35,12 +35,59 @@ describe "the console", ->
     expect(model.items.length).toBe(0)
     expect(view.querySelectorAll('.cell').length).toBe(0)
 
-  describe "when adding cells to the console", ->
+  describe 'when an input is created', ->
+    beforeEach ->
+      model.input()
 
-  describe 'focus', ->
+    it 'updates the model', ->
+      expect(model.items.length).toBe 1
+      expect(model.items[0].type).toBe 'input'
+      expect(model.items[0].input).toBe true
 
-  describe 'scrolling', ->
+    it 'creates an atom-text-editor', ->
+      ed = model.items[0].view
+      expect(ed.tagName.toLowerCase()).toBe 'atom-text-editor'
+      cells = view.querySelectorAll '.cell'
+      expect(cells.length).toBe 1
+      expect(cells[0].contains ed).toBe true
 
-  describe 'modes', ->
+    it 'focuses the input', ->
+      expect(document.activeElement).toBe model.items[0].view
 
-  describe 'history', ->
+  describe 'when a result is displayed', ->
+
+    describe 'when there is a single result', ->
+
+      result = null
+      beforeEach ->
+        result = document.createElement 'div'
+        model.result result
+
+      it 'updates the model', ->
+        expect(model.items.length).toBe 1
+        expect(model.items[0].type).toBe 'result'
+        expect(model.items[0].view.contains result).toBe true
+
+      it 'displays the result', ->
+        cells = view.querySelectorAll '.cell'
+        expect(cells.length).toBe 1
+        expect(cells[0].contains result).toBe true
+
+    describe 'when there are multiple results', ->
+
+      beforeEach ->
+        for i in [1..10]
+          result = document.createElement 'div'
+          result.innerText = "#{i}"
+          model.result result
+
+      it 'updates the model', ->
+        expect(model.items.length).toBe 10
+        for i in [1..10]
+          expect(model.items[i-1].view.innerText.trim()).toBe "#{i}"
+
+      it 'stacks the results vertically', ->
+        cells = view.querySelectorAll '.cell .content'
+        expect(cells.length).toBe 10
+        for i in [1..10]
+          expect(cells[i-1].innerText.trim()).toBe "#{i}"
