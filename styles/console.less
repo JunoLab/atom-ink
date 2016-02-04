@@ -31,6 +31,7 @@ ink-console {
     width: @gutter-width;
     color: @syntax-gutter-text-color;
     background-color: @syntax-gutter-background-color;
+    -webkit-user-select: none;
   }
   .divider {
     height: 1px;
@@ -73,6 +74,7 @@ ink-console {
       position: absolute;
       color: @syntax-gutter-text-color;
       text-align:center;
+      -webkit-user-select: none;
       .icon {
         transition: all 0.1s ease;
         &.ink-hide {

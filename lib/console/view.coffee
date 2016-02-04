@@ -22,6 +22,9 @@ class ConsoleElement extends HTMLElement
     @model.onDidInsertItem ([item, i]) => @insertItem [item, i]
     @model.onDidClear => @clear()
     @model.onFocusInput (force) => @focusLast force
+    @onfocus = =>
+      if document.activeElement == this and @model.getInput()
+        @focusLast()
     for item in @model.items
       @addItem item
     @
@@ -54,6 +57,8 @@ class ConsoleElement extends HTMLElement
     d
 
   clear: ->
+    if @hasFocus() then @focus() # Don't lose focus completely when removing a
+                                 # focused editor
     while @items.hasChildNodes()
       @items.removeChild @items.lastChild
 
@@ -98,6 +103,7 @@ class ConsoleElement extends HTMLElement
     {view, icon} = item
     cell = document.createElement 'div'
     cell.classList.add 'cell'
+    cell.setAttribute 'tabindex', -1
 
     gutter = document.createElement 'div'
     gutter.classList.add 'gutter'
