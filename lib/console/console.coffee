@@ -47,11 +47,12 @@ class Console
           return true
     return false
 
-  constructor: ->
+  constructor: ({initialInput}={}) ->
     @items = []
     @history = new HistoryProvider
     @emitter = new Emitter
-    setTimeout (=> @input()), 100 # Wait for grammars to load
+    initialInput ?= true
+    if initialInput then setTimeout (=> @input()), 100 # Wait for grammars to load
 
   getTitle: ->
     "Console"
