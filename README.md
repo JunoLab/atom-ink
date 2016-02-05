@@ -1,5 +1,7 @@
 # Ink
 
+[![Build Status](https://travis-ci.org/JunoLab/atom-ink.svg?branch=master)](https://travis-ci.org/JunoLab/atom-ink)
+
 Ink is a toolkit for building IDEs in Atom – in particular, it's aimed at providing the UI
 pieces necessary to build richly interactive, live environments for programming – inspired
 by the likes of SmallTalk, Lisp, LightTable, DevTools, Swift, and others.
