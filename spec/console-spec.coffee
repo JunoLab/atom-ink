@@ -270,3 +270,68 @@ describe "the console", ->
           atom.commands.dispatch view, 'core:backspace'
 
         expectMode 1, false
+
+  describe 'history', ->
+    goUp = -> atom.commands.dispatch model.getInput().view, 'core:move-up'
+    goDown = -> atom.commands.dispatch model.getInput().view, 'core:move-down'
+    enter = -> (model.logInput(); model.done(); model.input())
+
+    beforeEach ->
+      @history = ['using Gadfly', '2+2', 'foo\nbar', 'rand(5)']
+      model.input()
+      for s in @history
+        model.getInput().editor.setText s
+        enter()
+      {@editor} = model.getInput()
+
+    it 'records the right number of inputs', ->
+      expect(model.history.items.length).toBe @history.length
+
+    it 'allows moving up through history', ->
+      for s in @history.reverse()
+        goUp()
+        expect(@editor.getText()).toBe s
+
+    it 'allows moving down through history', ->
+      goUp() for i in [1..@history.length+1]
+      expect(@editor.getText()).toBe ''
+      for s in @history
+        goDown()
+        expect(@editor.getText()).toBe s
+
+    it 'jumps straight to prefixed inputs', ->
+      @editor.insertText 'us'
+      goUp()
+      expect(@editor.getText()).toBe 'using Gadfly'
+
+    describe 'after using an old input', ->
+      beforeEach ->
+        @editor.insertText 'us'
+        goUp()
+        enter()
+        {@editor} = model.getInput()
+
+      it 'resets the input', ->
+        expect(@editor.getText()).toBe ''
+
+      it 'goes down to the next in history', ->
+        goDown()
+        expect(@editor.getText()).toBe '2+2'
+
+      it 'goes up to the last input', ->
+        goUp()
+        expect(@editor.getText()).toBe 'using Gadfly'
+
+    it "doesn't record repeated input", ->
+      @editor.setText 'rand(5)'
+      enter()
+      goUp()
+      expect(model.getInput().editor.getText()).toBe 'rand(5)'
+      goUp()
+      expect(model.getInput().editor.getText()).toBe 'foo\nbar'
+
+    it 'eliminates longer input cycles', ->
+      for s in @history
+        model.getInput().editor.setText s
+        enter()
+      expect(model.history.items.length).toBe 4

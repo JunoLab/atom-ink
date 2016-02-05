@@ -102,6 +102,9 @@ class Console
       @push @setMode item
       @watchModes item
       @focusInput()
+      item
+    else
+      @getInput()
 
   done: ->
     if @getInput()
