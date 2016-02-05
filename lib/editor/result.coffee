@@ -17,7 +17,7 @@
 # - `fade`:  Default `false`. If true, the `Result` will fade in on creation.
 # - `type`:  Default `inline`, can also be `block`. Inline-`Result`s will be
 # displayed after the end of the last line contained in `range`, whereas
-# block-`Result`s will be displayed below it and span the whole width of 
+# block-`Result`s will be displayed below it and span the whole width of
 # the current editor.
 #
 # #### Static Methods
@@ -34,12 +34,13 @@
 
 module.exports =
 class Result
-  constructor: (@editor, range, opts={}) ->
-    if not opts.type then opts.type = 'inline'
-    @type = opts.type
+  constructor: (@editor, [start, end], opts={}) ->
+    opts.type ?= 'inline'
+    {@type} = opts
     @disposables = new CompositeDisposable
+    opts.fade = not Result.removeLines @editor, start, end
     @createView opts
-    @initMarker range
+    @initMarker [start, end]
     @text = @getText()
     @disposables.add @editor.onDidChange (e) => @validateText e
 
