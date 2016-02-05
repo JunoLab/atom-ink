@@ -1,20 +1,62 @@
 # TODO: better scrolling behaviour
 {CompositeDisposable} = require 'atom'
 
+# ## Result API
+# `Result`s are DOM elements which represent the result of some operation. They
+# can be created by something like
+#
+# ```coffeescript
+# new ink.Result(ed, range, options)
+# ```
+# where `ed` is the current text editor and `range` is a line range compatible array,
+# e.g. `[3, 4]`. `options` is an object with the mandatory field
+# - `content`: DOM-node that will be diplayed inside of the `Result`.
+#
+# and the optional fields
+# - `error`: Default `false`. If true, adds the `error`-style to the `Result`.
+# - `fade`:  Default `false`. If true, the `Result` will fade in on creation.
+# - `type`:  Default `inline`, can also be `block`. Inline-`Result`s will be
+# displayed after the end of the last line contained in `range`, whereas
+# block-`Result`s will be displayed below it and span the whole width of 
+# the current editor.
+#
+# #### Static Methods
+# There are also some static methods provided to deal with `Result`s without
+# addressing a specific object.
+#
+# - `removeLines(start, end, type = 'any')` removes all results with the specified
+# type (or any of them, if no type is given) in the line range `[start, end]`.
+# - `removeAll(ed)` removes all `Result`s in the editor `ed`, which defaults to the
+# currently active editor.
+# - `removeCurrent()` removes all `Result`s for all selected lines in the currently
+# active editor.
+
+
 module.exports =
 class Result
+  constructor: (@editor, range, opts={}) ->
+    if not opts.type then opts.type = 'inline'
+    @type = opts.type
+    @disposables = new CompositeDisposable
+    @createView opts
+    @initMarker range
+    @text = @getText()
+    @disposables.add @editor.onDidChange (e) => @validateText e
+
   fadeIn: ->
     @view.classList.add 'ink-hide'
     @timeout 20, =>
       @view.classList.remove 'ink-hide'
 
-  inlineView: ({error, content, fade}) ->
+  createView: ({error, content, fade}) ->
     @view = document.createElement 'div'
-    @view.classList.add 'ink', 'inline', 'result'
+    @view.classList.add 'ink', 'result'
+    switch @type
+      when 'inline'
+        @view.classList.add 'inline'
+        @view.style.top = -@editor.getLineHeightInPixels() + 'px'
+      when 'block' then @view.classList.add 'under'
     if error then @view.classList.add 'error'
-    @view.style.position = 'absolute'
-    @view.style.top = -@editor.getLineHeightInPixels() + 'px'
-    @view.style.left = '10px'
     # @view.style.pointerEvents = 'auto'
     @view.addEventListener 'mousewheel', (e) ->
       e.stopPropagation()
@@ -34,17 +76,13 @@ class Result
     @marker = @editor.markBufferRange @lineRange(start, end),
       persistent: false
     @marker.result = @
-    @editor.decorateMarker @marker,
-      type: 'overlay'
+    mark =
       item: @view
+    switch @type
+      when 'inline' then mark.type = 'overlay'
+      when 'block' then mark.type = 'block'; mark.position = 'after'
+    @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
-
-  constructor: (@editor, range, opts={}) ->
-    @disposables = new CompositeDisposable
-    @inlineView opts
-    @initMarker range
-    @text = @getText()
-    @disposables.add @editor.onDidChange (e) => @validateText e
 
   remove: ->
     @view.classList.add 'ink-hide'
@@ -87,18 +125,19 @@ class Result
 
   # Bulk Actions
 
-  @forLines: (ed, start, end) ->
-    ed.findMarkers().filter((m)->m.result? &&
-                                 m.getBufferRange().intersectsRowRange(start, end))
-                    .map((m)->m.result)
+  @forLines: (ed, start, end, type = 'any') ->
+    ed.findMarkers().filter((m) -> m.result? &&
+                                   m.getBufferRange().intersectsRowRange(start, end) &&
+                                  (m.result.type == type || type == 'any'))
+                    .map((m) -> m.result)
 
-  @removeLines: (ed, start, end) ->
-    rs = @forLines(ed, start, end)
+  @removeLines: (ed, start, end, type = 'any') ->
+    rs = @forLines(ed, start, end, type)
     rs.map (r) -> r.remove()
     rs.length > 0
 
   @removeAll: (ed = atom.workspace.getActiveTextEditor()) ->
-    ed?.findMarkers().filter((m)->m.result?).map((m)->m.result.remove())
+    ed?.findMarkers().filter((m) -> m.result?).map((m) -> m.result.remove())
 
   @removeCurrent: (e) ->
     if (ed = atom.workspace.getActiveTextEditor())
