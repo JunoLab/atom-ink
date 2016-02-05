@@ -204,3 +204,57 @@ describe "the console", ->
       model.done()
       model.result document.createElement 'div'
       expect(model.items.map (item) -> item.type).toEqual ['input', 'result']
+
+  describe 'input modes', ->
+    beforeEach ->
+      waitsForPromise ->
+        atom.packages.activatePackage 'language-python'
+      waitsForPromise ->
+        atom.packages.activatePackage 'language-shellscript'
+      runs ->
+        @modes = [
+          {name: 'python', default: true, grammar: 'source.python'}
+          {name: 'shell', prefix: ';', grammar: 'source.shell'}
+        ]
+        model.setModes @modes
+        model.input()
+        {@editor} = model.getInput()
+
+    it 'sets inputs to the default mode', ->
+      {mode} = model.getInput()
+      expect(mode.name).toBe 'python'
+
+    it 'sets inputs to the default mode grammar', ->
+      {editor, mode} = model.getInput()
+      expect(editor.getGrammar().scopeName).toBe 'source.python'
+
+    expectMode = (mode) ->
+
+      it 'updates the model', ->
+        expect(model.getInput().mode).toBe @modes[mode]
+
+      it 'preserves the input text', ->
+        expect(@editor.getText()).toBe @text
+
+      it 'updates the grammar', ->
+        waits 10
+        runs ->
+          expect(@editor.getGrammar().scopeName).toBe @modes[mode].grammar
+
+    describe 'when entering a mode prefix', ->
+
+      beforeEach ->
+        @text = 'foo bar baz'
+        @editor.setText @text
+        @editor.setCursorBufferPosition [0, 0]
+        @editor.insertText ';'
+
+      expectMode 1
+
+      describe 'when removing the prefix', ->
+
+        beforeEach ->
+          {view} = model.getInput()
+          atom.commands.dispatch view, 'core:backspace'
+
+        expectMode 0

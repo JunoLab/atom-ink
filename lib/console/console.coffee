@@ -99,8 +99,8 @@ class Console
     delete @prefix
     if not @getInput()
       item = type: 'input', input: true
-      @push item
-      @watchModes @setMode item
+      @push @setMode item
+      @watchModes item
       @focusInput()
 
   done: ->
