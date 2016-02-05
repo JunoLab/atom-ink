@@ -32,9 +32,6 @@ class Console
       'console:previous-in-history': -> @getModel().previous()
       'console:next-in-history': -> @getModel().next()
 
-    @subs.add atom.views.addViewProvider Console, (c) ->
-      new ConsoleView().initialize c
-
   @deactivate: ->
     @subs.dispose()
 
@@ -47,7 +44,7 @@ class Console
           return true
     return false
 
-  constructor: ({initialInput}={}) ->
+  constructor: ({initialInput, @id}={}) ->
     @items = []
     @history = new HistoryProvider
     @emitter = new Emitter
@@ -263,3 +260,28 @@ class Console
       if curs.length is 1 and (@prefix? or curs[0].getBufferRow()+1 == editor.getLineCount())
         e.stopImmediatePropagation()
         @next()
+
+  # Serialisation
+
+  @registered: {}
+
+  id: ''
+
+  serialize: ->
+    if @id
+      deserializer: 'InkConsole'
+      id: @id
+
+  @fromId: (id) ->
+    if cons = Console.registered[id]
+      cons
+    else
+      Console.registered[id] = new Console(id: id)
+
+atom.views.addViewProvider Console, (c) ->
+  new ConsoleView().initialize c
+
+atom.deserializers.add
+  name: 'InkConsole'
+  deserialize: ({id}) ->
+    Console.registered[id] = new Console(id: id)
