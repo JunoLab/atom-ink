@@ -14,6 +14,7 @@ describe "the console", ->
       model = new Console initialInput: false
       view = atom.views.getView(model)
       view.style.height = '500px'
+      view.style.width = '800px'
     waitsForPromise ->
       atom.workspace.open().then (ed) ->
         editor = ed
