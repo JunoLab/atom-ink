@@ -14,7 +14,6 @@
 #
 # and the optional fields
 # - `error`: Default `false`. If true, adds the `error`-style to the `Result`.
-# - `fade`:  Default `false`. If true, the `Result` will fade in on creation.
 # - `type`:  Default `inline`, can also be `block`. Inline-`Result`s will be
 # displayed after the end of the last line contained in `range`, whereas
 # block-`Result`s will be displayed below it and span the whole width of
@@ -38,7 +37,7 @@ class Result
     opts.type ?= 'inline'
     {@type} = opts
     @disposables = new CompositeDisposable
-    opts.fade = not Result.removeLines @editor, start, end
+    opts.fade = not Result.removeLines @editor, start, end, @type
     @createView opts
     @initMarker [start, end]
     @text = @getText()
@@ -77,8 +76,7 @@ class Result
     @marker = @editor.markBufferRange @lineRange(start, end),
       persistent: false
     @marker.result = @
-    mark =
-      item: @view
+    mark = item: @view
     switch @type
       when 'inline' then mark.type = 'overlay'
       when 'block' then mark.type = 'block'; mark.position = 'after'
