@@ -228,13 +228,17 @@ describe "the console", ->
       {editor, mode} = model.getInput()
       expect(editor.getGrammar().scopeName).toBe 'source.python'
 
-    expectMode = (mode) ->
+    expectMode = (mode, preserve = true) ->
 
       it 'updates the model', ->
         expect(model.getInput().mode).toBe @modes[mode]
 
-      it 'preserves the input text', ->
-        expect(@editor.getText()).toBe @text
+      if preserve
+        it 'preserves the input text', ->
+          expect(@editor.getText()).toBe @text
+      else
+        it "updates the input text", ->
+          expect(@editor.getText()).not.toBe @text
 
       it 'updates the grammar', ->
         waits 10
@@ -258,3 +262,11 @@ describe "the console", ->
           atom.commands.dispatch view, 'core:backspace'
 
         expectMode 0
+
+      describe 'when backspacing', ->
+        beforeEach ->
+          {editor, view} = model.getInput()
+          editor.setCursorBufferPosition [0, 1]
+          atom.commands.dispatch view, 'core:backspace'
+
+        expectMode 1, false
