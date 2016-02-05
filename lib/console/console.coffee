@@ -35,6 +35,15 @@ class Console
   @deactivate: ->
     @subs.dispose()
 
+  @registerViews: ->
+    atom.views.addViewProvider Console, (c) ->
+      new ConsoleView().initialize c
+
+    atom.deserializers.add
+      name: 'InkConsole'
+      deserialize: ({id}) ->
+        Console.registered[id] = new Console(id: id)
+
   activate: ->
     for pane in atom.workspace.getPanes()
       for item in pane.getItems()
@@ -278,10 +287,4 @@ class Console
     else
       Console.registered[id] = new Console(id: id)
 
-atom.views.addViewProvider Console, (c) ->
-  new ConsoleView().initialize c
-
-atom.deserializers.add
-  name: 'InkConsole'
-  deserialize: ({id}) ->
-    Console.registered[id] = new Console(id: id)
+Console.registerViews()
