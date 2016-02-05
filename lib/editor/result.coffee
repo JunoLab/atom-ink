@@ -18,18 +18,6 @@
 # displayed after the end of the last line contained in `range`, whereas
 # block-`Result`s will be displayed below it and span the whole width of
 # the current editor.
-#
-# #### Static Methods
-# There are also some static methods provided to deal with `Result`s without
-# addressing a specific object.
-#
-# - `removeLines(start, end, type = 'any')` removes all results with the specified
-# type (or any of them, if no type is given) in the line range `[start, end]`.
-# - `removeAll(ed)` removes all `Result`s in the editor `ed`, which defaults to the
-# currently active editor.
-# - `removeCurrent()` removes all `Result`s for all selected lines in the currently
-# active editor.
-
 
 module.exports =
 class Result
