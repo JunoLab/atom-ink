@@ -141,11 +141,10 @@ describe "the console", ->
   describe 'when output is created', ->
     describe 'when outputs are seperated', ->
       beforeEach ->
-        for i in [1..10]
-          do (i) ->
-            waits 100
-            runs ->
-              model.stdout "#{i}\n"
+        [1..10].forEach (i) ->
+          waits 100
+          runs ->
+            model.stdout "#{i}\n"
 
       it 'contains a cell for each piece of output', ->
         expect(model.items.length).toBe 10
@@ -158,11 +157,10 @@ describe "the console", ->
 
     describe 'when outputs are nearby', ->
       beforeEach ->
-        for i in [1..10]
-          do (i) ->
-            waits 10
-            runs ->
-              model.stdout "#{i}\n"
+        [1..10].forEach (i) ->
+          waits 10
+          runs ->
+            model.stdout "#{i}\n"
         waits 10
 
       it 'creates a single cell for all of the data', ->
