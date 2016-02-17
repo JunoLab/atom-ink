@@ -1,5 +1,5 @@
 # TODO: better scrolling behaviour
-{CompositeDisposable} = require 'atom'
+{CompositeDisposable, TextEditor} = require 'atom'
 
 # ## Result API
 # `Result`s are DOM elements which represent the result of some operation. They
@@ -111,6 +111,18 @@ class Result
     @editor.getTextInRange(@marker.getBufferRange()).trim()
 
   # Bulk Actions
+
+  @all: -> # TODO: scope selector
+    results = []
+    for item in atom.workspace.getPaneItems() when item instanceof TextEditor
+      item.findMarkers().filter((m) -> m.result?).forEach (m) ->
+        results.push m.result
+    results
+
+  @invalidateAll: ->
+    for result in @all()
+      delete result.text
+      result.invalidate()
 
   @forLines: (ed, start, end, type = 'any') ->
     ed.findMarkers().filter((m) -> m.result? &&
