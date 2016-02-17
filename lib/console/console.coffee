@@ -1,5 +1,5 @@
 {Emitter, CompositeDisposable} = require 'atom'
-ConsoleView = require './view'
+ConsoleElement = require './view'
 HistoryProvider = require './history'
 {closest} = require './helpers'
 
@@ -35,7 +35,7 @@ class Console
 
   @registerViews: ->
     atom.views.addViewProvider Console, (c) ->
-      new ConsoleView().initialize c
+      new ConsoleElement().initialize c
 
     atom.deserializers.add
       name: 'InkConsole'
