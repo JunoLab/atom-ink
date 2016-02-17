@@ -1,5 +1,5 @@
 # TODO: better scrolling behaviour
-{CompositeDisposable, TextEditor} = require 'atom'
+{CompositeDisposable} = require 'atom'
 
 # ## Result API
 # `Result`s are DOM elements which represent the result of some operation. They
@@ -114,7 +114,7 @@ class Result
 
   @all: -> # TODO: scope selector
     results = []
-    for item in atom.workspace.getPaneItems() when item instanceof TextEditor
+    for item in atom.workspace.getPaneItems() when atom.workspace.isTextEditor item
       item.findMarkers().filter((m) -> m.result?).forEach (m) ->
         results.push m.result
     results
