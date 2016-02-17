@@ -1,5 +1,3 @@
-# TODO: autocomplete
-
 {Emitter, CompositeDisposable} = require 'atom'
 ConsoleView = require './view'
 HistoryProvider = require './history'
