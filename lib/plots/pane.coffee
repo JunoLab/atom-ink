@@ -26,6 +26,6 @@ class PlotPane
     'Plots'
 
   getIconName: ->
-    'pencil'
+    'comment'
 
 PlotPane.registerViews()
