@@ -33,15 +33,6 @@ class Console
   @deactivate: ->
     @subs.dispose()
 
-  @registerViews: ->
-    atom.views.addViewProvider Console, (c) ->
-      new ConsoleElement().initialize c
-
-    atom.deserializers.add
-      name: 'InkConsole'
-      deserialize: ({id}) ->
-        Console.registered[id] = new Console(id: id)
-
   activate: ->
     for pane in atom.workspace.getPanes()
       for item in pane.getItems()
@@ -51,7 +42,7 @@ class Console
           return true
     return false
 
-  constructor: ({initialInput, @id}={}) ->
+  constructor: ({initialInput}={}) ->
     @items = []
     @history = new HistoryProvider
     @emitter = new Emitter
@@ -271,21 +262,4 @@ class Console
         e.stopImmediatePropagation()
         @next()
 
-  # Serialisation
-
-  @registered: {}
-
-  id: ''
-
-  serialize: ->
-    if @id
-      deserializer: 'InkConsole'
-      id: @id
-
-  @fromId: (id) ->
-    if cons = Console.registered[id]
-      cons
-    else
-      Console.registered[id] = new Console(id: id)
-
-Console.registerViews()
+require('../pane-mixin')(Console, ConsoleElement)
