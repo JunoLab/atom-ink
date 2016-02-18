@@ -4,7 +4,7 @@ module.exports =
 class PlotPane
 
   @activate: ->
-    @pane ?= PlotPane.fromId 'default'
+    @pane = PlotPane.fromId 'default'
     atom.workspace.addOpener (uri) =>
       if uri.startsWith 'atom://ink/plots'
         @pane
