@@ -7,6 +7,7 @@ Result = require './editor/result'
 Spinner = require './editor/spinner'
 Console = require './console/console'
 PlotPane = require './plots/pane'
+Workspace = require './workspace/workspace'
 tree    = require './tree'
 
 module.exports = Ink =
@@ -14,6 +15,7 @@ module.exports = Ink =
     Result.activate()
     Console.activate()
     PlotPane.activate()
+    Workspace.activate()
 
     edId = 1
     atom.workspace.observeTextEditors (ed) ->
