@@ -121,6 +121,7 @@ class Console
     @done()
     @clear()
     @input()
+    @history.resetPosition()
     @focusInput true
 
   itemForView: (view) ->
