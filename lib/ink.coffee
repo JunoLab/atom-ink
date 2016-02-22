@@ -41,5 +41,7 @@ module.exports = Ink =
     Spinner: Spinner
     Result: Result
     Console: Console
+    Workspace: Workspace
+    PlotPane: PlotPane
     highlights: highlights
     tree: tree
