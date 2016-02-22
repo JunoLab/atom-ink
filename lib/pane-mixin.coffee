@@ -25,3 +25,12 @@ module.exports = (Pane, View) ->
       id: @id
 
   Pane.registerViews()
+
+  Pane.prototype.activate = ->
+    for pane in atom.workspace.getPanes()
+      for item in pane.getItems()
+        if item is this
+          pane.activate()
+          pane.activateItem this
+          return true
+    return false
