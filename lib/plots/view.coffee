@@ -4,7 +4,13 @@ class PlotPaneElement extends HTMLElement
     @setAttribute 'tabindex', -1
 
   initialize: (@model) ->
+    @model.onDidAddItem (item) => @addItem item
     @
+
+  addItem: (item) ->
+    @item?.parentElement.removeChild @item
+    @item = item
+    @appendChild @item
 
   getModel: -> @model
 
