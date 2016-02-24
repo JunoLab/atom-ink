@@ -26,11 +26,15 @@ module.exports = (Pane, View) ->
 
   Pane.registerViews()
 
-  Pane.prototype.activate = ->
+  Pane.prototype.currentPane = ->
     for pane in atom.workspace.getPanes()
-      for item in pane.getItems()
-        if item is this
-          pane.activate()
-          pane.activateItem this
-          return true
-    return false
+      return pane if this in pane.getItems()
+    return
+
+  Pane.prototype.activate = ->
+    if (pane = @currentPane())
+      pane.activate()
+      pane.activateItem this
+      return pane
+    else
+      return
