@@ -223,9 +223,10 @@ class Console
 
   moveHistory: (up) ->
     {editor} = @getInput()
-    if editor.getText() or not @prefix?
+    if (editor.getText() or not @prefix?) and @prefix?.pos?[0] isnt Infinity
       pos = editor.getCursorBufferPosition()
       text = editor.getTextInRange [[0,0], pos]
+      pos = [Infinity, Infinity] if text is ''
       @prefix = {pos, text}
     next = if up
       @history.getPrevious @prefix.text
