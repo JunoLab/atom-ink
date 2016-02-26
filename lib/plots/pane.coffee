@@ -18,7 +18,7 @@ class PlotPane
     'Plots'
 
   getIconName: ->
-    'comment'
+    'graph'
 
   show: (view) ->
     @item = view
