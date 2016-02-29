@@ -14,23 +14,23 @@ fuzzaldrinPlus = require 'fuzzaldrin-plus'
 #     .line:      Line of definition.
 #     .dispfile:  Humanized file path, displayed.
 #
-# On rejection, the `GotoView` will only show the error message provided.
+# If the Promise errors, it should contain an object with the field error, which
+# will subsequently be displayed in a modal panel.
 
 module.exports =
 goto: (promise) ->
   @view ?= new GotoView()
 
   promise
-    .then (items) ->
+    .then (items) =>
+      if items.error?
+        @view.setError items.error
+        @view.show()
       if items.length == 1
         GotoView.openItem items[0]
       else if items.length > 1
         @view.setItems items
         @view.show()
-
-    .catch (error) ->
-      @view.setError error
-      @view.show()
 
 class GotoView extends SelectListView
   initialize: ->
