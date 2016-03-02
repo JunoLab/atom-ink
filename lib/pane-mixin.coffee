@@ -17,7 +17,9 @@ module.exports = (Pane, View) ->
     atom.deserializers.add
       name: deserialiser
       deserialize: ({id}) ->
-        Pane.fromId id
+        pane = Pane.fromId id
+        return if pane.currentPane()
+        pane
 
   Pane.prototype.serialize = ->
     if @id
