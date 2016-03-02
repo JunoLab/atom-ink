@@ -17,11 +17,6 @@ module.exports = Ink =
     PlotPane.activate()
     Workspace.activate()
 
-    edId = 1
-    atom.workspace.observeTextEditors (ed) ->
-      if not ed.getPath()?
-        ed.getBuffer().inkId ?= edId++
-
     try
       if id = localStorage.getItem 'metrics.userId'
         http.get "http://data.junolab.org/hit?id=#{id}&app=ink"
