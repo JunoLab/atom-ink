@@ -2,7 +2,7 @@ module.exports =
   matchesPath: (ed, path) ->
     ed.getPath() == path ||
       (!ed.getPath() &&
-        ed.getBuffer().inkId.toString() == path.match(/untitled-(\d*)/)?[1])
+        ed.getBuffer().id.toString() == path.match(/untitled-(\d*)/)?[1])
 
   observeLines: (ls, f) ->
     atom.workspace.observeTextEditors (ed) =>
