@@ -25,10 +25,6 @@ module.exports = Ink =
     Result.deactivate()
     Console.deactivate()
 
-    # Not sure why this gets set, but it prevents pane serialisation
-    pkg = atom.packages.getActivePackage('ink')
-    localStorage.clear(pkg.getCanDeferMainModuleRequireStorageKey())
-
   provide: ->
     highlight: (ed, start, end) =>
       block.highlight ed, start, end
