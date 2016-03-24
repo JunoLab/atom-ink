@@ -23,16 +23,15 @@ module.exports =
 goto: (promise) ->
   @view ?= new GotoView()
 
-  promise
-    .then (result) =>
-      if result.error
-        @view.setError result.items
-        @view.show()
-      else if result.items.length == 1
-        GotoView.openItem result.items[0]
-      else if result.items.length > 1
-        @view.setItems result.items
-        @view.show()
+  promise.then (result) =>
+    if result.error
+      @view.setError result.items
+      @view.show()
+    else if result.items.length == 1
+      GotoView.openItem result.items[0]
+    else if result.items.length > 1
+      @view.setItems result.items
+      @view.show()
 
 class GotoView extends SelectListView
   initialize: ->
