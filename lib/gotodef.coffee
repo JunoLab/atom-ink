@@ -5,31 +5,33 @@ fuzzaldrinPlus = require 'fuzzaldrin-plus'
 #
 # `goto` takes a promise as its argument, which can either be fulfilled or rejected.
 # Both modes will be handled by `goto` as follows:
-# On fulfillment, a `GotoView` will be shown and populated by the array `items`
-# returned by the promise if there's more than one item in it. Otherwise, Atom
-# jumps straight to the definition.
-#   `items` conatins objects with the fields:
-#     .text:      Displayed text, searchable.
-#     .file:      File in which this method is defined, not displayed.
-#     .line:      Line of definition.
-#     .dispfile:  Humanized file path, displayed.
+# On fulfillment, a `result` object is returned which contains two fields:
 #
-# If the Promise errors, it should contain an object with the field error, which
-# will subsequently be displayed in a modal panel.
+#   - `result.error`: Boolean. If true, the contents of `result.items` will be
+#   shown as an error.
+#
+#   - `result.items` -  Array that contains objects with the fields
+#     - `.text` -       Displayed text, searchable.
+#     - `.file` -       File in which this method is defined, not displayed.
+#     - `.line` -       Line of definition.
+#     - `.dispfile` -   Humanized file path, displayed.
+#
+#   or a plain text string if `result.error` is true.
+
 
 module.exports =
 goto: (promise) ->
   @view ?= new GotoView()
 
   promise
-    .then (items) =>
-      if items.error?
-        @view.setError items.error
+    .then (result) =>
+      if result.error
+        @view.setError result.items
         @view.show()
-      if items.length == 1
-        GotoView.openItem items[0]
-      else if items.length > 1
-        @view.setItems items
+      else if result.items.length == 1
+        GotoView.openItem result.items[0]
+      else if result.items.length > 1
+        @view.setItems result.items
         @view.show()
 
 class GotoView extends SelectListView
@@ -88,7 +90,7 @@ class GotoView extends SelectListView
 
   # Jump to `item.file` at line `item.line`, when an item was selected.
   confirmed: (item) ->
-    @openItem item
+    GotoView.openItem item
     @hide()
 
   # Return to previously focused element when the modal panel is cancelled.
