@@ -7,12 +7,22 @@ module.exports =
         @span class: 'icon icon-chevron-right'
         @div class: 'header gutted'
         @div class: 'body gutted'
-    view.find('> .header').append head
-    view.find('> .body').append child for child in children
 
-    view.find('> .body').hide() unless expand
+    # Setup the header
+    header = view.find('> .header')
+    header.append head
+    header.click => @toggle view
+
+    # Setup the body
+    body = view.find('> .body')
+    body.hide() unless expand
+    # Add the children to the body. Using direct dom manipulation instead of
+    # jQuery to improve performance in the presence of many children.
+    realBody = body[0]
+    for child in children
+      realBody.appendChild child
+
     view.find('> .icon').click => @toggle view
-    view.find('> .header').click => @toggle view
 
     view[0]
 
