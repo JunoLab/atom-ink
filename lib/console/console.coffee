@@ -136,7 +136,7 @@ class Console
   bufferOut: (item) ->
     {type, text} = item
     last = @lastOutput()
-    if last?.type is type and last.expires > performance.now()
+    if last?.type is type and (last.expires > performance.now() or not last.text)
       last.text += text
     else
       @output item
