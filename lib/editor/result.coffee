@@ -19,9 +19,15 @@
 # block-`Result`s will be displayed below it and span the whole width of
 # the current editor.
 
+metrics = ->
+  try
+    if id = localStorage.getItem 'metrics.userId'
+      require('http').get "http://data.junolab.org/hit?id=#{id}&app=ink-result"
+
 module.exports =
 class Result
   constructor: (@editor, [start, end], opts={}) ->
+    metrics()
     opts.type ?= 'inline'
     {@type} = opts
     @disposables = new CompositeDisposable

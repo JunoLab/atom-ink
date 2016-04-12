@@ -1,5 +1,4 @@
 {CompositeDisposable} = require 'atom'
-http = require 'http'
 Loading = require './util/loading'
 block   = require './editor/block'
 highlights = require './editor/highlights'
@@ -19,7 +18,7 @@ module.exports = Ink =
 
     try
       if id = localStorage.getItem 'metrics.userId'
-        http.get "http://data.junolab.org/hit?id=#{id}&app=ink"
+        require('http').get "http://data.junolab.org/hit?id=#{id}&app=ink"
 
   deactivate: ->
     Result.deactivate()
