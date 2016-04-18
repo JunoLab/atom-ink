@@ -1,13 +1,13 @@
 {CompositeDisposable} = require 'atom'
 Loading = require './util/loading'
-block   = require './editor/block'
+block = require './editor/block'
 highlights = require './editor/highlights'
 Result = require './editor/result'
 Spinner = require './editor/spinner'
 Console = require './console/console'
 PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
-tree    = require './tree'
+tree = require './tree'
 
 module.exports = Ink =
   activate: ->
