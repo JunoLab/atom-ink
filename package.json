@@ -18,5 +18,12 @@
         "0.1.0": "provide"
       }
     }
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
   }
 }
