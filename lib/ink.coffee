@@ -4,7 +4,6 @@ progress = require './util/progress'
 block = require './editor/block'
 highlights = require './editor/highlights'
 Result = require './editor/result'
-Spinner = require './editor/spinner'
 Console = require './console/console'
 PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
@@ -33,7 +32,6 @@ module.exports = Ink =
       block.highlight ed, start, end
     Loading: Loading
     progress: progress
-    Spinner: Spinner
     Result: Result
     Console: Console
     Workspace: Workspace
