@@ -31,12 +31,14 @@ module.exports =
     body = view.find('> .body')
     icon = view.find('> .icon')
     return unless body[0]?
-    body.toggle()
-    if body.isVisible()
-      view.visible = true
-      icon.removeClass 'icon-chevron-right'
-      icon.addClass 'icon-chevron-down'
-    else
-      view.visible = false
-      icon.removeClass 'icon-chevron-down'
-      icon.addClass 'icon-chevron-right'
+    body.toggle
+      duration: 50,
+      done: ->
+        if body.isVisible()
+          view.visible = true
+          icon.removeClass 'icon-chevron-right'
+          icon.addClass 'icon-chevron-down'
+        else
+          view.visible = false
+          icon.removeClass 'icon-chevron-down'
+          icon.addClass 'icon-chevron-right'
