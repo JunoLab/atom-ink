@@ -5,7 +5,7 @@ module.exports =
 
   metres: []
 
-  push: (p) ->
+  push: (p = {}) ->
     if @metres.indexOf(p) == -1
       @metres.push p
       if @metres.length == 1
