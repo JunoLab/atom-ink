@@ -114,7 +114,9 @@ class Console
 
   eval: (item) ->
     item = @itemForView item
-    if item.input
+    if item.eval?
+      item.eval()
+    else if item.input
       @emitter.emit 'eval', item
     else if (input = @getInput())
       input.editor.setText item.editor.getText()
