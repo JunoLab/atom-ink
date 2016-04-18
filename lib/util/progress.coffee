@@ -1,10 +1,28 @@
+# TODO: move determinate progress bars to the front
+# TODO: hover UI with progress stack, descriptions
+
 module.exports =
 
   metres: []
 
+  push: (p) ->
+    if @metres.indexOf(p) == -1
+      @metres.push p
+      if @metres.length == 1
+        @showTile p
+      p.destroy = => @remove p
+      p
+
+  remove: (p) ->
+    i = @metres.indexOf p
+    @metres.splice i, 1 if i > -1
+    if @metres.length == 0
+      @hideTile()
+    if i == 0 and @metres.length > 0
+      @showTile @metres[0]
+
   consumeStatusBar: (bar) ->
     @statusBar = bar
-    @test()
 
   progressView: (p) ->
     span = document.createElement 'span'
@@ -24,10 +42,10 @@ module.exports =
 
     span
 
-  test: ->
-    @p = {progress: 0}
-    @statusBar.addLeftTile item: @progressView(@p), priority: -10
+  hideTile: ->
+    @tile?.destroy()
+    delete @tile
 
-  # for i in [0..100]
-  #   do (i) =>
-  #     setTimeout (=> @p.progress = i/100), i*10
+  showTile: (p) ->
+    @hideTile()
+    @tile ?= @statusBar.addLeftTile item: @progressView(p), priority: -10
