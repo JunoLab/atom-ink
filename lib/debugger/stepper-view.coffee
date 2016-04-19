@@ -53,7 +53,7 @@ class StepperView
 
   fadeIn: ->
     @view.classList.add 'ink-hide'
-    setTimeout (=> @view.classList.remove 'ink-hide'), 10
+    setTimeout (=> @view.classList.remove 'ink-hide'), 20
 
   fadeOut: (f) ->
     @view.classList.add 'ink-hide'
