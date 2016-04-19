@@ -102,6 +102,19 @@ atom-text-editor::shadow {
   }
 }
 
+.ink.stepper {
+  position: absolute;
+  left: 10px;
+  background: @background-color-info;
+  border-radius: 3px;
+  transition: all 0.2s;
+  opacity: 1;
+  &.ink-hide {
+    opacity: 0;
+    transform: translate(10px);
+  }
+}
+
 .ink.tree {
   > .icon {
     position: relative;
