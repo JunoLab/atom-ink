@@ -42,14 +42,20 @@ class StepperView
     [ed, tab] = @edAndTab ed
     x.classList.remove 'debug' for x in [ed, tab]
 
+  attach: ->
+    @marker = @editor.markBufferPosition [@line, Infinity]
+    @editor.decorateMarker @marker,
+      type: 'overlay'
+      item: @view
+    # Work around markers being destroyed when closing a split editor
+    @mListener?.dispose()
+    @mListener = @marker.onDidDestroy => @attach() unless @destroyed
+
   constructor: (@editor, @line) ->
     @createView()
     @addClass @editor
     @fadeIn()
-    @marker = @editor.markBufferPosition [line, Infinity]
-    @editor.decorateMarker @marker,
-      type: 'overlay'
-      item: @view
+    @attach()
 
   fadeIn: ->
     @view.classList.add 'ink-hide'
@@ -68,6 +74,8 @@ class StepperView
     @animate => @marker.setHeadBufferPosition [line, Infinity]
 
   destroy: ->
+    @destroyed = true
+    @mListener.dispose()
     @rmClass @editor
     @fadeOut =>
       @marker.destroy()
