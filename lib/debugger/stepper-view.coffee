@@ -4,7 +4,8 @@ class StepperView
   createView: ->
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'stepper'
-    @view.style.top = -@editor.getLineHeightInPixels() + 'px'
+    @onReady @editor, =>
+      @view.style.top = -@editor.getLineHeightInPixels() + 'px'
 
   buttonView: ({icon, text, tooltip, command}) ->
     btn = document.createElement 'button'
@@ -34,13 +35,17 @@ class StepperView
     error("assertion: more than one tab") unless tabs.length <= 1
     [edView, tabs[0]]
 
+  onReady: (ed, f) ->
+    setTimeout f, 0
+
   addClass: (ed) ->
-    [ed, tab] = @edAndTab ed
-    x.classList.add 'debug' for x in [ed, tab]
+    @onReady ed, =>
+      [ed, tab] = @edAndTab ed
+      x?.classList.add 'debug' for x in [ed, tab]
 
   rmClass: (ed) ->
     [ed, tab] = @edAndTab ed
-    x.classList.remove 'debug' for x in [ed, tab]
+    x?.classList.remove 'debug' for x in [ed, tab]
 
   attach: ->
     @marker = @editor.markBufferPosition [@line, Infinity]
