@@ -26,8 +26,25 @@ class StepperView
 
   appendChild: (c) -> @view.appendChild c
 
+  edAndTab: (ed) ->
+    edView = atom.views.getView ed
+    workspace = atom.views.getView atom.workspace
+    tabs = workspace.querySelectorAll(".pane > .tab-bar > .tab")
+    tabs = [].filter.call tabs, (tab) -> tab?.item is ed
+    error("assertion: more than one tab") unless tabs.length <= 1
+    [edView, tabs[0]]
+
+  addClass: (ed) ->
+    [ed, tab] = @edAndTab ed
+    x.classList.add 'debug' for x in [ed, tab]
+
+  rmClass: (ed) ->
+    [ed, tab] = @edAndTab ed
+    x.classList.remove 'debug' for x in [ed, tab]
+
   constructor: (@editor, @line) ->
     @createView()
+    @addClass @editor
     @fadeIn()
     @marker = @editor.markBufferPosition [line, Infinity]
     @editor.decorateMarker @marker,
@@ -51,4 +68,6 @@ class StepperView
     @animate => @marker.setHeadBufferPosition [line, Infinity]
 
   destroy: ->
-    @fadeOut => @marker.destroy()
+    @rmClass @editor
+    @fadeOut =>
+      @marker.destroy()
