@@ -5,8 +5,26 @@ class StepperView
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'stepper'
     @view.style.top = -@editor.getLineHeightInPixels() + 'px'
-    @view.style.height = @editor.getLineHeightInPixels() + 'px'
-    @view.style.width = '100px'
+
+  buttonView: ({icon, text, tooltip, command}) ->
+    btn = document.createElement 'button'
+    btn.classList.add 'btn', 'btn-primary'
+    if text? then btn.innerText = text
+    if icon? then btn.classList.add "icon-#{icon}"
+    if tooltip? then atom.tooltips.add btn,
+      title: tooltip,
+      keyBindingCommand: command
+      keyBindingTarget: atom.views.getView @editor
+    btn.onclick = => atom.commands.dispatch atom.views.getView(@editor), command
+    btn
+
+  buttonGroup: (buttons) ->
+    grp = document.createElement 'div'
+    grp.classList.add 'btn-group', 'btn-group-xs'
+    buttons.forEach (b) => grp.appendChild @buttonView b
+    grp
+
+  appendChild: (c) -> @view.appendChild c
 
   constructor: (@editor, @line) ->
     @createView()

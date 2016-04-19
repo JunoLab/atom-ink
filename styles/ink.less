@@ -105,8 +105,9 @@ atom-text-editor::shadow {
 .ink.stepper {
   position: absolute;
   left: 10px;
-  background: @background-color-info;
+  border-left: 2px solid @text-color-info;
   border-radius: 3px;
+  white-space: nowrap;
   transition: all 0.2s;
   opacity: 1;
   &.ink-hide {
