@@ -28,17 +28,24 @@ class Stepper
     atom.workspace.getTextEditors()
       .filter((x)->x.getPath() is file)
 
+  activate: (file, line) ->
+    active = atom.workspace.getActiveTextEditor()
+    if active.getPath() is file
+      active.setCursorBufferPosition [line, 0]
+      Promise.resolve()
+    else
+      atom.workspace.open file,
+        initialLine: line
+        searchAllPanes: true
+        pending: true
+
   goto: (file, @line) ->
-    opts =
-      initialLine: @line
-      searchAllPanes: true
-      pending: true
-    atom.workspace.open(file, opts).then =>
+    @activate(file, @line).then =>
       if file == @file
         view.goto @line for view in @views
       else
-        @detach()
         @file = file
+        @detach()
         @attach(ed) for ed in @edsForFile file
 
   detach: ->
