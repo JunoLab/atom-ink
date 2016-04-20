@@ -1,9 +1,9 @@
 {CompositeDisposable} = require 'atom'
 Loading = require './util/loading'
+progress = require './util/progress'
 block = require './editor/block'
 highlights = require './editor/highlights'
 Result = require './editor/result'
-Spinner = require './editor/spinner'
 Console = require './console/console'
 PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
@@ -24,11 +24,14 @@ module.exports = Ink =
     Result.deactivate()
     Console.deactivate()
 
+  consumeStatusBar: (bar) ->
+    progress.consumeStatusBar bar
+
   provide: ->
     highlight: (ed, start, end) =>
       block.highlight ed, start, end
     Loading: Loading
-    Spinner: Spinner
+    progress: progress
     Result: Result
     Console: Console
     Workspace: Workspace
