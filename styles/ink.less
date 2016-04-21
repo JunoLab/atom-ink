@@ -11,6 +11,10 @@ atom-text-editor {
   overflow: hidden; // Otherwise inline results spill everywhere
 }
 
+.inline-block progress:indeterminate {
+  animation-iteration-count: infinite !important;
+}
+
 atom-text-editor::shadow {
   div.block-notify .region {
     background: @background-color-info;
