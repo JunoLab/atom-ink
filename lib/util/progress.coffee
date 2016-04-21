@@ -3,6 +3,9 @@
 
 module.exports =
 
+  deactivate: ->
+    @tile?.destroy()
+
   metres: []
 
   push: (p = {}) ->
@@ -17,7 +20,7 @@ module.exports =
     i = @metres.indexOf p
     @metres.splice i, 1 if i > -1
     if @metres.length == 0
-      @hideTile()
+      @showTile progress: 0
     if i == 0 and @metres.length > 0
       @showTile @metres[0]
 
@@ -28,6 +31,7 @@ module.exports =
     span = document.createElement 'span'
     span.classList.add 'inline-block'
     prog = document.createElement 'progress'
+    prog.classList.add 'ink'
     prog.setAttribute 'max', 1
     if p.progress? then prog.setAttribute 'value', p.progress
     span.appendChild prog
@@ -42,10 +46,8 @@ module.exports =
 
     span
 
-  hideTile: ->
-    @tile?.destroy()
-    delete @tile
-
   showTile: (p) ->
-    @hideTile()
-    @tile ?= @statusBar.addLeftTile item: @progressView(p)
+    @tile?.destroy()
+    @tile = @statusBar.addLeftTile
+      item: @progressView(p)
+      priority: -1

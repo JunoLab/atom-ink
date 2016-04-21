@@ -23,6 +23,7 @@ module.exports = Ink =
   deactivate: ->
     Result.deactivate()
     Console.deactivate()
+    progress.deactivate()
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
