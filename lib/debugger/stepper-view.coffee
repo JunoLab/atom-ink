@@ -75,8 +75,9 @@ class StepperView
     setTimeout f, 200
 
   animate: (f) ->
-    @view.parentElement?.style.transition = 'all 0.1s'
-    setTimeout (=> @view.parentElement?.style.transition = ''), 100
+    clearTimeout @at
+    @view.parentElement?.style.transition = 'all 0.3s'
+    @at = setTimeout (=> @view.parentElement?.style.transition = ''), 300
     setTimeout f, 0
 
   goto: (line) ->
