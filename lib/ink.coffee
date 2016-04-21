@@ -8,7 +8,7 @@ Console = require './console/console'
 PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
 tree = require './tree'
-goto    = require './gotodef'
+goto = require './gotodef'
 
 module.exports = Ink =
   activate: ->
