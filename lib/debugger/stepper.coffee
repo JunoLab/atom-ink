@@ -13,13 +13,16 @@ class Stepper
     ]
 
   attach: (ed) ->
-    view = new StepperView ed, @line
-    text = document.createElement 'span'
-    text.innerText = @text
-    text.style.paddingLeft = text.style.paddingRight = '10px'
-    view.appendChild text
-    view.appendChild view.buttonGroup @buttons
-    @views.push view
+    @views.push new StepperView ed, @line
+
+  setText: (@text) ->
+    for view in @views
+      text = document.createElement 'span'
+      text.innerText = @text
+      text.style.paddingLeft = text.style.paddingRight = '10px'
+      view.clear()
+      view.appendChild text
+      view.appendChild view.buttonGroup @buttons
 
   edsForFile: (file) ->
     atom.workspace.getTextEditors()
@@ -47,6 +50,7 @@ class Stepper
         @file = file
         @detach()
         @attach(ed) for ed in @edsForFile file
+        @setText @text
 
   detach: ->
     view?.destroy() for view in @views

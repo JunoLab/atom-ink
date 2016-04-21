@@ -27,6 +27,10 @@ class StepperView
 
   appendChild: (c) -> @view.appendChild c
 
+  clear: ->
+    while @view.firstChild?
+      @view.removeChild @view.firstChild
+
   edAndTab: (ed) ->
     edView = atom.views.getView ed
     workspace = atom.views.getView atom.workspace
