@@ -58,7 +58,7 @@ class Stepper
 
   destroy: ->
     @detach()
-    @listener.dispose()
+    @listener?.dispose()
     delete @listener
     delete @file
     delete @line
