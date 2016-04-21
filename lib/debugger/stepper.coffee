@@ -3,17 +3,14 @@ StepperView = require './stepper-view'
 module.exports =
 class Stepper
 
-  constructor: (@text, @buttons) ->
-
+  constructor: ({@buttons}) ->
     @views = []
-    @text ?= "Grand Steppin'"
+    @text = "Grand Steppin'"
     @buttons ?= [
-      {icon: 'arrow-down', tooltip: 'Next Line', command: 'julia-debug:step-to-next-line'}
-      {icon: 'link-external', tooltip: 'Step Out'}
-      {icon: 'chevron-right', tooltip: 'Step In'}
+      {icon: 'arrow-down'}
+      {icon: 'link-external'}
+      {icon: 'chevron-right'}
     ]
-    @listener = atom.workspace.observeTextEditors (ed) =>
-      @attach(ed) if ed.getPath() is @file
 
   attach: (ed) ->
     view = new StepperView ed, @line
@@ -30,7 +27,7 @@ class Stepper
 
   activate: (file, line) ->
     active = atom.workspace.getActiveTextEditor()
-    if active.getPath() is file
+    if active?.getPath() is file
       active.setCursorBufferPosition [line, 0]
       Promise.resolve()
     else
@@ -40,6 +37,9 @@ class Stepper
         pending: true
 
   goto: (file, @line) ->
+    @listener ?= atom.workspace.observeTextEditors (ed) =>
+      @attach(ed) if ed.getPath() is @file
+
     @activate(file, @line).then =>
       if file == @file
         view.goto @line for view in @views
@@ -55,5 +55,6 @@ class Stepper
   destroy: ->
     @detach()
     @listener.dispose()
+    delete @listener
     delete @file
     delete @line
