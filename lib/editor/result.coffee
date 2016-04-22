@@ -1,5 +1,7 @@
 # TODO: better scrolling behaviour
+{$, $$} = require 'atom-space-pen-views'
 {CompositeDisposable} = require 'atom'
+trees = require '../tree'
 
 # ## Result API
 # `Result`s are DOM elements which represent the result of some operation. They
@@ -77,6 +79,9 @@ class Result
     @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
 
+  toggleTree: ->
+    trees.toggle $(@view).find('> .tree')
+
   remove: ->
     @view.classList.add 'ink-hide'
     @timeout 200, => @destroy()
@@ -150,6 +155,12 @@ class Result
         if @removeLines(ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row)
           done = true
     e.abortKeyBinding() unless done
+
+  @toggleCurrent: ->
+    ed = atom.workspace.getActiveTextEditor()
+    for sel in ed.getSelections()
+      rs = @forLines ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row
+      rs.map (r) -> r.toggleTree()
 
   # Commands
 
