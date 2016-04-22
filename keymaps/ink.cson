@@ -16,7 +16,7 @@
   'alt-down': 'console:next-in-history'
 
 'atom-text-editor:not([mini])':
-  'escape': 'inline-results:clear-current'
+  'escape': 'inline-docs:clear-current'
 
 '.platform-darwin atom-text-editor:not([mini])':
   'cmd-i cmd-c': 'inline-results:clear-all'

@@ -4,6 +4,7 @@ progress = require './util/progress'
 block = require './editor/block'
 highlights = require './editor/highlights'
 Result = require './editor/result'
+Docs = require './editor/docs'
 Console = require './console/console'
 Stepper = require './debugger/stepper'
 PlotPane = require './plots/pane'
@@ -14,6 +15,7 @@ goto = require './gotodef'
 module.exports = Ink =
   activate: ->
     Result.activate()
+    Docs.activate()
     Console.activate()
     PlotPane.activate()
     Workspace.activate()
@@ -25,6 +27,7 @@ module.exports = Ink =
 
   deactivate: ->
     Result.deactivate()
+    Docs.deactivate()
     Console.deactivate()
     progress.deactivate()
 
@@ -43,4 +46,5 @@ module.exports = Ink =
     PlotPane: PlotPane
     highlights: highlights
     tree: tree
+    InlineDoc: Docs
     goto: goto
