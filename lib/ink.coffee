@@ -5,6 +5,7 @@ block = require './editor/block'
 highlights = require './editor/highlights'
 Result = require './editor/result'
 Console = require './console/console'
+Stepper = require './debugger/stepper'
 PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
 tree = require './tree'
@@ -15,6 +16,7 @@ module.exports = Ink =
     Console.activate()
     PlotPane.activate()
     Workspace.activate()
+    window.Stepper = Stepper
 
     try
       if id = localStorage.getItem 'metrics.userId'
@@ -35,6 +37,7 @@ module.exports = Ink =
     progress: progress
     Result: Result
     Console: Console
+    Stepper: Stepper
     Workspace: Workspace
     PlotPane: PlotPane
     highlights: highlights

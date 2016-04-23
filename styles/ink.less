@@ -102,6 +102,33 @@ atom-text-editor::shadow {
   }
 }
 
+.ink.stepper {
+  position: relative;
+  left: 20px;
+  border-left: 2px solid @text-color-info;
+  border-radius: 3px;
+  white-space: nowrap;
+  transition: all 0.2s;
+  opacity: 1;
+  background-color: fade(@background-color-info, 15%);
+  &.ink-hide {
+    opacity: 0;
+    transform: translate(10px);
+  }
+}
+
+.tab.debug .title:before {
+  font-family: "Octicons Regular";
+  font-size: medium;
+  text-align: center;
+  content: "\f091";
+  font-style: normal !important;
+  margin-right: 5px;
+  vertical-align: top;
+  // For better visualisation in Mac OS
+  -webkit-font-smoothing: antialiased;
+}
+
 .ink.tree {
   > .icon {
     position: relative;
