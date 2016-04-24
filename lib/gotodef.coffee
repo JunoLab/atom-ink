@@ -3,34 +3,38 @@ fuzzaldrinPlus = require 'fuzzaldrin-plus'
 
 # ## GoToDef-Panel
 #
-# `goto` takes a promise as its argument, which can either be fulfilled or rejected.
-# Both modes will be handled by `goto` as follows:
-# On fulfillment, a `result` object is returned which contains two fields:
+# `goto` either takes a `symbolTable` as its argument, or a Promise which returns a
+# `symbolTable`.
 #
-#   - `result.error`: Boolean. If true, the contents of `result.items` will be
-#   shown as an error.
+# A `symbolTable` is specified by having the following fields:
 #
-#   - `result.items` -  Array that contains objects with the fields
+#   - `symbolTable.error`: Boolean. If true, the contents of `result.items` will
+#   be shown as an error.
+#
+#   - `symbolTable.items` -  Array that contains objects with the fields
 #     - `.text` -       Displayed text, searchable.
 #     - `.file` -       File in which this method is defined, not displayed.
 #     - `.line` -       Line of definition.
 #     - `.dispfile` -   Humanized file path, displayed.
 #
-#   or a plain text string if `result.error` is true.
+#   or a plain text string if `symbolTable.error` is true.
 
 
 module.exports =
-goto: (promise) ->
+goto: (symbolTable) ->
   @view ?= new GotoView()
 
-  promise.then (result) =>
-    if result.error
-      @view.setError result.items
+  # this allows either a promise or a result as the input
+  promise = Promise.resolve symbolTable
+
+  promise.then (symbolTable) =>
+    if symbolTable.error
+      @view.setError symbolTable.items
       @view.show()
-    else if result.items.length == 1
-      GotoView.openItem result.items[0]
-    else if result.items.length > 1
-      @view.setItems result.items
+    else if symbolTable.items.length == 1
+      GotoView.openItem symbolTable.items[0]
+    else if symbolTable.items.length > 1
+      @view.setItems symbolTable.items
       @view.show()
 
 class GotoView extends SelectListView
