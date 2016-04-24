@@ -21,11 +21,11 @@ fuzzaldrinPlus = require 'fuzzaldrin-plus'
 
 
 module.exports =
-goto: (symbolTable) ->
+goto: (symbolTableOrPromise) ->
   @view ?= new GotoView()
 
-  # this allows either a promise or a result as the input
-  promise = Promise.resolve symbolTable
+  # this allows either a promise or a symbolTable as the input
+  promise = Promise.resolve symbolTableOrPromise
 
   promise.then (symbolTable) =>
     if symbolTable.error
