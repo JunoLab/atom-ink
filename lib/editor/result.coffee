@@ -1,4 +1,5 @@
 # TODO: better scrolling behaviour
+{throttle} = require 'underscore-plus'
 {$, $$} = require 'atom-space-pen-views'
 {CompositeDisposable} = require 'atom'
 trees = require '../tree'
@@ -22,10 +23,11 @@ trees = require '../tree'
 # the current editor.
 
 metrics = ->
-  try
-    if id = localStorage.getItem 'metrics.userId'
-      require('http').get "http://data.junolab.org/hit?id=#{id}&app=ink-result"
-    metrics = ->
+  if id = localStorage.getItem 'metrics.userId'
+    r = require('http').get "http://data.junolab.org/hit?id=#{id}&app=ink-result"
+    r.on 'error', ->
+
+metrics = throttle metrics, 60*60*1000
 
 module.exports =
 class Result

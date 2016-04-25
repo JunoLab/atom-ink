@@ -19,10 +19,6 @@ module.exports = Ink =
     Workspace.activate()
     window.Stepper = Stepper
 
-    try
-      if id = localStorage.getItem 'metrics.userId'
-        require('http').get "http://data.junolab.org/hit?id=#{id}&app=ink"
-
   deactivate: ->
     Result.deactivate()
     Console.deactivate()
