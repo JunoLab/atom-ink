@@ -25,6 +25,7 @@ metrics = ->
   try
     if id = localStorage.getItem 'metrics.userId'
       require('http').get "http://data.junolab.org/hit?id=#{id}&app=ink-result"
+    metrics = ->
 
 module.exports =
 class Result
