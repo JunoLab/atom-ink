@@ -59,7 +59,7 @@ class InlineDoc
   @activate: ->
     @subs = new CompositeDisposable
     @subs.add atom.commands.add 'atom-text-editor:not([mini])',
-      'inline-docs:clear-current': (e) => @removeCurrent e
+      'inline:clear-current': (e) => @removeCurrent e
 
   @deactivate: ->
     @subs.dispose()
