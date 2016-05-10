@@ -21,6 +21,7 @@ class ConsoleElement extends HTMLElement
     @model.onDidAddItem (item) => @addItem item
     @model.onDidInsertItem ([item, i]) => @insertItem [item, i]
     @model.onDidClear => @clear()
+    @model.onDidDeleteFirstItems (n) => @deleteFirstItems n
     @model.onDone => if @hasFocus() then @focus()
     @model.onFocusInput (force) => @focusLast force
     @model.onLoading (status) => @loading status
@@ -63,6 +64,13 @@ class ConsoleElement extends HTMLElement
                                  # focused editor
     while @items.hasChildNodes()
       @items.removeChild @items.lastChild
+
+  deleteFirstItems: (n) ->
+    # need to remove the cell and the divider (the +1 is for having an easier
+    # while loop)
+    n = 2*n + 1
+    while n -= 1
+      @items.removeChild @items.firstChild
 
   queryLast: (view, q) ->
     items = view.querySelectorAll q
