@@ -25,6 +25,10 @@ atom-text-editor::shadow {
     transition: opacity 0.2s;
   }
 
+  div.doc-highlight .region{
+    background-color: fade(@background-color-info, 10%);
+  }
+
   div.ink.block {
     background: url("atom://ink/res/stripe.png");
     background-size: 20px;
@@ -44,15 +48,13 @@ atom-text-editor::shadow {
   font-family: @font-family;
   color: @text-color;
 
+  cursor: default;
+
   background-color: @inset-panel-background-color;
 
   border-top: 1px solid @syntax-wrap-guide-color;
   border-bottom: 1px solid @syntax-wrap-guide-color;
-
-  &.ink-hide {
-    opacity: 0;
-    transform: translate(10px);
-  }
+  padding-left: 5px;
 }
 
 
@@ -80,7 +82,12 @@ atom-text-editor::shadow {
 
   max-width: 400px;
   overflow: hidden;
-  white-space: pre;
+  white-space: nowrap;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
 
   &:hover {
     overflow: auto;
