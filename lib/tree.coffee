@@ -32,7 +32,7 @@ module.exports =
     icon = view.find('> .icon')
     return unless body[0]?
     body.toggle
-      duration: 50,
+      duration: 0
       done: ->
         if body.isVisible()
           view.visible = true
