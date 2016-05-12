@@ -35,6 +35,7 @@ class Console
 
   constructor: ({initialInput}={}) ->
     @items = []
+    @maxSize = 1000
     @history = new HistoryProvider
     @emitter = new Emitter
     initialInput ?= true
@@ -51,8 +52,11 @@ class Console
   push: (cell) ->
     @items.push cell
     @emitter.emit 'did-add-item', cell
+    @limitHistory()
 
   onDidAddItem: (f) -> @emitter.on 'did-add-item', f
+
+  onDidDeleteFirstItems: (f) -> @emitter.on 'did-delete-first-items', f
 
   insert: (cell, i) ->
     if i >= @items.length or @items.length is 0
@@ -60,6 +64,13 @@ class Console
     else
       @items.splice(i, 0, cell)
       @emitter.emit 'did-insert-item', [cell, i]
+      @limitHistory()
+
+  limitHistory: ->
+    itemsToDelete = @items.length - @maxSize
+    if itemsToDelete <= 0 then return
+    @items.splice 0, itemsToDelete
+    @emitter.emit 'did-delete-first-items', itemsToDelete
 
   onDidInsertItem: (f) -> @emitter.on 'did-insert-item', f
 
