@@ -9,8 +9,10 @@ class ConsoleElement extends HTMLElement
     @items.classList.add 'items'
     @appendChild @items
 
-    @style.fontSize = atom.config.get('editor.fontSize') + 'px'
-    @style.fontFamily = atom.config.get('editor.fontFamily')
+    atom.config.observe 'editor.fontSize', (v) =>
+      @style.fontSize = v + 'px'
+    atom.config.observe 'editor.fontFamily', (v) =>
+      @style.fontFamily = v
 
     @views = {}
     for view in ['input', 'stdout', 'stderr', 'info', 'result']
