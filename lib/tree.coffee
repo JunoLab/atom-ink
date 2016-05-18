@@ -9,8 +9,9 @@ module.exports =
       div 'header gutted', head
       div 'body gutted', children
     ]
-    view.querySelector(':scope > .header').onclick = => @toggle view
-    view.querySelector(':scope > .icon').onclick = => @toggle view
+    for sel in [':scope > .header', ':scope > .icon']
+      view.querySelector(sel).onclick = =>
+        setTimeout (=> @toggle view), 0
     @toggle view unless expand
     view
 
