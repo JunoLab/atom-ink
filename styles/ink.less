@@ -64,15 +64,11 @@ atom-text-editor::shadow {
 
   &.error {
     color: @text-color-error;
+    border-left: 2px solid @background-color-error;
   }
 
-  // @inline-background-color: fade(@inset-panel-background-color, 80%);
-  @inline-background-color: @inset-panel-background-color;
-  background: linear-gradient(to top, darken(@inline-background-color, 5%),
-                                      @inline-background-color 10%,
-                                      @inline-background-color 90%,
-                                      lighten(@inline-background-color, 5%));
-  box-shadow: 0.5px 0.5px 2px @base-border-color;
+  background: @syntax-background-color;
+  border-left: 2px solid @background-color-info;
   border-radius: 3px;
 
   padding: 0px 5px 0px 5px;
