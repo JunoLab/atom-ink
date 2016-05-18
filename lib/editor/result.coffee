@@ -3,6 +3,8 @@
 {$, $$} = require 'atom-space-pen-views'
 {CompositeDisposable} = require 'atom'
 trees = require '../tree'
+views = require '../util/views'
+{div, span} = views.tags
 
 # ## Result API
 # `Result`s are DOM elements which represent the result of some operation. They
@@ -47,7 +49,8 @@ class Result
     @timeout 20, =>
       @view.classList.remove 'ink-hide'
 
-  createView: ({error, content, fade}) ->
+  createView: (opts) ->
+    {content, fade, loading} = opts
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'result'
     switch @type
@@ -55,7 +58,6 @@ class Result
         @view.classList.add 'inline'
         @view.style.top = -@editor.getLineHeightInPixels() + 'px'
       when 'block' then @view.classList.add 'under'
-    if error then @view.classList.add 'error'
     # @view.style.pointerEvents = 'auto'
     @view.addEventListener 'mousewheel', (e) ->
       e.stopPropagation()
@@ -66,7 +68,16 @@ class Result
     @disposables.add atom.commands.add @view,
       'inline-results:clear': (e) => @remove()
     fade and @fadeIn()
-    if content? then @view.appendChild content
+
+    if content? then @setContent content, opts
+    if loading then @setContent views.render(span 'loading icon icon-gear'), opts
+
+  setContent: (view, {error, loading}={}) ->
+    while @view.firstChild?
+      @view.removeChild @view.firstChild
+    if error then @view.classList.add 'error' else @view.classList.remove 'error'
+    if loading then @view.classList.add 'loading' else @view.classList.remove 'loading'
+    @view.appendChild view
 
   lineRange: (start, end) ->
     [[start, 0], [end, @editor.lineTextForBufferRow(end).length]]
