@@ -89,6 +89,15 @@ atom-text-editor::shadow {
     overflow: auto;
   }
 
+  &.loading {
+    opacity: 0.3;
+    .icon:before {
+      transform-origin: 45% 50%;
+      animation: spin 4s linear infinite;
+      @keyframes spin { 100% { transform:rotate(1turn); } }
+    }
+  }
+
   &.ink-hide, &.ink-hide.invalid {
     opacity: 0;
     transform: translate(10px);
@@ -142,7 +151,7 @@ atom-text-editor::shadow {
     margin-left: 15px;
   }
   .icon {
-    transition: all 0.1s;
+    transition: all 0.1s ease-out;
     &.open {
       transform: rotate(0.25turn);
       transform-origin: 25% 45%;
