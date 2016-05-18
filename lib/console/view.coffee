@@ -137,6 +137,7 @@ class ConsoleElement extends HTMLElement
     setTimeout (-> ed.component?.presenter.scrollPastEnd = false), 0
     item.editor = ed.getModel()
     item.editor.setLineNumberGutterVisible(false)
+    item.editor.setSoftWrapped true
     @updateGrammar item
     @observeKey item, 'grammar', => @updateGrammar item
     ed
