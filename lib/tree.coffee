@@ -5,7 +5,7 @@ views = require './util/views'
 module.exports =
   treeView: (head, children, {expand}) ->
     view = views.render div 'ink tree', [
-      span 'icon icon-chevron-down'
+      span 'icon icon-chevron-right open'
       div 'header gutted', head
       div 'body gutted', children
     ]
@@ -20,9 +20,7 @@ module.exports =
     return unless body?
     if body.style.display == ''
       body.style.display = 'none'
-      icon.classList.remove 'icon-chevron-down'
-      icon.classList.add 'icon-chevron-right'
+      icon.classList.remove 'open'
     else
       body.style.display = ''
-      icon.classList.remove 'icon-chevron-right'
-      icon.classList.add 'icon-chevron-down'
+      icon.classList.add 'open'

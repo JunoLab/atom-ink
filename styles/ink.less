@@ -141,6 +141,13 @@ atom-text-editor::shadow {
   .gutted {
     margin-left: 15px;
   }
+  .icon {
+    transition: all 0.1s;
+    &.open {
+      transform: rotate(0.25turn);
+      transform-origin: 25% 45%;
+    }
+  }
 }
 
 ink-console .ink.tree > .icon {
