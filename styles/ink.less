@@ -81,6 +81,10 @@ atom-text-editor::shadow {
   overflow: hidden;
   white-space: pre;
 
+  * {
+    vertical-align: top;
+  }
+
   p {
     margin: 0;
     padding: 0;
@@ -150,6 +154,7 @@ atom-text-editor::shadow {
 }
 
 .ink.tree {
+  display: inline-block;
   > .icon {
     position: relative;
     float: left;
