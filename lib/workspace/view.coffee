@@ -10,39 +10,38 @@ class WorkspaceElement extends HTMLElement
     atom.config.observe 'editor.fontFamily', (v) =>
       @style.fontFamily = v
 
-  class: (type) ->
-    switch type
-      when 'number' then 'constant'
-      when 'string' then 'constant'
-      when 'code' then 'mixin'
-      when 'macro' then 'mixin'
-      else type
-
   icon: (type) ->
+    if type?.startsWith 'icon-' then return span "icon #{type}"
+    if type?.length == 1 then return type
     switch type
       when 'function' then 'λ'
-      when 'macro' then span 'icon icon-mention'
       when 'type' then 'T'
       when 'module' then span 'icon icon-package'
-      when 'number' then 'n'
-      when 'code' then span 'icon icon-code'
-      when 'string' then span 'icon icon-quote'
+      when 'mixin' then span 'icon icon-code'
       else 'c'
 
   createView: ->
+    if @view? then @removeChild @view
     contexts = for {context, items} in @model.items
-      rows = for {name, value, type} in items
-        tr [
-          td "icon #{@class type}", @icon type
-          td "name", name
-          td 'value', value
-        ]
+      rows = for {name, value, type, icon} in items
+        if name?
+          tr [
+            td "icon #{type}", @icon icon or type
+            td "name", name
+            td 'value', value
+          ]
+        else
+          tr [
+            td "icon #{type}", @icon icon or type
+            td {class: "value", colspan: 2}, value
+          ]
       div 'context', [div('header', context), table('items', rows)]
     @view = views.render div 'contexts', contexts
     @appendChild @view
 
   initialize: (@model) ->
     @createView()
+    @model.onDidSetItems => @createView()
     @
 
   getModel: -> @model

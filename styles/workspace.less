@@ -8,7 +8,9 @@ ink-workspace {
   overflow: auto;
   white-space: pre;
 
-  .header {
+  *{ vertical-align: top; }
+
+  .context > .header {
     font-family: @font-family;
     font-size: @font-size;
     color: @text-color;
@@ -28,6 +30,7 @@ ink-workspace {
 
     td.name {
       padding-left: 10px;
+      width: 30%;
     }
 
     td.value {
@@ -37,7 +40,7 @@ ink-workspace {
 
     // https://github.com/atom/autocomplete-plus/blob/master/styles/autocomplete.less
     td.icon {
-      display: block;
+      display: inline-block;
       text-align: center;
       font-style: normal;
       font-weight: bold;
@@ -49,6 +52,15 @@ ink-workspace {
         position: relative;
         left: 0.2em;
       }
+    }
+
+    .editor.editor-colors {
+      background: none;
+      padding: 0;
+    }
+
+    .fade {
+      color: @text-color-subtle;
     }
 
     .make-type-icon(attribute, @syntax-color-attribute);

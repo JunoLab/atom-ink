@@ -114,6 +114,13 @@ ink-console {
     }
     .editor.editor-colors {
       word-wrap: normal;
+      display: inline-block;
+      padding: 0;
+      background: none;
+    }
+    .result > .editor.editor-colors {
+      padding: 10px;
+      background: fade(@syntax-wrap-guide-color, 10%);
     }
   }
 }
