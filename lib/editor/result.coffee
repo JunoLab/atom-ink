@@ -54,7 +54,10 @@ class Result
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'result'
     switch @type
-      when 'inline' then @view.classList.add 'inline'
+      when 'inline'
+        @view.classList.add 'inline'
+        atom.config.observe 'editor.lineHeight', (h) =>
+          @view.style.top = -h + 'em';
       when 'block'  then @view.classList.add 'under'
     # @view.style.pointerEvents = 'auto'
     @view.addEventListener 'mousewheel', (e) ->
