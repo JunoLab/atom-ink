@@ -99,10 +99,15 @@ atom-text-editor::shadow {
   &.loading {
     opacity: 0.5;
     .icon:before {
-      transform-origin: 45% 50%;
       animation: spin 4s linear infinite;
       @keyframes spin { 100% { transform:rotate(1turn); } }
-      margin: 0 0 0 2px;
+    }
+  }
+
+  .icon {
+    text-align: center;
+    &:before {
+      margin: 0;
     }
   }
 
