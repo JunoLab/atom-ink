@@ -54,10 +54,8 @@ class Result
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'result'
     switch @type
-      when 'inline'
-        @view.classList.add 'inline'
-        @view.style.top = -@editor.getLineHeightInPixels() + 'px'
-      when 'block' then @view.classList.add 'under'
+      when 'inline' then @view.classList.add 'inline'
+      when 'block'  then @view.classList.add 'under'
     # @view.style.pointerEvents = 'auto'
     @view.addEventListener 'mousewheel', (e) ->
       e.stopPropagation()

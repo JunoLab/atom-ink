@@ -72,12 +72,11 @@ ink-console {
       transform: translate(0, -10px);
     }
     .gutter {
-      width: @gutter-width;
+      width: 2em;
       height: 100%;
       float: left;
-      position: absolute;
       color: @syntax-gutter-text-color;
-      text-align:center;
+      text-align: center;
       -webkit-user-select: none;
       .icon {
         transition: all 0.1s ease;
@@ -85,10 +84,15 @@ ink-console {
           opacity: 0;
           transform: translate(-10px);
         }
+        &:before {
+          width: initial;
+          height: initial;
+          font-size: inherit;
+          margin: 0;
+        }
       }
     }
     .content {
-      margin-left: @gutter-width;
       padding-left: 5px;
       padding-right: 20px;
     }

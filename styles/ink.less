@@ -61,6 +61,7 @@ atom-text-editor::shadow {
 .ink.inline {
   position: absolute;
   left: 10px;
+  top: -1.5em;
 
   &.error {
     color: @text-color-error;
@@ -99,6 +100,8 @@ atom-text-editor::shadow {
   &.loading {
     opacity: 0.5;
     .icon:before {
+      height: initial;
+      width: initial;
       animation: spin 4s linear infinite;
       @keyframes spin { 100% { transform:rotate(1turn); } }
     }
@@ -108,6 +111,7 @@ atom-text-editor::shadow {
     text-align: center;
     &:before {
       margin: 0;
+      font-size: inherit;
     }
   }
 
@@ -164,7 +168,6 @@ atom-text-editor::shadow {
 .ink.tree {
   display: inline-block;
   > .icon {
-    position: relative;
     float: left;
     width: 16px;
   }
@@ -172,15 +175,12 @@ atom-text-editor::shadow {
     margin-left: 20px;
   }
   .icon {
+    text-align: center;
     transition: all 0.1s ease-out;
     &.open {
       transform: rotate(0.25turn);
     }
   }
-}
-
-ink-console .ink.tree > .icon {
-  position: absolute;
 }
 
 .gotodef-panel {
