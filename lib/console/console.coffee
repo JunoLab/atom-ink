@@ -17,9 +17,9 @@ class Console
       'core:move-down': (e) ->
         getConsole(this).keyDown e, this
       'core:move-left': (e) ->
-        delete getConsole(this).prefix
+        getConsole(this).resetPrefix()
       'core:move-right': (e) ->
-        delete getConsole(this).prefix
+        getConsole(this).resetPrefix()
       'core:backspace': (e) ->
         getConsole(this).cancelMode this
 
@@ -87,7 +87,7 @@ class Console
   lastOutput: -> @items[@items.length - (if @getInput() then 2 else 1)]
 
   input: ->
-    delete @prefix
+    @resetPrefix()
     if not @getInput()
       item = type: 'input', input: true
       @push @setMode item
@@ -234,9 +234,14 @@ class Console
       input: editor.getText()
       mode: mode?.name
 
+  resetPrefix: ->
+    @prefix?.listener?.dispose()
+    delete @prefix
+
   moveHistory: (up) ->
     {editor} = @getInput()
     if (editor.getText() or not @prefix?) and @prefix?.pos?[0] isnt Infinity
+      @resetPrefix()
       pos = editor.getCursorBufferPosition()
       text = editor.getTextInRange [[0,0], pos]
       pos = [Infinity, Infinity] if text is ''
@@ -245,7 +250,9 @@ class Console
       @history.getPrevious @prefix.text
     else
       @history.getNext @prefix.text
+    @prefix.listener?.dispose()
     editor.setText next.input
+    @prefix.listener = editor.onDidChange => @resetPrefix()
     @setMode @getInput(), next.mode
     editor.setCursorBufferPosition @prefix.pos or [0, 0]
 
