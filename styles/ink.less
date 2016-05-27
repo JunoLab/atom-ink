@@ -195,3 +195,27 @@ atom-text-editor::shadow {
     font-weight: bold;
   }
 }
+
+// Notificator:
+.ink-notificator.flashing {
+  &.msg {
+    color: @text-color-info;
+    animation: blinkermsg 1s ease-in-out 1;
+  }
+  &.error {
+    color: @text-color-error;
+    animation: blinkererr 1s ease-in-out 1;
+  }
+}
+
+@keyframes blinkererr {
+  0%   { text-shadow: none; }
+  50%  { text-shadow: 0 0 3px @background-color-error; }
+  100% { text-shadow: none; }
+}
+
+@keyframes blinkermsg {
+  0%   { text-shadow: none; }
+  50%  { text-shadow: 0 0 3px @background-color-info; }
+  100% { text-shadow: none; }
+}

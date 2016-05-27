@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 Loading = require './util/loading'
 progress = require './util/progress'
+Notificator = require './util/notificator'
 block = require './editor/block'
 highlights = require './editor/highlights'
 Result = require './editor/result'
@@ -29,6 +30,7 @@ module.exports = Ink =
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
+    Notificator.consumeStatusBar bar
 
   provide: ->
     highlight: (ed, start, end) =>
@@ -44,3 +46,4 @@ module.exports = Ink =
     tree: tree
     InlineDoc: Docs
     goto: goto
+    Notificator: Notificator
