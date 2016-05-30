@@ -29,6 +29,8 @@ class ConsoleElement extends HTMLElement
         @focusLast()
     for item in @model.items
       @addItem item
+    atom.config.observe 'editor.fontFamily', (value) =>
+      @style.fontFamily = value
     @
 
   getModel: -> @model
