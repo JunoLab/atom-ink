@@ -56,6 +56,7 @@ class StepperView
     @editor.decorateMarker @marker,
       type: 'overlay'
       item: @view
+      stable: true
     # Work around markers being destroyed when closing a split editor
     @mListener?.dispose()
     @mListener = @marker.onDidDestroy => @attach() unless @destroyed

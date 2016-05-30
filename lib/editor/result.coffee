@@ -87,7 +87,7 @@ class Result
     @marker = @editor.markBufferRange @lineRange(start, end),
       persistent: false
     @marker.result = @
-    mark = item: @view
+    mark = item: @view, stable: true
     switch @type
       when 'inline' then mark.type = 'overlay'
       when 'block' then mark.type = 'block'; mark.position = 'after'
