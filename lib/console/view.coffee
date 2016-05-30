@@ -2,9 +2,6 @@ class ConsoleElement extends HTMLElement
 
   createdCallback: ->
     @setAttribute 'tabindex', -1
-    @gutter = document.createElement 'div'
-    @gutter.classList.add 'gutter'
-    @appendChild @gutter
     @items = document.createElement 'div'
     @items.classList.add 'items'
     @appendChild @items
