@@ -133,8 +133,7 @@ class ConsoleElement extends HTMLElement
 
   inputView: (item) ->
     ed = document.createElement 'atom-text-editor'
-    # Wait for ed to be attached
-    setTimeout (-> ed.component?.presenter.scrollPastEnd = false), 0
+    ed.scrollPastEnd = false
     item.editor = ed.getModel()
     item.editor.setLineNumberGutterVisible(false)
     item.editor.setSoftWrapped true
