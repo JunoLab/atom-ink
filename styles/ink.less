@@ -44,6 +44,8 @@ atom-text-editor::shadow {
   }
 }
 
+// TODO: more CSS sharing
+
 .ink.under {
   font-family: @font-family;
   color: @text-color;
@@ -144,7 +146,15 @@ atom-text-editor::shadow {
   white-space: nowrap;
   transition: all 0.2s;
   opacity: 1;
-  background-color: fade(@background-color-info, 15%);
+  background: contrast(@syntax-background-color,
+                       darken(@syntax-background-color, 4%),
+                       lighten(@syntax-background-color, 4%));
+  * {
+    vertical-align: top;
+  }
+  .fade {
+    opacity: 0.5;
+  }
   &.ink-hide {
     opacity: 0;
     transform: translate(10px);

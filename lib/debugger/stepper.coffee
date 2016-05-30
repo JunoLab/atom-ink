@@ -17,8 +17,6 @@ class Stepper
 
   setText: (@text) ->
     for view in @views
-      text = document.createElement 'span'
-      text.innerText = @text
       text.style.paddingLeft = text.style.paddingRight = '10px'
       view.clear()
       view.appendChild text
