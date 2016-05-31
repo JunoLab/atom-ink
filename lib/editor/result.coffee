@@ -56,7 +56,7 @@ class Result
     switch @type
       when 'inline'
         @view.classList.add 'inline'
-        atom.config.observe 'editor.lineHeight', (h) =>
+        @disposables.add atom.config.observe 'editor.lineHeight', (h) =>
           @view.style.top = -h + 'em';
       when 'block'  then @view.classList.add 'under'
     # @view.style.pointerEvents = 'auto'
@@ -74,6 +74,7 @@ class Result
     if loading then @setContent views.render(span 'loading icon icon-gear'), opts
 
   setContent: (view, {error, loading}={}) ->
+    @loading = loading
     while @view.firstChild?
       @view.removeChild @view.firstChild
     if error then @view.classList.add 'error' else @view.classList.remove 'error'
@@ -98,6 +99,7 @@ class Result
     trees.toggle $(@view).find('> .tree')
 
   remove: ->
+    if @loading then return
     @view.classList.add 'ink-hide'
     @timeout 200, => @destroy()
 
