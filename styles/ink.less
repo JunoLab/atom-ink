@@ -61,7 +61,7 @@ atom-text-editor::shadow {
 
 
 .ink.inline {
-  position: absolute;
+  position: relative;
   left: 10px;
 
   &.error {
@@ -103,13 +103,14 @@ atom-text-editor::shadow {
       height: initial;
       width: initial;
       animation: spin 4s linear infinite;
-      @keyframes spin { 100% { transform:rotate(1turn); } }
+      @keyframes spin { 100% { transform: rotate(1turn); } }
     }
   }
 
   .icon {
     text-align: center;
     &:before {
+      width: 1em;
       margin: 0;
       font-size: inherit;
     }
@@ -139,25 +140,18 @@ atom-text-editor::shadow {
 }
 
 .ink.stepper {
-  position: relative;
-  left: 20px;
-  border-left: 2px solid @text-color-info;
-  border-radius: 3px;
-  white-space: nowrap;
-  transition: all 0.2s;
-  opacity: 1;
-  background: contrast(@syntax-background-color,
-                       darken(@syntax-background-color, 4%),
-                       lighten(@syntax-background-color, 4%));
-  * {
-    vertical-align: top;
-  }
+  .ink.inline();
   .fade {
     opacity: 0.5;
   }
-  &.ink-hide {
-    opacity: 0;
-    transform: translate(10px);
+  .btn-group {
+    padding-left: .4em;
+  }
+  button:before {
+    font-size: 1.2em;
+  }
+  &:hover {
+    overflow: hidden;
   }
 }
 
@@ -177,10 +171,10 @@ atom-text-editor::shadow {
   display: inline-block;
   > .icon {
     float: left;
-    width: 16px;
+    width: 1em;
   }
   .gutted {
-    margin-left: 20px;
+    margin-left: 1.2em;
   }
   .icon {
     text-align: center;

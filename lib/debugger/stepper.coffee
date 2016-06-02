@@ -17,7 +17,6 @@ class Stepper
 
   setText: (@text) ->
     for view in @views
-      text.style.paddingLeft = text.style.paddingRight = '10px'
       view.clear()
       view.appendChild text
       view.appendChild view.buttonGroup @buttons

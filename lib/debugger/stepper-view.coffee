@@ -1,11 +1,15 @@
+{CompositeDisposable} = require 'atom'
+
 module.exports =
 class StepperView
 
   createView: ->
+    @disposables = new CompositeDisposable
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'stepper'
     @onReady @editor, =>
-      @view.style.top = -@editor.getLineHeightInPixels() + 'px'
+      @disposables.add atom.config.observe 'editor.lineHeight', (h) =>
+        @view.style.top = -h + 'em';
 
   buttonView: ({icon, text, tooltip, command}) ->
     btn = document.createElement 'button'
@@ -23,6 +27,8 @@ class StepperView
     grp = document.createElement 'div'
     grp.classList.add 'btn-group', 'btn-group-xs'
     buttons.forEach (b) => grp.appendChild @buttonView b
+    @disposables.add atom.config.observe 'editor.lineHeight', (h) =>
+      grp.style.maxHeight = h + 'em';
     grp
 
   appendChild: (c) -> @view.appendChild c
@@ -86,6 +92,7 @@ class StepperView
 
   destroy: ->
     @destroyed = true
+    @disposables.dispose()
     @mListener.dispose()
     @rmClass @editor
     @fadeOut =>
