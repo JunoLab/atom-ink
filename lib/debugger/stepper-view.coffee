@@ -7,6 +7,9 @@ class StepperView
     @disposables = new CompositeDisposable
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'stepper'
+    # clicking on it will bring the current view to the top of the stack
+    @view.addEventListener 'click', =>
+      @view.parentNode.parentNode.appendChild @view.parentNode
     @onReady @editor, =>
       @disposables.add atom.config.observe 'editor.lineHeight', (h) =>
         @view.style.top = -h + 'em';
