@@ -5,6 +5,7 @@ class StepperView
 
   createView: ->
     @disposables = new CompositeDisposable
+    @tooltips = new CompositeDisposable
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'stepper'
     # clicking on it will bring the current view to the top of the stack
@@ -19,7 +20,7 @@ class StepperView
     btn.classList.add 'btn', 'btn-primary'
     if text? then btn.innerText = text
     if icon? then btn.classList.add "icon-#{icon}"
-    if tooltip? then @disposables.add atom.tooltips.add btn,
+    if tooltip? then @tooltips.add atom.tooltips.add btn,
       title: tooltip,
       keyBindingCommand: command
       keyBindingTarget: atom.views.getView @editor
@@ -91,10 +92,12 @@ class StepperView
     setTimeout f, 0
 
   goto: (line) ->
+    @tooltips.dispose()
     @animate => @marker.setHeadBufferPosition [line, Infinity]
 
   destroy: ->
     @destroyed = true
+    @tooltips.dispose()
     @disposables.dispose()
     @mListener.dispose()
     @rmClass @editor
