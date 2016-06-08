@@ -15,6 +15,11 @@ atom-text-editor {
   animation-iteration-count: infinite;
 }
 
+// for the atom-overlay positioned below the current line
+.no-pointer-events {
+  pointer-events: none;
+}
+
 atom-text-editor::shadow {
   div.block-notify .region {
     background: @background-color-info;
@@ -65,6 +70,8 @@ atom-text-editor::shadow {
   position: relative;
   left: 10px;
 
+  pointer-events: auto;
+
   &.error {
     color: @text-color-error;
     border-left: 2px solid @background-color-error;
@@ -74,9 +81,9 @@ atom-text-editor::shadow {
                        darken(@syntax-background-color, 4%),
                        lighten(@syntax-background-color, 4%));
   border-left: 2px solid @background-color-info;
-  border-right:  1px solid @syntax-background-color;
-  border-top:    1px solid @syntax-background-color;
-  border-bottom: 1px solid @syntax-background-color;
+
+  box-shadow: inset -1px 0px 0px 1px @syntax-wrap-guide-color;
+
   border-radius: 3px;
 
   padding: 0px 5px 0px 5px;
