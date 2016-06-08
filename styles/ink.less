@@ -81,8 +81,9 @@ atom-text-editor::shadow {
                        darken(@syntax-background-color, 4%),
                        lighten(@syntax-background-color, 4%));
   border-left: 2px solid @background-color-info;
-
-  box-shadow: inset -1px 0px 0px 1px @syntax-wrap-guide-color;
+  border-right: 2px solid @syntax-wrap-guide-color;
+  box-shadow: inset 0px -1px 0px 0px @syntax-wrap-guide-color,
+              inset 0px 1px 0px 0px @syntax-wrap-guide-color;
 
   border-radius: 3px;
 
