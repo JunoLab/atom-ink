@@ -13,7 +13,8 @@ module.exports =
   errorLines: (ls) ->
     markers = []
     watch = @observeLines ls, (ed, {line}) =>
-      m = ed.markBufferRange [[line, 0], [line+1, 0]]
+      m = ed.markBufferRange [[line, 0], [line+1, 0]],
+        invalidate: 'touch'
       markers.push m
       ed.decorateMarker m,
         type: 'highlight'
