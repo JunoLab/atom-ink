@@ -19,7 +19,6 @@ module.exports = Ink =
     Console.activate()
     PlotPane.activate()
     Workspace.activate()
-    window.Stepper = Stepper
 
   deactivate: ->
     Result.deactivate()
