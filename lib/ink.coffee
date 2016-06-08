@@ -7,6 +7,7 @@ Result = require './editor/result'
 Docs = require './editor/docs'
 Console = require './console/console'
 Stepper = require './debugger/stepper'
+breakpoints = require './debugger/breakpoints'
 PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
 tree = require './tree'
@@ -25,6 +26,7 @@ module.exports = Ink =
     Docs.deactivate()
     Console.deactivate()
     progress.deactivate()
+    breakpoints.deactivate()
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
@@ -37,6 +39,7 @@ module.exports = Ink =
     Result: Result
     Console: Console
     Stepper: Stepper
+    breakpoints: breakpoints
     Workspace: Workspace
     PlotPane: PlotPane
     highlights: highlights
