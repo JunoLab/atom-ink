@@ -4,7 +4,7 @@ views = require './util/views'
 
 module.exports =
   treeView: (head, children, {expand}) ->
-    view = views.render div 'ink tree', [
+    view = views.render div {class: 'ink tree', 'tabindex': '0'}, [
       span 'icon icon-chevron-right open'
       div 'header gutted', head
       div 'body gutted', children
