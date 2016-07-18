@@ -5,6 +5,30 @@ HistoryProvider = require './history'
 
 getConsole = (el) -> closest(el, 'ink-console').getModel()
 
+# ## Console API - in Javascript
+
+# NOTE: This is incomplete, but it should help you get a an overview of the console itself
+
+# In general you need to do 4 things to get a working console:
+# - Register a console object via: ink.Console.fromId('console-id')
+# - set the console modes via: console.setModes(modes), where modes is a vector of
+#     {name: 'mode-name', default: true, grammar: 'source.language', icon: 'icon-name'}, and
+#     console is the previously created console
+# - activate the console object via: console.activate()
+# - open a console pane via: atom.workspace.open('atom://language-client/console',
+#                                                { split: 'down', searchAllPanes: true })
+#   with a unique URI for your language, the position of the console on the workspace and
+#   whether or not to have a unique console in your workspace. The previous works provided that
+#   you have already registered an opener for your console via: atom.workspace.addOpener(uri-function)
+
+# Once created you can interact with the console like this:
+# - console.stderr('string') displays the string with a yellow color and a warning sign on the gutter
+# - console.stdout('string') displays the string with the default color and a quotation mark on the gutter
+# - console.info('string') displays the string with a blue color and an `i` on the gutter
+# - console.result(HTMLElement, {error: true|false}) displays the HTML element according to the error flag
+#    on error: red text with an `x` on the gutter
+#    on normal-result:  default text color with  a `✓` on the gutter
+
 module.exports =
 class Console
   @activate: ->
