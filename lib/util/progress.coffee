@@ -48,6 +48,6 @@ module.exports =
 
   showTile: (p) ->
     @tile?.destroy()
-    @tile = @statusBar.addLeftTile
+    @tile = @statusBar?.addLeftTile
       item: @progressView(p)
       priority: -1
