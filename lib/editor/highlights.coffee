@@ -10,6 +10,10 @@ module.exports =
         if @matchesPath ed, l.file
           f ed, l
 
+# Adds a red background color to the provided line specifications
+# ls is a vector of {file: 'full-path-to-file', line: integer}
+# full-path as via: atom.workspace.getActiveTextEditor().getPath()
+# NOTE: this doesn't check whether or not the lines already had a background color
   errorLines: (ls) ->
     markers = []
     watch = @observeLines ls, (ed, {line}) =>
