@@ -1,4 +1,5 @@
 {CompositeDisposable} = require 'atom'
+mixin = require './pane-mixin'
 Loading = require './util/loading'
 progress = require './util/progress'
 block = require './editor/block'
@@ -12,11 +13,10 @@ PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
 tree = require './tree'
 goto = require './gotodef'
-mixin = require './pane-mixin'
 
 module.exports = Ink =
   activate: ->
-    mod.activate() for mod in [Result, Docs, Console, PlotPane, Workspace, mixin]
+    mod.activate() for mod in [Result, Docs, Console, PlotPane, Workspace]
 
   deactivate: ->
     mod.deactivate() for mod in [Result, Docs, Console, progress, breakpoints, mixin]

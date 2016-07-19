@@ -57,8 +57,5 @@ module.exports = (Pane, View) ->
     else
       throw new Error 'Pane does not have an ID'
 
-module.exports.activate = ->
-  subs = new CompositeDisposable
-
 module.exports.deactivate = ->
   subs.dispose()
