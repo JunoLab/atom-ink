@@ -1,3 +1,7 @@
+{CompositeDisposable} = require 'atom'
+
+subs = new CompositeDisposable
+
 module.exports = (Pane, View) ->
   deserialiser = "Ink#{Pane.name}"
 
@@ -40,3 +44,21 @@ module.exports = (Pane, View) ->
       return pane
     else
       return
+
+  subs.add atom.workspace.addOpener (uri) ->
+    if (m = uri.match new RegExp "atom://ink-#{Pane.name.toLowerCase()}/(.+)")
+      [_, id] = m
+      return Pane.fromId id
+
+  Pane.prototype.open = (opts) ->
+    if @activate() then return
+    if @id
+      atom.workspace.open "atom://ink-#{Pane.name.toLowerCase()}/#{@id}", opts
+    else
+      throw new Error 'Pane does not have an ID'
+
+module.exports.activate = ->
+  subs = new CompositeDisposable
+
+module.exports.deactivate = ->
+  subs.dispose()

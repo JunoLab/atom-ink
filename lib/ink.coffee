@@ -12,21 +12,14 @@ PlotPane = require './plots/pane'
 Workspace = require './workspace/workspace'
 tree = require './tree'
 goto = require './gotodef'
+mixin = require './pane-mixin'
 
 module.exports = Ink =
   activate: ->
-    Result.activate()
-    Docs.activate()
-    Console.activate()
-    PlotPane.activate()
-    Workspace.activate()
+    mod.activate() for mod in [Result, Docs, Console, PlotPane, Workspace, mixin]
 
   deactivate: ->
-    Result.deactivate()
-    Docs.deactivate()
-    Console.deactivate()
-    progress.deactivate()
-    breakpoints.deactivate()
+    mod.deactivate() for mod in [Result, Docs, Console, progress, breakpoints, mixin]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
