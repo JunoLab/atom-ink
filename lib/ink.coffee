@@ -16,10 +16,10 @@ goto = require './gotodef'
 
 module.exports = Ink =
   activate: ->
-    mod.activate() for mod in [Result, Docs, Console, PlotPane, Workspace]
+    mod.activate() for mod in [mixin, Result, Docs, Console, PlotPane, Workspace]
 
   deactivate: ->
-    mod.deactivate() for mod in [Result, Docs, Console, progress, breakpoints, mixin]
+    mod.deactivate() for mod in [mixin, Result, Docs, Console, progress, breakpoints]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
