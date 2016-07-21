@@ -38,7 +38,8 @@ class Result
     opts.type ?= 'inline'
     {@type} = opts
     @disposables = new CompositeDisposable
-    opts.fade = not Result.removeLines @editor, start, end
+    opts.fade ?= not Result.removeLines @editor, start, end
+    opts.loading ?= not opts.content
     @createView opts
     @initMarker [start, end]
     @text = @getText()
