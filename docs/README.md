@@ -32,4 +32,5 @@ Now that the ink module is available you can go ahead and use it!
 
 ## Features
 
+* [Inline Results](results.md)
 * [Console](console.md)
