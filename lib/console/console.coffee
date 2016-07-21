@@ -205,7 +205,7 @@ class Console
 
   defaultMode: ->
     for mode in @getModes()
-      return mode if mode.default
+      return mode if not mode.prefix?
     return {}
 
   getMode: (name) ->
