@@ -8,7 +8,7 @@ describe "the console", ->
     jasmine.unspy window, 'setTimeout'
     jasmine.attachToDOM atom.views.getView(atom.workspace)
     waitsForPromise ->
-      Console.registerViews()
+      Console.registerView()
       atom.packages.activatePackage 'ink'
     runs ->
       model = new Console initialInput: false

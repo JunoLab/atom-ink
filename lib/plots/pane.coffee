@@ -1,9 +1,10 @@
 {Emitter} = require 'atom'
 
+PaneItem = require '../util/pane-item'
 PlotPaneElement = require './view'
 
 module.exports =
-class PlotPane
+class PlotPane extends PaneItem
 
   @activate: ->
     @pane = PlotPane.fromId 'default'
@@ -26,4 +27,4 @@ class PlotPane
 
   onDidAddItem: (f) -> @emitter.on 'did-add-item', f
 
-require('../pane-mixin')(PlotPane, PlotPaneElement)
+PlotPane.attachView PlotPaneElement

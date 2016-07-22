@@ -1,4 +1,5 @@
 {Emitter, CompositeDisposable} = require 'atom'
+PaneItem = require '../util/pane-item'
 ConsoleElement = require './view'
 HistoryProvider = require './history'
 {closest} = require './helpers'
@@ -30,7 +31,7 @@ getConsole = (el) -> closest(el, 'ink-console').getModel()
 #    on normal-result:  default text color with  a `✓` on the gutter
 
 module.exports =
-class Console
+class Console extends PaneItem
   @activate: ->
     @subs = new CompositeDisposable
     @subs.add atom.commands.add 'ink-console atom-text-editor:not([mini])',
@@ -299,4 +300,4 @@ class Console
         e.stopImmediatePropagation()
         @next()
 
-require('../pane-mixin')(Console, ConsoleElement)
+Console.attachView ConsoleElement
