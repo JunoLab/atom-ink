@@ -20,6 +20,12 @@ atom-text-editor {
   pointer-events: none;
 }
 
+atom-overlay:last-child .ink.inline {
+  background-color: contrast(@syntax-background-color,
+                             darken(@syntax-background-color, 4%),
+                             lighten(@syntax-background-color, 4%));
+}
+
 atom-text-editor::shadow {
   div.block-notify .region {
     background: @background-color-info;
@@ -84,6 +90,12 @@ atom-text-editor::shadow {
   position: relative;
   left: 1em;
 
+  :focus {
+    > .icon:before {
+      text-shadow: 2px 2px 0 @background-color-info;
+    }
+  }
+
   pointer-events: auto;
 
   &.error {
@@ -91,12 +103,11 @@ atom-text-editor::shadow {
     border-left: 2px solid @background-color-error;
   }
 
-  background: contrast(@syntax-background-color,
-                       darken(@syntax-background-color, 4%),
-                       lighten(@syntax-background-color, 4%));
+  background: @syntax-background-color;
   border-left: 2px solid @background-color-info;
-  border-right: 2px solid @syntax-background-color;
-
+  border-right: 2px solid contrast(@syntax-background-color,
+                            darken(@syntax-background-color, 4%),
+                           lighten(@syntax-background-color, 4%));
   border-radius: 3px;
 
   padding: 0px 0.5em 0px 0.5em;

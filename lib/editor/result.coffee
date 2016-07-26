@@ -53,6 +53,7 @@ class Result
   createView: (opts) ->
     {content, fade, loading} = opts
     @view = document.createElement 'div'
+    @view.setAttribute 'tabindex', '0'
     @view.classList.add 'ink', 'result'
     switch @type
       when 'inline'
@@ -63,7 +64,7 @@ class Result
     # @view.style.pointerEvents = 'auto'
     @view.addEventListener 'mousewheel', (e) ->
       e.stopPropagation()
-    # clicking on it will bring the current result to the top of the stack
+    # clicking on it will bring the focus the result
     @view.addEventListener 'click', =>
       @view.parentNode.parentNode.appendChild @view.parentNode
 
@@ -73,6 +74,11 @@ class Result
 
     if content? then @setContent content, opts
     if loading then @setContent views.render(span 'loading icon icon-gear'), opts
+
+  focus: () ->
+    # move current result to the top of the stack
+    @view.parentNode.parentNode.appendChild @view.parentNode
+    @view.querySelector('.tree').focus()
 
   setContent: (view, {error, loading}={}) ->
     @loading = loading
@@ -91,13 +97,10 @@ class Result
     @marker.result = @
     mark = item: @view, stable: true
     switch @type
-      when 'inline' then mark.type = 'overlay'; mark.class = 'no-pointer-events'
+      when 'inline' then mark.type = 'overlay'; mark.class = ['no-pointer-events', 'ink']
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
-
-  toggleTree: ->
-    trees.toggle $(@view).find('> .tree')
 
   remove: ->
     if @loading then return
@@ -180,6 +183,15 @@ class Result
       rs = @forLines ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row
       rs.map (r) -> r.toggleTree()
 
+  @focusCurrent: ->
+    ed = atom.workspace.getActiveTextEditor()
+    for sel in ed.getSelections()
+      rs = @forLines ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row
+      rs.map (r) -> r.focus()
+
+  @toggleTree: ->
+    trees.toggle document.activeElement
+
   # Commands
 
   @activate: ->
@@ -187,7 +199,8 @@ class Result
     @subs.add atom.commands.add 'atom-text-editor:not([mini])',
       'inline:clear-current': (e) => @removeCurrent e
       'inline-results:clear-all': => @removeAll()
-      'inline-results:toggle': => @toggleCurrent()
+      'inline-results:focus': => @focusCurrent()
+      'inline-results:toggleTree': => @toggleTree()
 
   @deactivate: ->
     @subs.dispose()
