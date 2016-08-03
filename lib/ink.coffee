@@ -1,4 +1,5 @@
 {CompositeDisposable} = require 'atom'
+PaneItem = require './util/pane-item'
 Loading = require './util/loading'
 progress = require './util/progress'
 block = require './editor/block'
@@ -15,18 +16,10 @@ goto = require './gotodef'
 
 module.exports = Ink =
   activate: ->
-    Result.activate()
-    Docs.activate()
-    Console.activate()
-    PlotPane.activate()
-    Workspace.activate()
+    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, Workspace]
 
   deactivate: ->
-    Result.deactivate()
-    Docs.deactivate()
-    Console.deactivate()
-    progress.deactivate()
-    breakpoints.deactivate()
+    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, progress, breakpoints]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar

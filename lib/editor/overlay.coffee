@@ -4,7 +4,7 @@ module.exports =
     view.style.position = 'absolute'
     view.style.zIndex = 100
     dom.appendChild view
-    if scroll then @scrollContinuous ed, view
+    if scroll then @scrollContinuous atom.views.getView(ed), view
 
   remove: (view) ->
     view.parentElement?.removeChild(view)

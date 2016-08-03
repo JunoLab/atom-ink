@@ -1,4 +1,6 @@
 StepperView = require './stepper-view'
+views = require '../util/views'
+{span} = views.tags
 
 module.exports =
 class Stepper
@@ -18,7 +20,7 @@ class Stepper
   setText: (@text) ->
     for view in @views
       view.clear()
-      view.appendChild text
+      view.appendChild views.render span 'stepper-label', text
       view.appendChild view.buttonGroup @buttons
 
   edsForFile: (file) ->

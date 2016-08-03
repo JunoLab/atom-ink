@@ -21,6 +21,9 @@ module.exports =
     div.style.width = '100%'
     div
 
+  # highlights the start-end range of the provided editor object for 20 ms
+  # ed is an object like atom.workspace.getActiveTextEditor(), start and 
+  # end are integers
   highlight: (ed, start, end) ->
     div = @blockDiv()
     overlay.show ed, div, scroll: true

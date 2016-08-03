@@ -1,9 +1,10 @@
 {Emitter} = require 'atom'
 
+PaneItem = require '../util/pane-item'
 WorkspaceElement = require './view'
 
 module.exports =
-class Workspace
+class Workspace extends PaneItem
 
   @activate: ->
 
@@ -21,4 +22,4 @@ class Workspace
   getIconName: ->
     'book'
 
-require('../pane-mixin')(Workspace, WorkspaceElement)
+Workspace.attachView WorkspaceElement

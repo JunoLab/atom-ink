@@ -12,6 +12,10 @@ class Loading
   onDone: (f) -> @emitter.on 'done', f
   isWorking: -> @status > 0
 
+  onceDone: (f) ->
+    return f() unless @isWorking()
+    sub = @onDone -> (sub.dispose(); f())
+
   working: ->
     @status++
     if @status is 1

@@ -73,6 +73,10 @@ atom-text-editor::shadow {
 
   cursor: default;
 
+  &.error {
+    color: @text-color-error;
+  }
+
   background-color: @inset-panel-background-color;
 
   border-top: 1px solid @syntax-wrap-guide-color;
@@ -84,7 +88,7 @@ atom-text-editor::shadow {
 .ink.inline {
   color: @syntax-text-color;
   position: relative;
-  left: 10px;
+  left: 1em;
 
   pointer-events: auto;
 
@@ -101,7 +105,7 @@ atom-text-editor::shadow {
 
   border-radius: 3px;
 
-  padding: 0px 5px 0px 5px;
+  padding: 0px 0.5em 0px 0.5em;
   transition: all 0.2s;
   opacity: 1;
   cursor: default;
@@ -144,7 +148,7 @@ atom-text-editor::shadow {
 
   &.ink-hide, &.ink-hide.invalid {
     opacity: 0;
-    transform: translate(10px);
+    transform: translate(1em);
   }
   &.invalid {
     opacity: 0.5;
@@ -186,11 +190,11 @@ atom-text-editor::shadow {
 
 atom-text-editor::shadow {
   .ink-bp {
-    margin-left: 5px;
+    margin-left: 0.3em;
     transition: all 0.2s;
     &.ink-hide {
       opacity: 0;
-      transform: translate(-10px);
+      transform: translate(-1em);
     }
   }
 }

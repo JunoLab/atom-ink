@@ -19,13 +19,8 @@ class StepperView
     btn.classList.add 'btn', 'btn-primary'
     if text? then btn.innerText = text
     if icon? then btn.classList.add "icon-#{icon}"
-    if tooltip? then tt = atom.tooltips.add btn,
-      title: tooltip,
-      keyBindingCommand: command
-      keyBindingTarget: atom.views.getView @editor
     btn.onclick = =>
       atom.commands.dispatch atom.views.getView(@editor), command
-      tt.dispose()
     btn
 
   buttonGroup: (buttons) ->
