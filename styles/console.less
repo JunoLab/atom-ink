@@ -50,10 +50,7 @@ ink-console {
     height: 50%;
   }
 
-  .cell {
-    * {
-      vertical-align: top;
-    }
+  .items > .cell {
     transition: all 0.1s ease;
     position: relative;
     top: 0;
@@ -112,6 +109,10 @@ ink-console {
     .result > .editor.editor-colors {
       padding: 10px;
       background: fade(@syntax-wrap-guide-color, 10%);
+    }
+    // workaround for autocomplete:
+    .autocomplete-plus {
+      white-space: normal;
     }
   }
 }
