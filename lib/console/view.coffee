@@ -134,6 +134,7 @@ class ConsoleElement extends HTMLElement
     model = atom.workspace.buildTextEditor()
     atom.textEditors.add model
     ed = atom.views.getView model
+    ed.onblur = -> atom.commands.dispatch ed, 'autocomplete-plus:cancel'
     item.editor = model
     ed.scrollPastEnd = false
     item.editor.setLineNumberGutterVisible(false)
