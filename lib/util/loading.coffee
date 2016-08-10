@@ -27,6 +27,12 @@ class Loading
       if not @isWorking()
         @emitter.emit 'done'
 
+  monitor: (p) ->
+    @working()
+    done = => @done()
+    p.then done, done
+    p
+
   reset: ->
     if @isWorking()
       @status = 0
