@@ -1,17 +1,22 @@
+{CompositeDisposable} = require 'atom'
 views = require '../util/views.coffee'
 {div, span} = views.tags
 
 module.exports =
 
   activate: ->
-    @sub ?= atom.workspace.observeTextEditors (ed) =>
-      if ed.getGrammar().scopeName in @scopes
-        @init ed
+    @subs = new CompositeDisposable
+    @subs.add atom.workspace.observeTextEditors (ed) =>
+      @subs.add ed.observeGrammar (grammar) =>
+        if grammar.scopeName in @scopes
+          @init ed
+        else
+          @deinit ed
 
   deactivate: ->
-    @sub?.dispose()
+    @subs.dispose()
     for ed in atom.workspace.getTextEditors()
-      ed.gutterWithName('ink-breakpoints')?.destroy()
+      @deinit ed
     delete @sub
 
   scopes: []
@@ -28,6 +33,9 @@ module.exports =
     for bp in @breakpoints
       if bp.file == ed.getPath()
         bp.views.push @addToEd ed, bp.line
+
+  deinit: (ed) ->
+    ed.gutterWithName('ink-breakpoints')?.destroy()
 
   get: (f, l, bps = @breakpoints) ->
     bps.filter ({file, line}) ->
