@@ -69,3 +69,6 @@ class PaneItem
       atom.workspace.open "atom://ink-#{@constructor.name.toLowerCase()}/#{@id}", opts
     else
       throw new Error 'Pane does not have an ID'
+
+  close: ->
+    @currentPane()?.removeItem @
