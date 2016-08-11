@@ -16,7 +16,7 @@ goto = require './gotodef'
 
 module.exports = Ink =
   activate: ->
-    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, Workspace]
+    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, Workspace, breakpoints]
 
   deactivate: ->
     mod.deactivate() for mod in [PaneItem, Result, Docs, Console, progress, breakpoints]

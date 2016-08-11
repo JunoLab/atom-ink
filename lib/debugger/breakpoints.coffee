@@ -6,6 +6,10 @@ module.exports =
 
   activate: ->
     @subs = new CompositeDisposable
+
+    @scopes = []
+    @breakpoints = []
+
     @subs.add atom.workspace.observeTextEditors (ed) =>
       @subs.add ed.observeGrammar (grammar) =>
         if grammar.scopeName in @scopes
@@ -19,14 +23,18 @@ module.exports =
       @deinit ed
     delete @sub
 
-  scopes: []
-  breakpoints: []
-
   addScope: (scope) ->
-    @activate()
-    @scopes.push scope
+    if not (scope in @scopes)
+      @scopes.push scope
+      for ed in atom.workspace.getTextEditors()
+        if ed.getGrammar().scopeName == scope then @init ed
+    dispose: => @rmScope scope
+
+  rmScope: (scope) ->
     for ed in atom.workspace.getTextEditors()
-      if ed.getGrammar().scopeName == scope then @init(ed)
+      if ed.getGrammar().scopeName == scope then @deinit ed
+    @scopes = @scopes.filter (s) -> s isnt scope
+    return
 
   init: (ed) ->
     ed.addGutter name: 'ink-breakpoints'
