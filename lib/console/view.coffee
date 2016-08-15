@@ -30,6 +30,9 @@ class ConsoleElement extends HTMLElement
     @onfocus = =>
       if document.activeElement == this and @model.getInput()
         @focusLast()
+    # start listening now, since @lock doesn't work properly if @items is empty
+    @resizer.listenTo @items, =>
+      @scrollTop = @scrollHeight
     for item in @model.items
       @addItem item
     atom.config.observe 'editor.fontFamily', (value) =>
@@ -191,8 +194,7 @@ class ConsoleElement extends HTMLElement
   # Scrolling
 
   lock: (f) ->
-    last = @lastDivider()
-    if @isVisible last
+    if @isVisible @lastDivider()
       # listen to changes in height from subtree modifications
       @resizer.listenTo @items, =>
         @scrollTop = @scrollHeight
