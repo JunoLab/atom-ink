@@ -1,3 +1,5 @@
+ResizeDetector = require 'element-resize-detector'
+
 class ConsoleElement extends HTMLElement
 
   createdCallback: ->
@@ -17,6 +19,7 @@ class ConsoleElement extends HTMLElement
 
   initialize: (@model) ->
     @getModel = -> @model
+    @resizer = ResizeDetector strategy: "scroll"
     @model.onDidAddItem (item) => @addItem item
     @model.onDidInsertItem ([item, i]) => @insertItem [item, i]
     @model.onDidClear => @clear()
@@ -188,14 +191,15 @@ class ConsoleElement extends HTMLElement
   # Scrolling
 
   lock: (f) ->
-    last = @lastCell()
+    last = @lastDivider()
     if @isVisible last
-      target = last.offsetTop + last.clientHeight - @scrollTop
+      # listen to changes in height from subtree modifications
+      @resizer.listenTo @items, =>
+        @scrollTop = @scrollHeight
       f()
-      last = @lastCell()
-      delta = last.offsetTop + last.clientHeight - @scrollTop - target
-      @scrollTop += delta
+      @scrollTop = @scrollHeight
     else
+      @resizer.removeAllListeners @items
       f()
 
 module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype
