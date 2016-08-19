@@ -1,4 +1,6 @@
 ResizeDetector = require 'element-resize-detector'
+AnsiConverter = require('ansi-to-html')
+converter = new AnsiConverter()
 
 class ConsoleElement extends HTMLElement
 
@@ -152,17 +154,22 @@ class ConsoleElement extends HTMLElement
   updateGrammar: ({editor, grammar}) ->
     editor.setGrammar atom.grammars.grammarForScopeName grammar
 
-  streamView: (item, type) ->
+  streamView: (item, type, ansi) ->
     out = document.createElement 'div'
     out.innerText = item.text
+    out.innerHTML = converter.toHtml(out.innerHTML) if ansi
+
     @observeKey item, 'text', (text) =>
-      @lock -> out.innerText = text
+      @lock ->
+        out.innerText = text
+        out.innerHTML = converter.toHtml(out.innerHTML) if ansi
+
     out.classList.add type, 'stream'
     out
 
-  stdoutView: (item) -> @streamView item, 'output'
+  stdoutView: (item) -> @streamView item, 'output', true
 
-  stderrView: (item) -> @streamView item, 'err'
+  stderrView: (item) -> @streamView item, 'err', true
 
   infoView: (item) -> @streamView item, 'info'
 
