@@ -1,3 +1,4 @@
+ResizeDetector = require 'element-resize-detector'
 AnsiConverter = require('ansi-to-html')
 converter = new AnsiConverter()
 
@@ -20,6 +21,7 @@ class ConsoleElement extends HTMLElement
 
   initialize: (@model) ->
     @getModel = -> @model
+    @resizer = ResizeDetector strategy: "scroll"
     @model.onDidAddItem (item) => @addItem item
     @model.onDidInsertItem ([item, i]) => @insertItem [item, i]
     @model.onDidClear => @clear()
@@ -30,6 +32,9 @@ class ConsoleElement extends HTMLElement
     @onfocus = =>
       if document.activeElement == this and @model.getInput()
         @focusLast()
+    # start listening now, since @lock doesn't work properly if @items is empty
+    @resizer.listenTo @items, =>
+      @scrollTop = @scrollHeight
     for item in @model.items
       @addItem item
     atom.config.observe 'editor.fontFamily', (value) =>
@@ -196,14 +201,14 @@ class ConsoleElement extends HTMLElement
   # Scrolling
 
   lock: (f) ->
-    last = @lastCell()
-    if @isVisible last
-      target = last.offsetTop + last.clientHeight - @scrollTop
+    if @isVisible @lastDivider()
+      # listen to changes in height from subtree modifications
+      @resizer.listenTo @items, =>
+        @scrollTop = @scrollHeight
       f()
-      last = @lastCell()
-      delta = last.offsetTop + last.clientHeight - @scrollTop - target
-      @scrollTop += delta
+      @scrollTop = @scrollHeight
     else
+      @resizer.removeAllListeners @items
       f()
 
 module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype
