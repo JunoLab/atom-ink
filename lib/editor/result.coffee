@@ -60,9 +60,14 @@ class Result
         @disposables.add atom.config.observe 'editor.lineHeight', (h) =>
           @view.style.top = -h + 'em';
       when 'block'  then @view.classList.add 'under'
-    # @view.style.pointerEvents = 'auto'
-    @view.addEventListener 'mousewheel', (e) ->
-      e.stopPropagation()
+    @view.addEventListener 'mousewheel', (e) =>
+      if (@view.offsetHeight < @view.scrollHeight  ||
+          @view.offsetWidth  < @view.scrollWidth)  &&
+         ((e.deltaY > 0 && @view.scrollHeight - @view.scrollTop > @view.clientHeight) ||
+          (e.deltaY < 0 && @view.scrollTop > 0) ||
+          (e.deltaX > 0 && @view.scrollWidth - @view.scrollLeft > @view.clientWidth) ||
+          (e.deltaX < 0 && @view.scrollLeft > 0))
+        e.stopPropagation()
     # clicking on it will bring the current result to the top of the stack
     @view.addEventListener 'click', =>
       @view.parentNode.parentNode.appendChild @view.parentNode
