@@ -19,6 +19,8 @@ module.exports = Ink =
     mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, Workspace, breakpoints]
 
   deactivate: ->
+    pkg = atom.packages.getActivePackage 'ink'
+    localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
     mod.deactivate() for mod in [PaneItem, Result, Docs, Console, progress, breakpoints]
 
   consumeStatusBar: (bar) ->
