@@ -1,6 +1,10 @@
 'context-menu':
-  '.ink.inline': [
+  '.ink.result': [
     {label: 'Clear', command: 'inline-results:clear'}
+    {type: 'separator'}
+  ]
+  '.ink.docs': [
+    {label: 'Clear', command: 'inline-docs:clear'}
     {type: 'separator'}
   ]
   'ink-console': [
