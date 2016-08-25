@@ -1,6 +1,6 @@
 # Ink
 
-[![Build Status](https://travis-ci.org/JunoLab/atom-ink.svg?branch=master)](https://travis-ci.org/JunoLab/atom-ink)  [![Build status](https://ci.appveyor.com/api/projects/status/8hrbi7ii3vvbd8b1/branch/master?svg=true)](https://ci.appveyor.com/project/pfitzseb/atom-ink/branch/master)
+[![Build Status](https://travis-ci.org/JunoLab/atom-ink.svg?branch=master)](https://travis-ci.org/JunoLab/atom-ink)  [![Build status](https://ci.appveyor.com/api/projects/status/8hrbi7ii3vvbd8b1/branch/master?svg=true)](https://ci.appveyor.com/project/pfitzseb/atom-ink/branch/master) [![Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JunoLab/atom-ink)
 
 Ink is a toolkit for building IDEs in Atom – in particular, it's aimed at providing the UI
 pieces necessary to build richly interactive, live environments for programming – inspired
