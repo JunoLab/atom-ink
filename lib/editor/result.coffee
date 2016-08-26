@@ -1,7 +1,7 @@
 # TODO: better scrolling behaviour
 {throttle} = require 'underscore-plus'
 {$, $$} = require 'atom-space-pen-views'
-{CompositeDisposable} = require 'atom'
+{CompositeDisposable, Emitter} = require 'atom'
 trees = require '../tree'
 views = require '../util/views'
 {div, span} = views.tags
@@ -37,6 +37,7 @@ class Result
     metrics()
     opts.type ?= 'inline'
     {@type} = opts
+    @emitter = new Emitter
     @disposables = new CompositeDisposable
     opts.fade ?= not Result.removeLines @editor, start, end
     opts.loading ?= not opts.content
@@ -110,8 +111,13 @@ class Result
     @timeout 200, => @destroy()
 
   destroy: ->
+    @emitter.emit 'destroyed'
+    @emitter.dispose()
     @marker.destroy()
     @disposables.dispose()
+
+  onDidDestroy: (f) ->
+    @emitter.on 'destroyed', f
 
   invalidate: ->
     @view.classList.add 'invalid'
