@@ -81,7 +81,6 @@ class Result
     if loading then @setContent views.render(span 'loading icon icon-gear'), opts
 
   setContent: (view, {error, loading}={}) ->
-    @loading = loading
     while @view.firstChild?
       @view.removeChild @view.firstChild
     if error then @view.classList.add 'error' else @view.classList.remove 'error'
@@ -106,11 +105,11 @@ class Result
     trees.toggle $(@view).find('> .tree')
 
   remove: ->
-    if @loading then return
     @view.classList.add 'ink-hide'
     @timeout 200, => @destroy()
 
   destroy: ->
+    @isDestroyed = true
     @emitter.emit 'destroyed'
     @emitter.dispose()
     @marker.destroy()
