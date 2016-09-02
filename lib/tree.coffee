@@ -3,7 +3,7 @@ views = require './util/views'
 {div, span} = views.tags
 
 module.exports =
-  treeView: (head, children, {expand}) ->
+  treeView: (head, children, {expand}={}) ->
     view = views.render div 'ink tree', [
       span 'icon icon-chevron-right open'
       div 'header gutted', head
