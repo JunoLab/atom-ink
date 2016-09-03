@@ -3,7 +3,7 @@ views = require './util/views'
 {div, span} = views.tags
 
 module.exports =
-  treeView: (head, children, {expand}={}) ->
+  treeView: (head, children, {expand, onToggle}={}) ->
     view = views.render div 'ink tree', [
       span 'icon icon-chevron-right open'
       div 'header gutted', head
@@ -11,6 +11,7 @@ module.exports =
     ]
     for sel in [':scope > .header', ':scope > .icon']
       view.querySelector(sel).onclick = =>
+        onToggle?()
         setTimeout (=> @toggle view), 0
     @toggle view unless expand
     view
