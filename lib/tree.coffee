@@ -13,6 +13,7 @@ module.exports =
       view.querySelector(sel).onclick = =>
         onToggle?()
         setTimeout (=> @toggle view), 0
+    view.onToggle = onToggle
     @toggle view unless expand
     view
 
