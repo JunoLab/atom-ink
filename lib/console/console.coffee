@@ -105,6 +105,8 @@ class Console extends PaneItem
 
   onDidClear: (f) -> @emitter.on 'did-clear', f
 
+  onceDidClear: (f) -> d = @onDidClear (x) -> (d.dispose(); f(x))
+
   getInput: ->
     last = @items[@items.length-1]
     if last?.input then last
