@@ -36,7 +36,9 @@ class Stepper
       atom.workspace.open file,
         initialLine: line
         searchAllPanes: true
-        pending: true
+        # TODO: This causes Atom to hang when the current stepper-enabled
+        # editor is also marked pending.
+        # pending: true
 
   goto: (file, @line) ->
     @listener ?= atom.workspace.observeTextEditors (ed) =>
