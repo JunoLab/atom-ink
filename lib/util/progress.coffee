@@ -1,53 +1,88 @@
 # TODO: move determinate progress bars to the front
 # TODO: hover UI with progress stack, descriptions
+{Emitter} = require 'atom'
 
-module.exports =
+class ProgressMeter
+  constructor: (@progress, @text = '') ->
+    @emitter  = new Emitter
+    @view = @progressView()
+    @overlay = @overlayView()
 
-  deactivate: ->
-    @tile?.destroy()
+    document.body.appendChild @overlay
 
-  metres: []
+    @view.onmouseover = => @overlay.style.display = 'block' unless @text is ''
+    @view.onmouseout  = => @overlay.style.display = 'none'
 
-  push: (p = {}) ->
-    if @metres.indexOf(p) == -1
-      @metres.push p
-      if @metres.length == 1
-        @showTile p
-      p.destroy = => @remove p
-      p
+  update: (@progress, @text, @file, @line) ->
+    @positionOverlay()
+    @emitter.emit 'did-update'
 
-  remove: (p) ->
-    i = @metres.indexOf p
-    @metres.splice i, 1 if i > -1
-    if @metres.length == 0
-      @showTile progress: 0
-    if i == 0 and @metres.length > 0
-      @showTile @metres[0]
+  destroy: ->
+    @emitter.emit 'did-destroy'
+    @emitter.dispose()
 
-  consumeStatusBar: (bar) ->
-    @statusBar = bar
+  positionOverlay: ->
+    bounding = @view.getBoundingClientRect()
+    @overlay.style.bottom = bounding.height - 5 + 'px'
+    @overlay.style.left   = bounding.left + 'px'
 
-  progressView: (p) ->
+  overlayView: ->
+    div = document.createElement 'div'
+    div.classList.add 'ink-overlay'
+    div.style.display = 'none'
+    content = document.createElement 'span'
+    content.classList.add 'text'
+    if @text? then content.innerText = @text
+
+    div.appendChild content
+
+    @emitter.on 'did-update', =>
+      content.innerText = @text
+      if @text is '' then div.style.display = 'none'
+
+    @emitter.on 'did-destroy', =>
+      div.style.display = 'none'
+      document.body.removeChild div
+
+    div
+
+  progressView: ->
     span = document.createElement 'span'
     span.classList.add 'inline-block'
     prog = document.createElement 'progress'
     prog.classList.add 'ink'
     prog.setAttribute 'max', 1
-    if p.progress? then prog.setAttribute 'value', p.progress
     span.appendChild prog
 
-    Object.observe p, (changes) ->
-      for {name, object} in changes
-        continue unless name == "progress"
-        if object.progress?
-          prog.setAttribute 'value', object.progress
-        else
-          prog.removeAttribute 'value'
+    @emitter.on 'did-update', =>
+      if @progress is 'indeterminate'
+        prog.removeAttribute 'value'
+      else
+        prog.setAttribute 'value', @progress
+
+      if @file?
+        prog.style.cursor = 'pointer'
+        prog.onclick = =>
+          atom.workspace.open @file,
+            searchAllPanes: true
+      else
+        prog.style.cursor = 'auto'
+        prog.onclick = =>
 
     span
 
-  showTile: (p) ->
+
+module.exports =
+  deactivate: ->
     @tile?.destroy()
+
+  create: ->
+    p = new ProgressMeter 0
     @tile = @statusBar?.addLeftTile
-      item: @progressView(p)
+      item: p.view
       priority: -1
+    p.positionOverlay()
+    p
+
+  consumeStatusBar: (bar) ->
+    @statusBar = bar

@@ -7,6 +7,19 @@
 @import "ui-variables";
 @import "syntax-variables";
 
+.ink-overlay {
+  position: absolute;
+  background: contrast(@syntax-background-color,
+                       darken(@syntax-background-color, 4%),
+                       lighten(@syntax-background-color, 4%));
+  border-left: 2px solid @background-color-info;
+  border-radius: 3px;
+
+  font-size: 1.05em;
+  padding: 0.5em;
+  z-index: 100;
+}
+
 atom-text-editor {
   clip: rect(auto auto auto auto); // Otherwise inline results spill everywhere
 }
