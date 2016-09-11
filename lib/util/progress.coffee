@@ -13,7 +13,7 @@ class ProgressMeter
     @view.onmouseover = => @overlay.style.display = 'block' unless @text is ''
     @view.onmouseout  = => @overlay.style.display = 'none'
 
-  update: (@progress, @text, @file, @line) ->
+  update: (@progress, @text, @file) ->
     @positionOverlay()
     @emitter.emit 'did-update'
 
@@ -23,21 +23,18 @@ class ProgressMeter
 
   positionOverlay: ->
     bounding = @view.getBoundingClientRect()
-    @overlay.style.bottom = bounding.height - 5 + 'px'
-    @overlay.style.left   = bounding.left + 'px'
+    @overlay.style.bottom   = bounding.height - 5 + 'px'
+    @overlay.style.left     = bounding.left + 'px'
+    @overlay.style.minWidth = bounding.width + 'px'
 
   overlayView: ->
     div = document.createElement 'div'
     div.classList.add 'ink-overlay'
     div.style.display = 'none'
-    content = document.createElement 'span'
-    content.classList.add 'text'
-    if @text? then content.innerText = @text
-
-    div.appendChild content
+    if @text? then div.innerText = @text
 
     @emitter.on 'did-update', =>
-      content.innerText = @text
+      div.innerText = @text
       if @text is '' then div.style.display = 'none'
 
     @emitter.on 'did-destroy', =>
