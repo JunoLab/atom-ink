@@ -13,9 +13,13 @@ class ProgressMeter
     @view.onmouseover = => @overlay.style.display = 'block' unless @text is ''
     @view.onmouseout  = => @overlay.style.display = 'none'
 
+  onDidUpdate:  (f) -> @emitter.on 'did-update', f
+
   update: (@progress, @text, @file) ->
     @positionOverlay()
     @emitter.emit 'did-update'
+
+  onDidDestroy: (f) -> @emitter.on 'did-destroy', f
 
   destroy: ->
     @emitter.emit 'did-destroy'
@@ -33,11 +37,11 @@ class ProgressMeter
     div.style.display = 'none'
     if @text? then div.innerText = @text
 
-    @emitter.on 'did-update', =>
+    @onDidUpdate =>
       div.innerText = @text
       if @text is '' then div.style.display = 'none'
 
-    @emitter.on 'did-destroy', =>
+    @onDidDestroy =>
       div.style.display = 'none'
       document.body.removeChild div
 
@@ -51,7 +55,7 @@ class ProgressMeter
     prog.setAttribute 'max', 1
     span.appendChild prog
 
-    @emitter.on 'did-update', =>
+    @onDidUpdate =>
       if @progress is 'indeterminate'
         prog.removeAttribute 'value'
       else
@@ -79,6 +83,7 @@ module.exports =
       item: p.view
       priority: -1
     p.positionOverlay()
+    p.onDidDestroy => @tile?.destroy()
     p
 
   consumeStatusBar: (bar) ->
