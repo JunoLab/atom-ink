@@ -1,6 +1,23 @@
-# TODO: move determinate progress bars to the front
-# TODO: hover UI with progress stack, descriptions
+# TODO: implement progress stack
 {Emitter} = require 'atom'
+
+# Progress API
+#
+# You can create a new progress meter in the status bar by calling
+# `ink.progress.create()`, which will return a ProgressMeter object, which can
+# be updated via the `update(progress, [text, [file]])` method as well as
+# `destroy()`ed (the latter removes the tile as well).
+#
+# create()
+#   Creates a new progress bar and displays it in the status bar.
+#
+# update(progress, [text, [file]])
+#   Updates the progress bar to `progress` ∈ [0, 1] (or "indeterminate" to show
+#   a indeterminate progress bar) and displays `text` as a tooltip if provided.
+#   If `file` exists, a click on the progress bar will open it.
+#
+# destroy()
+#   Destroys the progress bar and removes it from the status bar.
 
 class ProgressMeter
   constructor: (@progress, @text = '') ->
