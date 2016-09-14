@@ -79,6 +79,13 @@ class Console extends PaneItem
     @emitter.emit 'did-add-item', cell
     @limitHistory()
 
+  updateItem: (item, changed) ->
+    for key, val of changed
+      item[key] = val
+      @emitter.emit 'did-update-item', {item, key}
+
+  onDidUpdateItem: (f) ->  @emitter.on 'did-update-item', f
+
   onDidAddItem: (f) -> @emitter.on 'did-add-item', f
 
   onDidDeleteFirstItems: (f) -> @emitter.on 'did-delete-first-items', f
@@ -177,7 +184,7 @@ class Console extends PaneItem
     {type, text} = item
     last = @lastOutput()
     if last?.type is type and (last.expires > performance.now() or not last.text)
-      last.text += text
+      @updateItem last, {text: last.text + text}
     else
       @output item
     @lastOutput().expires = performance.now() + 100
@@ -223,9 +230,7 @@ class Console extends PaneItem
 
   setMode: (item, mode = @defaultMode()) ->
     mode = @getMode mode
-    item.mode = mode
-    item.icon = mode.icon or 'chevron-right'
-    item.grammar = mode.grammar
+    @updateItem item, {mode, icon: mode.icon or 'chevron-right', grammar: mode.grammar}
     item
 
   cursorAtBeginning: (ed) ->
