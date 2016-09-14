@@ -154,9 +154,7 @@ class ConsoleElement extends HTMLElement
     out = document.createElement 'div'
     item.ansi = ansi
     out.innerText = item.text
-    console.log out.innerHTML
     out.innerHTML = converter.toHtml(out.innerHTML) if ansi
-    console.log out.innerHTML
     out.classList.add type, 'stream'
     out
 
