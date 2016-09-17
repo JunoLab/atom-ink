@@ -29,6 +29,11 @@ class ConsoleElement extends HTMLElement
     @model.onDone => if @hasFocus() then @focus()
     @model.onFocusInput (force) => @focusLast force
     @model.onLoading (status) => @loading status
+    @model.onDidUpdateItem ({item, key}) =>
+      if key is 'icon'    then @updateIcon item
+      if key is 'grammar' then @updateGrammar item
+      if key is 'text'    then @lock => @updateStream item
+
     @onfocus = =>
       if document.activeElement == this and @model.getInput()
         @focusLast()
@@ -105,14 +110,6 @@ class ConsoleElement extends HTMLElement
       @focusVisible view, force
 
   # Various cell views
-
-  observeKey: (obj, key, cb) ->
-    Object.observe obj, (changes) ->
-      for change in changes
-        if change.name is key
-          cb(change.object[key])
-          return
-
   iconView: (name) ->
     icon = document.createElement 'span'
     icon.classList.add 'icon', 'icon-'+name
@@ -128,7 +125,6 @@ class ConsoleElement extends HTMLElement
     gutter.classList.add 'gutter'
     cell.appendChild gutter
 
-    @observeKey item, 'icon', => @updateIcon item
     @updateIcon {cell, icon: item.icon}
 
     content = document.createElement 'div'
@@ -148,22 +144,17 @@ class ConsoleElement extends HTMLElement
     item.editor.setLineNumberGutterVisible(false)
     item.editor.setSoftWrapped true
     @updateGrammar item
-    @observeKey item, 'grammar', => @updateGrammar item
     ed
 
   updateGrammar: ({editor, grammar}) ->
+    return unless editor? and grammar?
     editor.setGrammar atom.grammars.grammarForScopeName grammar
 
   streamView: (item, type, ansi) ->
     out = document.createElement 'div'
+    item.ansi = ansi
     out.innerText = item.text
     out.innerHTML = converter.toHtml(out.innerHTML) if ansi
-
-    @observeKey item, 'text', (text) =>
-      @lock ->
-        out.innerText = text
-        out.innerHTML = converter.toHtml(out.innerHTML) if ansi
-
     out.classList.add type, 'stream'
     out
 
@@ -180,7 +171,14 @@ class ConsoleElement extends HTMLElement
     view.appendChild result
     view
 
+  updateStream: ({cell, text, ansi}) ->
+    return unless cell? and text?
+    out = cell.querySelector '.stream'
+    out.innerText = text
+    out.innerHTML = converter.toHtml(out.innerHTML) if ansi
+
   updateIcon: ({cell, icon}) ->
+    return unless cell? and icon?
     gutter = cell.querySelector '.gutter'
     iconView = cell.querySelector '.icon'
     if iconView? then gutter.removeChild iconView
