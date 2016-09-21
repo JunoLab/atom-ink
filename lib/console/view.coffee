@@ -3,6 +3,7 @@ AnsiConverter = require('ansi-to-html')
 converter = new AnsiConverter()
 
 class ConsoleElement extends HTMLElement
+  atomVersion: atom.appVersion.split('.').map (x) -> parseInt x, 10
 
   createdCallback: ->
     @setAttribute 'tabindex', -1
@@ -140,7 +141,11 @@ class ConsoleElement extends HTMLElement
     ed = atom.views.getView model
     ed.onblur = -> atom.commands.dispatch ed, 'autocomplete-plus:cancel'
     item.editor = model
-    item.editor.presenter.scrollPastEndOverride = false
+    # remove this when appropriate
+    if @atomVersion[0] is 1 and @atomVersion[1] is 10
+      item.editor.presenter.scrollPastEndOverride = false
+    else if @atomVersion[0] is 1 and @atomVersion[1] >= 11
+      item.editor.setScrollPastEnd false
     item.editor.setLineNumberGutterVisible(false)
     item.editor.setSoftWrapped true
     @updateGrammar item
