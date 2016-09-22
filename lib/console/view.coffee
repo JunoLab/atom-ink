@@ -145,7 +145,7 @@ class ConsoleElement extends HTMLElement
     if @atomVersion[0] is 1 and @atomVersion[1] is 10
       item.editor.presenter.scrollPastEndOverride = false
     else if @atomVersion[0] is 1 and @atomVersion[1] >= 11
-      item.editor.update setScrollPastEnd: false
+      item.editor.update scrollPastEnd: false
     item.editor.setLineNumberGutterVisible(false)
     item.editor.setSoftWrapped true
     @updateGrammar item
