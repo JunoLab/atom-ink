@@ -286,7 +286,7 @@ class Console extends PaneItem
     editor.setText next.input
     @prefix.listener = editor.onDidChange => @resetPrefix()
     @setMode @getInput(), next.mode
-    editor.setCursorBufferPosition @prefix.pos or [0, 0]
+    editor.setCursorBufferPosition @prefix?.pos or [0, 0]
 
   previous: -> @moveHistory true
   next: -> @moveHistory false
