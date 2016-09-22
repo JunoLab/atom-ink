@@ -141,7 +141,7 @@ describe "the console", ->
     describe 'when outputs are seperated', ->
       beforeEach ->
         [1..10].forEach (i) ->
-          waits 100
+          waits 120
           runs ->
             model.stdout "#{i}\n"
 
