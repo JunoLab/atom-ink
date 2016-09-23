@@ -91,8 +91,7 @@ class Result
     [[start, 0], [end, @editor.lineTextForBufferRow(end).length]]
 
   initMarker: ([start, end]) ->
-    @marker = @editor.markBufferRange @lineRange(start, end),
-      persistent: false
+    @marker = @editor.markBufferRange @lineRange(start, end)
     @marker.result = @
     mark = item: @view, stable: true
     switch @type
