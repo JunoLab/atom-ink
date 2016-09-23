@@ -1,26 +1,38 @@
-notifications:
-  email:
-    on_success: never
-    on_failure: change
+### Project specific config ###
+language: generic
 
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
+env:
+  global:
+    - APM_TEST_PACKAGES=""
+    - ATOM_LINT_WITH_BUNDLED_NODE="true"
 
-git:
-  depth: 10
-
-sudo: false
+  matrix:
+    - ATOM_CHANNEL=stable
+    - ATOM_CHANNEL=beta
 
 os:
   - linux
   - osx
 
-env:
-  global:
-    - APM_TEST_PACKAGES=""
+### Generic setup follows ###
+script:
+  - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
+  - chmod u+x build-package.sh
+  - ./build-package.sh
 
-  matrix:
-    - ATOM_CHANNEL=stable
-    - ATOM_CHANNEL=beta
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+branches:
+  only:
+    - master
+
+git:
+  depth: 10
+
+sudo: false
 
 addons:
   apt:
