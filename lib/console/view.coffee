@@ -1,5 +1,6 @@
 ResizeDetector = require 'element-resize-detector'
-AnsiConverter = require('ansi-to-html')
+AnsiConverter = require 'ansi-to-html'
+{throttle, delay} = require 'underscore-plus'
 converter = new AnsiConverter()
 
 class ConsoleElement extends HTMLElement
@@ -38,9 +39,8 @@ class ConsoleElement extends HTMLElement
     @onfocus = =>
       if document.activeElement == this and @model.getInput()
         @focusLast()
-    # start listening now, since @lock doesn't work properly if @items is empty
-    @resizer.listenTo @items, =>
-      @scrollTop = @scrollHeight
+    # scroll down on subtree modifications if last element is visible
+    @resizer.listenTo @items, => @scrollDownIfVisible()()
     for item in @model.items
       @addItem item
     atom.config.observe 'editor.fontFamily', (value) =>
@@ -202,16 +202,13 @@ class ConsoleElement extends HTMLElement
     @isLoading = l
 
   # Scrolling
+  scrollDown: -> throttle (=> delay (=> @lastDivider().scrollIntoView()), 20), 100, {leading: false}
+  scrollDownIfVisible: -> throttle (=> if @isVisible @lastCell() then delay (=> @lastDivider().scrollIntoView()), 20), 150, {leading: false}
 
   lock: (f) ->
-    if @isVisible @lastDivider()
-      # listen to changes in height from subtree modifications
-      @resizer.listenTo @items, =>
-        @scrollTop = @scrollHeight
-      f()
-      @scrollTop = @scrollHeight
-    else
-      @resizer.removeAllListeners @items
-      f()
+    if @isVisible @lastCell()
+      @scrollDown()()
+    f()
+
 
 module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype
