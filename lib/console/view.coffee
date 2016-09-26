@@ -39,8 +39,12 @@ class ConsoleElement extends HTMLElement
     @onfocus = =>
       if document.activeElement == this and @model.getInput()
         @focusLast()
+
+    # determine if we should scroll down
+    @shouldScroll = true
+    @items.onscroll = throttle (=> @shouldScroll = @isVisible @lastElement()), 150
     # scroll down on subtree modifications if last element is visible
-    @resizer.listenTo @items, => @scrollDownIfVisible()()
+    @resizer.listenTo @items, => if @shouldScroll then @scrollDown()()
     for item in @model.items
       @addItem item
     atom.config.observe 'editor.fontFamily', (value) =>
@@ -94,6 +98,9 @@ class ConsoleElement extends HTMLElement
   lastCell: -> @queryLast @items, '.cell'
 
   lastDivider: -> @queryLast @items, '.divider'
+
+  # fast no-jquery way to get the last element
+  lastElement: -> @items.lastChild
 
   isVisible: (pane, view) ->
     if !view? then [pane, view] = [@, pane]
@@ -202,13 +209,11 @@ class ConsoleElement extends HTMLElement
     @isLoading = l
 
   # Scrolling
-  scrollDown: -> throttle (=> delay (=> @lastDivider().scrollIntoView()), 20), 100, {leading: false}
-  scrollDownIfVisible: -> throttle (=> if @isVisible @lastCell() then delay (=> @lastDivider().scrollIntoView()), 20), 150, {leading: false}
+  scrollDown: -> throttle (=> delay (=> @lastElement().scrollIntoView()), 20), 130, {leading: false}
 
   lock: (f) ->
-    if @isVisible @lastCell()
+    if @isVisible @lastElement()
       @scrollDown()()
     f()
-
 
 module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype
