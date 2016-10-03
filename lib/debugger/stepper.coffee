@@ -20,7 +20,7 @@ class Stepper
   setText: (@text) ->
     for view in @views
       view.clear()
-      view.appendChild views.render span 'stepper-label', text
+      view.appendChild views.render span 'stepper-label', @text
       view.appendChild view.buttonGroup @buttons
 
   edsForFile: (file) ->
