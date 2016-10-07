@@ -42,7 +42,8 @@ class ConsoleElement extends HTMLElement
 
     # determine if we should scroll down
     @shouldScroll = true
-    @items.onscroll = throttle (=> @shouldScroll = @isVisible @lastElement()), 150
+    @items.parentElement.onscroll =
+      throttle (=> @shouldScroll = @isVisible @lastElement()), 150
     # scroll down on subtree modifications if last element is visible
     @resizer.listenTo @items, => if @shouldScroll then @scrollDown()()
     for item in @model.items
