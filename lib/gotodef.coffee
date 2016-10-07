@@ -15,7 +15,7 @@ fuzzaldrinPlus = require 'fuzzaldrin-plus'
 #     - `.text` -       Displayed text, searchable.
 #     - `.file` -       File in which this method is defined, not displayed.
 #     - `.line` -       Line of definition.
-#     - `.dispfile` -   Humanized file path, displayed.
+#     - `.secondary` -  Secondary information, displayed below `text` (e.g. file).
 #
 #   or a plain text string if `symbolTable.error` is true.
 
@@ -49,7 +49,7 @@ class GotoView extends SelectListView
     @panel.destroy()
 
   # Create the view for one item.
-  viewForItem: ({text, dispfile, line}) ->
+  viewForItem: ({text, secondary, line}) ->
     # the highlighting is taken verbatim from https://github.com/atom/command-palette
     filterQuery = @getFilterQuery()
     matches = fuzzaldrinPlus.match(text, filterQuery)
@@ -77,7 +77,7 @@ class GotoView extends SelectListView
 
       @li class: 'two-lines', =>
         @div class: 'primary-line', -> highlighter(text, matches, 0)
-        @div dispfile + ":" + line, class: 'secondary-line'
+        @div secondary, class: 'secondary-line'
 
   # Only `item.text` is searchable.
   getFilterKey: -> 'text'
