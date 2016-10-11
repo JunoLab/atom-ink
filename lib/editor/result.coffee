@@ -95,7 +95,7 @@ class Result
     @marker.result = @
     mark = item: @view, stable: true
     switch @type
-      when 'inline' then mark.type = 'overlay'; mark.class = 'no-pointer-events'
+      when 'inline' then mark.type = 'overlay'; mark.class = 'ink-overlay'
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
