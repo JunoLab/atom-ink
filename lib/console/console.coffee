@@ -126,7 +126,7 @@ class Console extends PaneItem
       item = type: 'input', input: true
       @push @setMode item
       @watchModes item
-      @focusInput()
+      @focusInput true
       item
     else
       @getInput()
