@@ -1,6 +1,8 @@
 # TODO: tooltip for each progress bar that displays the .msg
 # TODO: cleanup
 # TODO: styling
+# TODO: global progress bar
+# TODO: time estimates (here?)
 {Emitter} = require 'atom'
 {once} = require 'underscore-plus'
 
