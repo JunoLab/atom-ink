@@ -1,5 +1,6 @@
-# TODO: move determinate progress bars to the front
-# TODO: hover UI with progress stack, descriptions
+# TODO: tooltip for each progress bar that displays the .msg
+# TODO: cleanup
+# TODO: styling
 {Emitter} = require 'atom'
 {once} = require 'underscore-plus'
 
@@ -96,7 +97,6 @@ module.exports =
         td.appendChild @progressView p
         tr.appendChild td
         table.appendChild tr
-        console.log p
         @emitter.emit 'did-update-progress', p
 
     div
