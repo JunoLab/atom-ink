@@ -244,3 +244,17 @@ atom-text-editor::shadow {
     font-weight: bold;
   }
 }
+
+.ink-tooltip {
+  position: absolute;
+  background: contrast(@syntax-background-color,
+                       darken(@syntax-background-color, 4%),
+                       lighten(@syntax-background-color, 4%));
+  border-left: 2px solid @background-color-info;
+  border-right: 2px solid @background-color-info;
+  border-radius: 3px;
+
+  font-size: 1.05em;
+  padding: 0.5em;
+  z-index: 100;
+}
