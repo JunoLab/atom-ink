@@ -1,12 +1,11 @@
 # TODO: tooltip for each progress bar that displays the .msg
 # TODO: cleanup
-# TODO: styling
-# TODO: global progress bar
-# TODO: time estimates (here?)
 {Emitter} = require 'atom'
 {once} = require 'underscore-plus'
 
 module.exports =
+  stack: []
+
   activate: ->
     return if @activated
     @activated = true
@@ -19,10 +18,10 @@ module.exports =
       item: @view
       priority: -1
 
-    @view.onmouseover = => @overlay.style.display = 'block'
-    @view.onmouseout = =>  @overlay.style.display = 'none'
+    @view.onmouseover = => @overlay.style.display = 'block' unless @noDetProgBars()
+    @view.onmouseout  = => @overlay.style.display = 'none'
     @positionOverlay()
-    @emitter.on 'did-update-stack', => @positionOverlay()
+    @onDidUpdateStack => @positionOverlay()
 
   deactivate: ->
     @tile?.destroy()
@@ -30,50 +29,87 @@ module.exports =
   consumeStatusBar: (bar) ->
     @statusBar = bar
 
-  stack: []
-
   add: (p) ->
+    @activate()
     @stack.push p
     @emitter.emit 'did-update-stack'
 
   delete: (p) ->
+    @activate()
     i = @stack.findIndex (e) -> e.id is p.id
     return if i < 0
     @stack.splice i, 1
     @emitter.emit 'did-update-stack'
 
   update: (p) ->
+    @activate()
     i = @stack.findIndex (e) -> e.id is p.id
     return if i < 0
     @stack[i] = p
     @emitter.emit 'did-update-progress', p
 
+  emptyStack: () ->
+    @stack = []
+    @emitter.emit 'did-update-stack'
+
+  noDetProgBars: () ->
+    @stack.length is 0 or @stack.filter((p) => p.determinate).length is 0
+
   onDidUpdateStack: (f) -> @emitter.on 'did-update-stack', f
 
   onDidUpdateProgress: (f) -> @emitter.on 'did-update-progress', f
-
-  progressView: (p) ->
-    span = document.createElement 'span'
-    span.classList.add 'inline-block'
-    prog = document.createElement 'progress'
-    prog.classList.add 'ink'
-    prog.setAttribute 'max', 1
-    span.appendChild prog
-
-    @onDidUpdateProgress (prg) =>
-      return unless p.id is prg.id
-      if prg.determinate
-        prog.setAttribute 'value', prg.progress
-      else
-        prog.removeAttribute 'value'
-
-    span
 
   positionOverlay: ->
     bounding = @view.getBoundingClientRect()
     @overlay.style.bottom   = bounding.height - 5 + 'px'
     @overlay.style.left     = bounding.left + 'px'
     @overlay.style.minWidth = bounding.width + 'px'
+
+  progressView: (p) ->
+    span = document.createElement 'span'
+    span.id = "ink-prog-#{p.id}"
+    prog = document.createElement 'progress'
+    prog.classList.add 'ink'
+    prog.setAttribute 'max', 1
+    span.appendChild prog
+
+    updateView = (prg) =>
+      return unless p.id is prg.id
+      if prg.determinate
+        prog.setAttribute 'value', prg.progress
+      else
+        prog.removeAttribute 'value'
+
+    @onDidUpdateProgress (prg) => updateView(prg)
+    updateView p
+
+    span
+
+  tableRowView: (p) ->
+    tr = document.createElement 'tr'
+    # left text
+    tdl = document.createElement 'td'
+    tdl.classList.add 'progress-tr'
+    p.leftText? and tdl.appendChild document.createTextNode p.leftText
+    # progress bar
+    td = document.createElement 'td'
+    td.classList.add 'progress-tr'
+    td.appendChild @progressView p
+    # right text
+    tdr = document.createElement 'td'
+    tdr.classList.add 'progress-tr'
+    p.rightText? and tdr.appendChild document.createTextNode p.rightText
+    @onDidUpdateProgress (prg) =>
+      return unless p.id is prg.id
+      if prg.rightText?
+        if tdr.firstChild then tdr.removeChild tdr.firstChild
+        tdr.appendChild document.createTextNode prg.rightText
+    # construct the row
+    tr.appendChild tdl
+    tr.appendChild td
+    tr.appendChild tdr
+
+    tr
 
   stackView: ->
     div = document.createElement 'div'
@@ -83,29 +119,41 @@ module.exports =
     div.appendChild table
 
     @onDidUpdateStack =>
-      # remove
+      # remove all table rows
       while table.firstChild
         table.removeChild table.firstChild
-
-      #backwards iteration
-      for i in [@stack.length - 1..0]
+      # backwards iteration
+      for i in [0...@stack.length].reverse()
         p = @stack[i]
-        tr = document.createElement 'tr'
-        if p.name.length
-          td = document.createElement 'td'
-          td.appendChild document.createTextNode p.name
-          tr.appendChild td
-        td = document.createElement 'td'
-        td.appendChild @progressView p
-        tr.appendChild td
-        table.appendChild tr
+        continue unless p.determinate
+        table.appendChild @tableRowView p
         @emitter.emit 'did-update-progress', p
 
     div
 
+  emptyProgress: (id = 'empty') ->
+    id: id
+    determinate: true
+    progress: 0
+
+  indeterminateProgress: (id = 'indeterminate') ->
+    id: id
+    determinate: false
+
   tileView: ->
     span = document.createElement 'span'
     span.classList.add 'inline-block'
-    span.innerText = 'progress'
+    span.appendChild @tableRowView @emptyProgress()
+
+    @onDidUpdateStack =>
+      span.removeChild span.firstChild
+      # find the first determinate progress bar
+      global = @stack.find (p) => p.determinate
+      # if there is none, use the first one in the stack
+      global = @stack[0] unless global?
+      # display an empty progress bar if the stack is empty
+      global = @emptyProgress() unless global?
+      span.appendChild @progressView global
+      @emitter.emit 'did-update-progress', global
 
     span
