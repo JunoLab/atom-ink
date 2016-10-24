@@ -253,12 +253,32 @@ atom-text-editor::shadow {
   border-left: 2px solid @background-color-info;
   border-right: 2px solid @background-color-info;
   border-radius: 3px;
-
-  font-size: 1.05em;
+  font-size: 1.15em;
   padding: 0.5em;
   z-index: 100;
 }
 
+.ink-tooltip-msg {
+  display: none;
+}
+
 .progress-tr {
-  padding: 0 3px;
+  padding: 0 0.2em;
+  &.has-tooltip {
+    .ink-tooltip-msg {
+      position: absolute;
+      margin-top: -4em;
+      margin-left: 1em;
+      background: @progress-background-color;
+      border-radius: 1px;
+      padding: 0.5em;
+      color: white;
+      border-radius: 3px;
+      white-space: nowrap;
+      color: @tooltip-text-color
+    }
+    &:hover .ink-tooltip-msg {
+      display: block;
+    }
+  }
 }

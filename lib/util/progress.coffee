@@ -1,7 +1,4 @@
-# TODO: tooltip for each progress bar that displays the .msg
-# TODO: cleanup
 {Emitter} = require 'atom'
-{once} = require 'underscore-plus'
 
 module.exports =
   stack: []
@@ -18,8 +15,7 @@ module.exports =
       item: @view
       priority: -1
 
-    @view.onmouseover = => @overlay.style.display = 'block' unless @noDetProgBars()
-    @view.onmouseout  = => @overlay.style.display = 'none'
+    @showOnHover()
     @positionOverlay()
     @onDidUpdateStack => @positionOverlay()
 
@@ -52,18 +48,14 @@ module.exports =
     @stack = []
     @emitter.emit 'did-update-stack'
 
-  noDetProgBars: () ->
-    @stack.length is 0 or @stack.filter((p) => p.determinate).length is 0
+  hasNoDeterminateBars: ->
+    @stack.filter((p) => p.determinate).length is 0
 
   onDidUpdateStack: (f) -> @emitter.on 'did-update-stack', f
 
   onDidUpdateProgress: (f) -> @emitter.on 'did-update-progress', f
 
-  positionOverlay: ->
-    bounding = @view.getBoundingClientRect()
-    @overlay.style.bottom   = bounding.height - 5 + 'px'
-    @overlay.style.left     = bounding.left + 'px'
-    @overlay.style.minWidth = bounding.width + 'px'
+  onDidDestroyProgress: (f) -> @emitter.on 'did-destroy-progress', f
 
   progressView: (p) ->
     span = document.createElement 'span'
@@ -85,6 +77,21 @@ module.exports =
 
     span
 
+  msgView: (p, parent) ->
+    div = document.createElement 'div'
+    div.classList.add 'ink-tooltip-msg'
+    div.appendChild.innerText = p.msg
+
+    @onDidUpdateProgress (prg) =>
+      return unless p.id is prg.id
+      if prg.msg?.length
+        div.innerText = prg.msg
+        parent.classList.add 'has-tooltip'
+      else
+        parent.classList.remove 'has-tooltip'
+
+    div
+
   tableRowView: (p) ->
     tr = document.createElement 'tr'
     # left text
@@ -93,12 +100,14 @@ module.exports =
     p.leftText? and tdl.appendChild document.createTextNode p.leftText
     # progress bar
     td = document.createElement 'td'
-    td.classList.add 'progress-tr'
+    td.classList.add 'progress-tr', 'has-tooltip'
     td.appendChild @progressView p
+    td.appendChild @msgView p, td
     # right text
     tdr = document.createElement 'td'
     tdr.classList.add 'progress-tr'
     p.rightText? and tdr.appendChild document.createTextNode p.rightText
+
     @onDidUpdateProgress (prg) =>
       return unless p.id is prg.id
       if prg.rightText?
@@ -122,6 +131,9 @@ module.exports =
       # remove all table rows
       while table.firstChild
         table.removeChild table.firstChild
+      if @hasNoDeterminateBars()
+        div.style.display = 'none'
+        return
       # backwards iteration
       for i in [0...@stack.length].reverse()
         p = @stack[i]
@@ -130,6 +142,21 @@ module.exports =
         @emitter.emit 'did-update-progress', p
 
     div
+
+  showOnHover: ->
+    timer = null
+    @view.onmouseover = =>
+      clearTimeout timer
+      @overlay.style.display = 'block' unless @hasNoDeterminateBars()
+    @view.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
+    @overlay.onmouseover = => clearTimeout timer
+    @overlay.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
+
+  positionOverlay: ->
+    bounding = @view.getBoundingClientRect()
+    @overlay.style.bottom   = bounding.height + 'px'
+    @overlay.style.left     = bounding.left + 'px'
+    @overlay.style.minWidth = bounding.width + 'px'
 
   emptyProgress: (id = 'empty') ->
     id: id
