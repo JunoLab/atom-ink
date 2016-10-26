@@ -1,5 +1,52 @@
 {Emitter} = require 'atom'
 
+# Progress Bars
+#
+# This module provides an API for displaying progress bars in Atom. The methods
+# below allow modifing the stack of progress bars, which is represented by
+# corresponding UI elements:
+#    - A "global" progress bar is shown in the status bar. In pratice, this is
+#      the first determinate progress bar in the stack. If there is none, the
+#      first element (which then is indeterminate) will be shown instead. If the
+#      stack is empty, an empty progress bar will be shown instead.
+#    - Hovering over that status bar element will show the complete stack as
+#      an overlay.
+#    - Hovering over the actual progress bar of one such stack element will show
+#      the message correesponding to that progress bar, if there is any.
+#
+# Methods:
+#
+# add(p)
+#    Adds the progress bar `p` to the stack. Will also add a status bar element
+#    automatically.
+#
+# delete(p)
+#    Deletes the progress bar `p` from the stack.
+#
+# update(p)
+#    Updates the progress bar with ID `p.id` with all the properties from `p`.
+#
+# emptyStack()
+#    Clears the stack from all progress bars.
+#
+# emptyProgress(id = 'empty')
+#    Returns an empty progress bar with ID `id`.
+#
+# indeterminateProgress(id = 'indeterminate')
+#    Returns an indeterminate progress Bar with ID `id`.
+#
+# Objects:
+#
+# Properties of a progress bar object:
+#
+#    .id          - A string uniquely identifing the progress bar. Required.
+#    .determinate - Boolean, determines if progress is shown.
+#    .progress    - Number between 0 and 1. Required for determinate progress bars-
+#    .leftText    - String displayed to the left of the progress bar (e.g. name).
+#    .rightText   - String displayed to the right of the progress bar (e.g. remaining time).
+#    .msg         - String displayed when hovering over the progress bar in the stack.
+
+
 module.exports =
   stack: []
 
@@ -20,11 +67,13 @@ module.exports =
     @onDidUpdateStack => @positionOverlay()
 
   deactivate: ->
+    document.body.removeChild @overlay
     @tile?.destroy()
 
   consumeStatusBar: (bar) ->
     @statusBar = bar
 
+  # Public API
   add: (p) ->
     @activate()
     @stack.push p
@@ -41,13 +90,26 @@ module.exports =
     @activate()
     i = @stack.findIndex (e) -> e.id is p.id
     return if i < 0
+    oldp = @stack[i]
     @stack[i] = p
     @emitter.emit 'did-update-progress', p
+    # if p.determinate changes, update the stack display
+    @emitter.emit 'did-update-stack' unless oldp.determinate is p.determinate
 
   emptyStack: () ->
     @stack = []
     @emitter.emit 'did-update-stack'
 
+  emptyProgress: (id = 'empty') ->
+    id: id
+    determinate: true
+    progress: 0
+
+  indeterminateProgress: (id = 'indeterminate') ->
+    id: id
+    determinate: false
+
+  # update logic
   hasNoDeterminateBars: ->
     @stack.filter((p) => p.determinate).length is 0
 
@@ -55,8 +117,7 @@ module.exports =
 
   onDidUpdateProgress: (f) -> @emitter.on 'did-update-progress', f
 
-  onDidDestroyProgress: (f) -> @emitter.on 'did-destroy-progress', f
-
+  # UI elements:
   progressView: (p) ->
     span = document.createElement 'span'
     span.id = "ink-prog-#{p.id}"
@@ -143,30 +204,6 @@ module.exports =
 
     div
 
-  showOnHover: ->
-    timer = null
-    @view.onmouseover = =>
-      clearTimeout timer
-      @overlay.style.display = 'block' unless @hasNoDeterminateBars()
-    @view.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
-    @overlay.onmouseover = => clearTimeout timer
-    @overlay.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
-
-  positionOverlay: ->
-    bounding = @view.getBoundingClientRect()
-    @overlay.style.bottom   = bounding.height + 'px'
-    @overlay.style.left     = bounding.left + 'px'
-    @overlay.style.minWidth = bounding.width + 'px'
-
-  emptyProgress: (id = 'empty') ->
-    id: id
-    determinate: true
-    progress: 0
-
-  indeterminateProgress: (id = 'indeterminate') ->
-    id: id
-    determinate: false
-
   tileView: ->
     span = document.createElement 'span'
     span.classList.add 'inline-block'
@@ -184,3 +221,19 @@ module.exports =
       @emitter.emit 'did-update-progress', global
 
     span
+
+  # UI logic
+  showOnHover: ->
+    timer = null
+    @view.onmouseover = =>
+      clearTimeout timer
+      @overlay.style.display = 'block' unless @hasNoDeterminateBars()
+    @view.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
+    @overlay.onmouseover = => clearTimeout timer
+    @overlay.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
+
+  positionOverlay: ->
+    bounding = @view.getBoundingClientRect()
+    @overlay.style.bottom   = bounding.height + 'px'
+    @overlay.style.left     = bounding.left + 'px'
+    @overlay.style.minWidth = bounding.width + 'px'
