@@ -41,7 +41,7 @@
 #
 #    .id          - A string uniquely identifing the progress bar. Required.
 #    .determinate - Boolean, determines if progress is shown.
-#    .progress    - Number between 0 and 1. Required for determinate progress bars-
+#    .progress    - Number between 0 and 1. Required for determinate progress bars.
 #    .leftText    - String displayed to the left of the progress bar (e.g. name).
 #    .rightText   - String displayed to the right of the progress bar (e.g. remaining time).
 #    .msg         - String displayed when hovering over the progress bar in the stack.
