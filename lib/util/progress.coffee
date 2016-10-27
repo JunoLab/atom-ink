@@ -40,8 +40,8 @@
 # Properties of a progress bar object:
 #
 #    .id          - A string uniquely identifing the progress bar. Required.
-#    .determinate - Boolean, determines if progress is shown.
-#    .progress    - Number between 0 and 1. Required for determinate progress bars.
+#    .progress    - Number ∈ [-∞, 1]. If negative, the progress bar will be
+#                   indeterminate.
 #    .leftText    - String displayed to the left of the progress bar (e.g. name).
 #    .rightText   - String displayed to the right of the progress bar (e.g. remaining time).
 #    .msg         - String displayed when hovering over the progress bar in the stack.
@@ -93,8 +93,8 @@ module.exports =
     oldp = @stack[i]
     @stack[i] = p
     @emitter.emit 'did-update-progress', p
-    # if p.determinate changes, update the stack display
-    @emitter.emit 'did-update-stack' unless oldp.determinate is p.determinate
+    # if determinate-ness changes, update the stack display
+    @emitter.emit 'did-update-stack' unless oldp.progress*p.progress > 0
 
   emptyStack: () ->
     @stack = []
@@ -102,16 +102,15 @@ module.exports =
 
   emptyProgress: (id = 'empty') ->
     id: id
-    determinate: true
     progress: 0
 
   indeterminateProgress: (id = 'indeterminate') ->
     id: id
-    determinate: false
+    progress: -1
 
   # update logic
   hasNoDeterminateBars: ->
-    @stack.filter((p) => p.determinate).length is 0
+    @stack.filter((p) => p.progress >= 0).length is 0
 
   onDidUpdateStack: (f) -> @emitter.on 'did-update-stack', f
 
@@ -128,7 +127,7 @@ module.exports =
 
     updateView = (prg) =>
       return unless p.id is prg.id
-      if prg.determinate
+      if prg.progress >= 0
         prog.setAttribute 'value', prg.progress
       else
         prog.removeAttribute 'value'
@@ -198,7 +197,7 @@ module.exports =
       # backwards iteration
       for i in [0...@stack.length].reverse()
         p = @stack[i]
-        continue unless p.determinate
+        continue unless p.progress >= 0
         table.appendChild @tableRowView p
         @emitter.emit 'did-update-progress', p
 
@@ -212,7 +211,7 @@ module.exports =
     @onDidUpdateStack =>
       span.removeChild span.firstChild
       # find the first determinate progress bar
-      global = @stack.find (p) => p.determinate
+      global = @stack.find (p) => p.progress >= 0
       # if there is none, use the first one in the stack
       global = @stack[0] unless global?
       # display an empty progress bar if the stack is empty
