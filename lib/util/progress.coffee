@@ -1,4 +1,5 @@
 {Emitter} = require 'atom'
+inkTooltip   = require './tooltip'
 
 # Progress Bars
 #
@@ -43,17 +44,15 @@ module.exports =
 
     @overlay = @stackView()
     @view = @tileView()
-    document.body.appendChild @overlay
+
+    @tooltip = new inkTooltip @view, @overlay, => @hasDeterminateBars()
+
     @tile = @statusBar?.addLeftTile
       item: @view
       priority: -1
 
-    @showOnHover()
-    @positionOverlay()
-    @onDidUpdateStack => @positionOverlay()
-
   deactivate: ->
-    document.body.removeChild @overlay
+    @tooltip.destroy()
     @tile?.destroy()
 
   consumeStatusBar: (bar) ->
@@ -100,8 +99,8 @@ module.exports =
     p
 
   # update logic
-  hasNoDeterminateBars: ->
-    @stack.filter((p) => p.progress >= 0).length is 0
+  hasDeterminateBars: ->
+    @stack.filter((p) => p.progress >= 0).length is not 0
 
   onDidUpdateStack: (f) -> @emitter.on 'did-update-stack', f
 
@@ -169,8 +168,7 @@ module.exports =
 
   stackView: ->
     div = document.createElement 'div'
-    div.classList.add 'ink-tooltip'
-    div.style.display = 'none'
+
     table = document.createElement 'table'
     div.appendChild table
 
@@ -178,9 +176,8 @@ module.exports =
       # remove all table rows
       while table.firstChild
         table.removeChild table.firstChild
-      if @hasNoDeterminateBars()
-        div.style.display = 'none'
-        return
+      if not @hasDeterminateBars()
+        @tooltip.hide()
       # backwards iteration
       for i in [0...@stack.length].reverse()
         p = @stack[i]
@@ -207,19 +204,3 @@ module.exports =
       global.emitter.emit 'did-update-progress'
 
     span
-
-  # UI logic
-  showOnHover: ->
-    timer = null
-    @view.onmouseover = =>
-      clearTimeout timer
-      @overlay.style.display = 'block' unless @hasNoDeterminateBars()
-    @view.onmouseout     = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
-    @overlay.onmouseover = => clearTimeout timer
-    @overlay.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
-
-  positionOverlay: ->
-    bounding = @view.getBoundingClientRect()
-    @overlay.style.bottom   = bounding.height + 'px'
-    @overlay.style.left     = bounding.left + 'px'
-    @overlay.style.minWidth = bounding.width + 'px'
