@@ -16,35 +16,21 @@
 #
 # Methods:
 #
-# add(p)
-#    Adds the progress bar `p` to the stack. Will also add a status bar element
-#    automatically.
+# add(p = {progress: 0})
+#    Create and return a ProgressBar with the initial properties specified by `p`,
+#    which has the following methods available to it:
 #
-# delete(p)
-#    Deletes the progress bar `p` from the stack.
+#    p.setProgress(prog)
+#        Updates `p`s progress. `prog` is a number between -∞ and 1; if it is
+#        negative, a indeterminate progress bar will be displayed.
 #
-# update(p)
-#    Updates the progress bar with ID `p.id` with all the properties from `p`.
+#    p.setLeftText(t), p.setRightText(t), p.setMessage(t)
+#        Sets the text displayed to the left of the progress bar, right of the
+#        progress bar, or when hovering over it.
 #
-# emptyStack()
-#    Clears the stack from all progress bars.
-#
-# emptyProgress(id = 'empty')
-#    Returns an empty progress bar with ID `id`.
-#
-# indeterminateProgress(id = 'indeterminate')
-#    Returns an indeterminate progress Bar with ID `id`.
-#
-# Objects:
-#
-# Properties of a progress bar object:
-#
-#    .id          - A string uniquely identifing the progress bar. Required.
-#    .progress    - Number ∈ [-∞, 1]. If negative, the progress bar will be
-#                   indeterminate.
-#    .leftText    - String displayed to the left of the progress bar (e.g. name).
-#    .rightText   - String displayed to the right of the progress bar (e.g. remaining time).
-#    .msg         - String displayed when hovering over the progress bar in the stack.
+#    p.destroy()
+#        Destroys `p` and removes it from the display stack.
+
 
 
 module.exports =
@@ -73,40 +59,45 @@ module.exports =
   consumeStatusBar: (bar) ->
     @statusBar = bar
 
+
+  create: (p = {progress: 0}) ->
+    @activate()
+    p.emitter = new Emitter
+
+    p.onDidUpdate = (f) =>
+      p.emitter.on 'did-update-progress', f
+    p.setProgress = (prog) =>
+      oldp = p.progress
+      p.progress = prog
+      p.emitter.emit 'did-update-progress'
+      # if determinate-ness changes, update the stack display
+      @emitter.emit 'did-update-stack' unless oldp*prog > 0
+    p.setLeftText = (t) =>
+      p.leftText = t
+      p.emitter.emit 'did-update-progress'
+    p.setRightText = (t) =>
+      p.rightText = t
+      p.emitter.emit 'did-update-progress'
+    p.setMessage = (t) =>
+      p.msg = t
+      p.emitter.emit 'did-update-progress'
+    p.destroy = (t) =>
+      i = @stack.indexOf p
+      return if i < 0
+      @stack.splice i, 1
+      p.emitter.dispose()
+      @emitter.emit 'did-update-stack'
+    p.register = =>
+      @stack.push p
+      @emitter.emit 'did-update-stack'
+
+    p
+
   # Public API
-  add: (p) ->
-    @activate()
-    @stack.push p
-    @emitter.emit 'did-update-stack'
-
-  delete: (p) ->
-    @activate()
-    i = @stack.findIndex (e) -> e.id is p.id
-    return if i < 0
-    @stack.splice i, 1
-    @emitter.emit 'did-update-stack'
-
-  update: (p) ->
-    @activate()
-    i = @stack.findIndex (e) -> e.id is p.id
-    return if i < 0
-    oldp = @stack[i]
-    @stack[i] = p
-    @emitter.emit 'did-update-progress', p
-    # if determinate-ness changes, update the stack display
-    @emitter.emit 'did-update-stack' unless oldp.progress*p.progress > 0
-
-  emptyStack: () ->
-    @stack = []
-    @emitter.emit 'did-update-stack'
-
-  emptyProgress: (id = 'empty') ->
-    id: id
-    progress: 0
-
-  indeterminateProgress: (id = 'indeterminate') ->
-    id: id
-    progress: -1
+  add: (prog) ->
+    p = create prog
+    p.register()
+    p
 
   # update logic
   hasNoDeterminateBars: ->
@@ -119,20 +110,18 @@ module.exports =
   # UI elements:
   progressView: (p) ->
     span = document.createElement 'span'
-    span.id = "ink-prog-#{p.id}"
     prog = document.createElement 'progress'
     prog.classList.add 'ink'
     prog.setAttribute 'max', 1
     span.appendChild prog
 
     updateView = (prg) =>
-      return unless p.id is prg.id
       if prg.progress >= 0
         prog.setAttribute 'value', prg.progress
       else
         prog.removeAttribute 'value'
 
-    @onDidUpdateProgress (prg) => updateView(prg)
+    p.onDidUpdate => updateView p
     updateView p
 
     span
@@ -142,10 +131,9 @@ module.exports =
     div.classList.add 'ink-tooltip-msg'
     div.appendChild.innerText = p.msg
 
-    @onDidUpdateProgress (prg) =>
-      return unless p.id is prg.id
-      if prg.msg?.length
-        div.innerText = prg.msg
+    p.onDidUpdate =>
+      if p.msg?.length
+        div.innerText = p.msg
         parent.classList.add 'has-tooltip'
       else
         parent.classList.remove 'has-tooltip'
@@ -168,11 +156,10 @@ module.exports =
     tdr.classList.add 'progress-tr'
     p.rightText? and tdr.appendChild document.createTextNode p.rightText
 
-    @onDidUpdateProgress (prg) =>
-      return unless p.id is prg.id
-      if prg.rightText?
+    p.onDidUpdate =>
+      if p.rightText?
         if tdr.firstChild then tdr.removeChild tdr.firstChild
-        tdr.appendChild document.createTextNode prg.rightText
+        tdr.appendChild document.createTextNode p.rightText
     # construct the row
     tr.appendChild tdl
     tr.appendChild td
@@ -199,14 +186,14 @@ module.exports =
         p = @stack[i]
         continue unless p.progress >= 0
         table.appendChild @tableRowView p
-        @emitter.emit 'did-update-progress', p
+        p.emitter.emit 'did-update-progress'
 
     div
 
   tileView: ->
     span = document.createElement 'span'
     span.classList.add 'inline-block'
-    span.appendChild @tableRowView @emptyProgress()
+    span.appendChild @tableRowView @create()
 
     @onDidUpdateStack =>
       span.removeChild span.firstChild
@@ -215,9 +202,9 @@ module.exports =
       # if there is none, use the first one in the stack
       global = @stack[0] unless global?
       # display an empty progress bar if the stack is empty
-      global = @emptyProgress() unless global?
+      global = @create() unless global?
       span.appendChild @progressView global
-      @emitter.emit 'did-update-progress', global
+      global.emitter.emit 'did-update-progress'
 
     span
 
@@ -227,7 +214,7 @@ module.exports =
     @view.onmouseover = =>
       clearTimeout timer
       @overlay.style.display = 'block' unless @hasNoDeterminateBars()
-    @view.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
+    @view.onmouseout     = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
     @overlay.onmouseover = => clearTimeout timer
     @overlay.onmouseout  = => timer = setTimeout (=> @overlay.style.display = 'none' ), 150
 
