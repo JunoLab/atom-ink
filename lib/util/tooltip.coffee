@@ -21,6 +21,7 @@ class InkTooltip
     @view = @tooltipView content
     document.body.appendChild @view
     @showOnHover()
+    this
 
   hide: -> @view.style.display = 'none'
 
@@ -41,7 +42,7 @@ class InkTooltip
     @parent.onmouseover = =>
       @positionOverlay()
       clearTimeout timer
-      of @cond() then @show()
+      if @cond() then @show()
     @parent.onmouseout = => timer = setTimeout (=> @hide()), 150
     @view.onmouseover  = => clearTimeout timer
     @view.onmouseout   = => timer = setTimeout (=> @hide()), 150

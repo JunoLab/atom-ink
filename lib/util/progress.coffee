@@ -50,7 +50,7 @@ module.exports =
       priority: -1
 
   deactivate: ->
-    @tooltip.destroy()
+    @tooltip?.destroy()
     @tile?.destroy()
 
   consumeStatusBar: (bar) ->
