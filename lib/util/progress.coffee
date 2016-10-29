@@ -1,5 +1,5 @@
-{Emitter} = require 'atom'
-inkTooltip   = require './tooltip'
+{Emitter}  = require 'atom'
+inkTooltip = require './tooltip'
 
 # Progress Bars
 #
@@ -31,8 +31,6 @@ inkTooltip   = require './tooltip'
 #
 #    p.destroy()
 #        Destroys `p` and removes it from the display stack.
-
-
 
 module.exports =
   stack: []

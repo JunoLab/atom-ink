@@ -2,6 +2,7 @@
 PaneItem = require './util/pane-item'
 Loading = require './util/loading'
 progress = require './util/progress'
+InkTooltip = require './util/tooltip'
 block = require './editor/block'
 highlights = require './editor/highlights'
 Result = require './editor/result'
@@ -41,3 +42,4 @@ module.exports = Ink =
     tree: tree
     InlineDoc: Docs
     goto: goto
+    InkTooltip: InkTooltip
