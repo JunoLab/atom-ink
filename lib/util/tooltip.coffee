@@ -1,4 +1,4 @@
-# InkTooltip
+# Tooltip
 #
 # Tooltips that support arbitrary HTML content.
 #
@@ -16,24 +16,24 @@
 #     Destroy the tooltip.
 
 module.exports =
-class InkTooltip
+class Tooltip
   constructor: (@parent, content, @cond = -> true) ->
     @view = @tooltipView content
     document.body.appendChild @view
     @showOnHover()
     this
 
-  hide: -> @view.style.display = 'none'
+  hide: ->
+    @view.classList.add 'dontshow'
 
-  show: -> @view.style.display = 'block'
+  show: -> @view.classList.remove 'dontshow'
 
   destroy: ->
     document.body.removeChild @view
 
   tooltipView: (content) ->
     tt = document.createElement 'div'
-    tt.classList.add 'ink-tooltip'
-    tt.style.display = 'none'
+    tt.classList.add 'ink-tooltip', 'dontshow'
     tt.appendChild content
     tt
 
@@ -50,5 +50,5 @@ class InkTooltip
   positionOverlay: ->
     bounding = @parent.getBoundingClientRect()
     @view.style.bottom   = bounding.height + 'px'
-    @view.style.left     = bounding.left + 'px'
-    @view.style.minWidth = bounding.width + 'px'
+    @view.style.left     = bounding.left   + 'px'
+    @view.style.minWidth = bounding.width  + 'px'

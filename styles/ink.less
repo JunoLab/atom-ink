@@ -257,10 +257,17 @@ atom-text-editor::shadow {
   color: @syntax-text-color;
   padding: 0.5em;
   z-index: 100;
+  opacity: 1;
+  display: block;
+  transition: all 0.1s ease-out;
+
+  &.dontshow {
+    opacity: 0;
+  }
 }
 
 .ink-tooltip-msg {
-  display: none;
+  display: block;
 }
 
 .progress-tr {
@@ -277,9 +284,11 @@ atom-text-editor::shadow {
       border-radius: 3px;
       white-space: nowrap;
       color: white;
+      opacity: 0;
     }
     &:hover .ink-tooltip-msg {
       display: block;
+      opacity: 1;
     }
   }
 }

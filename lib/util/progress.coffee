@@ -1,5 +1,5 @@
 {Emitter}  = require 'atom'
-inkTooltip = require './tooltip'
+Tooltip = require './tooltip'
 
 # Progress Bars
 #
@@ -22,8 +22,8 @@ inkTooltip = require './tooltip'
 #    which has the following methods available to it:
 #
 #    p.setProgress(prog)
-#        Updates `p`s progress. `prog` is a number between -∞ and 1; if it is
-#        negative, a indeterminate progress bar will be displayed.
+#        Updates `p`s progress. `prog` is a number between 0 and 1 or `null`; if
+#        it is `null`, an indeterminate progress bar will be displayed.
 #
 #    p.setLeftText(t), p.setRightText(t), p.setMessage(t)
 #        Sets the text displayed to the left of the progress bar, right of the
@@ -43,7 +43,7 @@ module.exports =
     @overlay = @stackView()
     @view = @tileView()
 
-    @tooltip = new inkTooltip @view, @overlay, => @hasDeterminateBars()
+    @tooltip = new Tooltip @view, @overlay, => @hasDeterminateBars()
 
     @tile = @statusBar?.addLeftTile
       item: @view
@@ -68,7 +68,8 @@ module.exports =
       p.progress = prog
       p.emitter.emit 'did-update-progress'
       # if determinate-ness changes, update the stack display
-      @emitter.emit 'did-update-stack' unless oldp*prog > 0
+      if oldp? and not prog? or prog? and not oldp?
+        @emitter.emit 'did-update-stack'
     p.setLeftText = (t) =>
       p.leftText = t
       p.emitter.emit 'did-update-progress'
@@ -78,11 +79,11 @@ module.exports =
     p.setMessage = (t) =>
       p.msg = t
       p.emitter.emit 'did-update-progress'
-    p.destroy = (t) =>
+    p.destroy = =>
       i = @stack.indexOf p
+      p.emitter.dispose()
       return if i < 0
       @stack.splice i, 1
-      p.emitter.dispose()
       @emitter.emit 'did-update-stack'
     p.register = =>
       @stack.push p
@@ -98,7 +99,7 @@ module.exports =
 
   # update logic
   hasDeterminateBars: ->
-    @stack.filter((p) => p.progress >= 0).length is not 0
+    @stack.filter((p) -> p.progress?).length > 0
 
   onDidUpdateStack: (f) -> @emitter.on 'did-update-stack', f
 
@@ -113,7 +114,7 @@ module.exports =
     span.appendChild prog
 
     updateView = (prg) =>
-      if prg.progress >= 0
+      if prg.progress?
         prog.setAttribute 'value', prg.progress
       else
         prog.removeAttribute 'value'
@@ -179,7 +180,7 @@ module.exports =
       # backwards iteration
       for i in [0...@stack.length].reverse()
         p = @stack[i]
-        continue unless p.progress >= 0
+        continue unless p.progress?
         table.appendChild @tableRowView p
         p.emitter.emit 'did-update-progress'
 
@@ -193,7 +194,7 @@ module.exports =
     @onDidUpdateStack =>
       span.removeChild span.firstChild
       # find the first determinate progress bar
-      global = @stack.find (p) => p.progress >= 0
+      global = @stack.find (p) => p.progress?
       # if there is none, use the first one in the stack
       global = @stack[0] unless global?
       # display an empty progress bar if the stack is empty
