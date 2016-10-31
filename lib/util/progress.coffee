@@ -43,7 +43,7 @@ module.exports =
     @overlay = @stackView()
     @view = @tileView()
 
-    @tooltip = new Tooltip @view, @overlay, => @hasDeterminateBars()
+    @tooltip = new Tooltip @view, @overlay, cond: => @hasDeterminateBars()
 
     @tile = @statusBar?.addLeftTile
       item: @view

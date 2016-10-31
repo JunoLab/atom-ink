@@ -2,9 +2,14 @@
 #
 # Tooltips that support arbitrary HTML content.
 #
-# new InkTooltip(parent, content, cond = -> true)
-#     Create a new InkTooltip attached to `parent` with content `content`. Will
-#     be shown on mouseover, unless `cond` evaluates to `false`.
+# new Tooltip(parent, content, options)
+#     Create a new Tooltip attached to `parent` with content `content`, which
+#     will be shown on mouseover.
+#     options:
+#        cond:  Function. If it evaluates to false when hovering over the parent,
+#               the tooltip will not be shown. Defaults to `-> true`.
+#        delay: Time in ms after which the tooltip is shown or hidden. Defaults
+#               to 150ms.
 #
 # .show()
 #     Show the tooltip.
@@ -17,7 +22,10 @@
 
 module.exports =
 class Tooltip
-  constructor: (@parent, content, @cond = -> true) ->
+  constructor: (@parent, content, {@cond, @delay}) ->
+    @cond  = (-> true) unless @cond?
+    @delay = 150       unless @delay?
+
     @view = @tooltipView content
     document.body.appendChild @view
     @showOnHover()
@@ -28,8 +36,8 @@ class Tooltip
     setTimeout (=> @view.style.display = 'none'), 100
 
   show: ->
+    @view.style.display = 'block'
     @view.classList.remove 'dontshow'
-    setTimeout (=> @view.style.display = 'block'), 100
 
   destroy: ->
     document.body.removeChild @view
@@ -38,18 +46,21 @@ class Tooltip
     tt = document.createElement 'div'
     tt.classList.add 'ink-tooltip', 'dontshow'
     tt.style.display = 'none'
-    tt.appendChild content
+    if content then tt.appendChild content
     tt
 
   showOnHover: ->
-    timer = null
+    hideTimer = null
+    showTimer = null
     @parent.onmouseover = =>
       @positionOverlay()
-      clearTimeout timer
-      if @cond() then @show()
-    @parent.onmouseout = => timer = setTimeout (=> @hide()), 100
-    @view.onmouseover  = => clearTimeout timer
-    @view.onmouseout   = => timer = setTimeout (=> @hide()), 100
+      clearTimeout hideTimer
+      if @cond() then showTimer = setTimeout (=> @show()), @delay
+    @parent.onmouseout = =>
+      clearTimeout showTimer
+      hideTimer = setTimeout (=> @hide()), @delay
+    @view.onmouseover  = => clearTimeout hideTimer
+    @view.onmouseout   = => hideTimer = setTimeout (=> @hide()), @delay
 
   positionOverlay: ->
     bounding = @parent.getBoundingClientRect()
