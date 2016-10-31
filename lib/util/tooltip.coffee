@@ -25,8 +25,11 @@ class Tooltip
 
   hide: ->
     @view.classList.add 'dontshow'
+    setTimeout (=> @view.style.display = 'none'), 100
 
-  show: -> @view.classList.remove 'dontshow'
+  show: ->
+    @view.classList.remove 'dontshow'
+    setTimeout (=> @view.style.display = 'block'), 100
 
   destroy: ->
     document.body.removeChild @view
@@ -34,6 +37,7 @@ class Tooltip
   tooltipView: (content) ->
     tt = document.createElement 'div'
     tt.classList.add 'ink-tooltip', 'dontshow'
+    tt.style.display = 'none'
     tt.appendChild content
     tt
 
@@ -43,9 +47,9 @@ class Tooltip
       @positionOverlay()
       clearTimeout timer
       if @cond() then @show()
-    @parent.onmouseout = => timer = setTimeout (=> @hide()), 150
+    @parent.onmouseout = => timer = setTimeout (=> @hide()), 100
     @view.onmouseover  = => clearTimeout timer
-    @view.onmouseout   = => timer = setTimeout (=> @hide()), 150
+    @view.onmouseout   = => timer = setTimeout (=> @hide()), 100
 
   positionOverlay: ->
     bounding = @parent.getBoundingClientRect()
