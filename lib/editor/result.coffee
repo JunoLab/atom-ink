@@ -59,7 +59,8 @@ class Result
       when 'inline'
         @view.classList.add 'inline'
         @disposables.add atom.config.observe 'editor.lineHeight', (h) =>
-          @view.style.top = -h + 'em';
+          @view.style.top       = -h + 'em'
+          @view.style.minHeight =  h + 'em'
       when 'block'  then @view.classList.add 'under'
     @view.addEventListener 'mousewheel', (e) =>
       if (@view.offsetHeight < @view.scrollHeight  ||
