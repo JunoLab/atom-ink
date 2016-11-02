@@ -179,8 +179,8 @@ module.exports =
       if not @stack.length
         @tooltip.hide_()
       # backwards iteration
-      for p in @stack.reverse()
-        table.appendChild @tableRowView p
+      for i in [0...@stack.length].reverse()
+        table.appendChild @tableRowView @stack[i]
         p.emitter.emit 'did-update-progress'
 
     div
