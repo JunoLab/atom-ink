@@ -1,3 +1,7 @@
+## 0.6.0
+
+* new progress API (#90)
+
 ## 0.5.0
 
 * Improved tree-view performance
