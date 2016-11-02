@@ -33,7 +33,7 @@ class Tooltip
 
   hide_: ->
     @view.classList.add 'dontshow'
-    => @view.style.display = 'none'
+    @view.style.display = 'none'
 
   hide: ->
     @view.classList.add 'dontshow'
