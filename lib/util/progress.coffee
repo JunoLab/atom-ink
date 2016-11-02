@@ -58,7 +58,6 @@ module.exports =
   consumeStatusBar: (bar) ->
     @statusBar = bar
 
-
   create: (p = {progress: 0}) ->
     @activate()
     p.emitter = new Emitter
@@ -108,7 +107,7 @@ module.exports =
   onDidUpdateProgress: (f) -> @emitter.on 'did-update-progress', f
 
   # UI elements:
-  progressView: (p) ->
+  progressView: (p, {min} = {}) ->
     span = document.createElement 'span'
     prog = document.createElement 'progress'
     prog.classList.add 'ink'
@@ -116,7 +115,7 @@ module.exports =
     span.appendChild prog
 
     updateView = (prg) =>
-      if prg.progress?
+      if prg.progress? and not (min? and prg.progress < min)
         prog.setAttribute 'value', prg.progress
       else
         prog.removeAttribute 'value'
@@ -196,12 +195,10 @@ module.exports =
     @onDidUpdateStack =>
       span.removeChild span.firstChild
       # find the first determinate progress bar
-      global = @stack.find (p) => p.progress?
       # if there is none, use the first one in the stack
-      global = @stack[0] unless global?
-      # display an empty progress bar if the stack is empty
-      global = @create() unless global?
-      span.appendChild @progressView global
-      global.emitter.emit 'did-update-progress'
+      if (global = (@stack.find (p) => p.progress?) ? @stack[0])?
+        span.appendChild @progressView global, min: 0.01
+      else
+        span.appendChild @progressView @create()
 
     span
