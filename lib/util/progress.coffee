@@ -43,7 +43,7 @@ module.exports =
     @overlay = @stackView()
     @view = @tileView()
 
-    @tooltip = new Tooltip @view, @overlay, cond: => @hasDeterminateBars()
+    @tooltip = new Tooltip @view, @overlay, cond: => @stack.length
 
     @tile = @statusBar?.addLeftTile
       item: @view
@@ -176,12 +176,10 @@ module.exports =
       # remove all table rows
       while table.firstChild
         table.removeChild table.firstChild
-      if not @hasDeterminateBars()
+      if not @stack.length
         @tooltip.hide()
       # backwards iteration
-      for i in [0...@stack.length].reverse()
-        p = @stack[i]
-        continue unless p.progress?
+      for p in @stack.reverse()
         table.appendChild @tableRowView p
         p.emitter.emit 'did-update-progress'
 
