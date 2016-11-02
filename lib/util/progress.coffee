@@ -159,6 +159,9 @@ module.exports =
       if p.rightText?
         if tdr.firstChild then tdr.removeChild tdr.firstChild
         tdr.appendChild document.createTextNode p.rightText
+      if p.leftText?
+        if tdl.firstChild then tdl.removeChild tdl.firstChild
+        tdl.appendChild document.createTextNode p.leftText
     # construct the row
     tr.appendChild tdl
     tr.appendChild td
