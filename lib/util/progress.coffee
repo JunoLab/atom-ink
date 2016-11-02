@@ -177,7 +177,7 @@ module.exports =
       while table.firstChild
         table.removeChild table.firstChild
       if not @stack.length
-        @tooltip.hide()
+        @tooltip.hide_()
       # backwards iteration
       for p in @stack.reverse()
         table.appendChild @tableRowView p

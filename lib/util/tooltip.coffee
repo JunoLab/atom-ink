@@ -31,9 +31,13 @@ class Tooltip
     @showOnHover()
     this
 
+  hide_: ->
+    @view.classList.add 'dontshow'
+    => @view.style.display = 'none'
+
   hide: ->
     @view.classList.add 'dontshow'
-    setTimeout (=> @view.style.display = 'none'), 100
+    setTimeout (=> @hide_()), 100
 
   show: ->
     @view.style.display = 'block'
