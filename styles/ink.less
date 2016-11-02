@@ -244,3 +244,53 @@ atom-text-editor::shadow {
     font-weight: bold;
   }
 }
+
+.ink-tooltip {
+  position: absolute;
+  background: contrast(@syntax-background-color,
+                       darken(@syntax-background-color, 4%),
+                       lighten(@syntax-background-color, 4%));
+  border-left: 2px solid @background-color-info;
+  border-right: 2px solid @background-color-info;
+  border-radius: 3px;
+  font-size: 1.15em;
+  color: @syntax-text-color;
+  padding: 0.5em;
+  z-index: 100;
+  opacity: 1;
+  display: block;
+  transition: all 0.1s ease-out;
+
+  &.dontshow {
+    opacity: 0;
+    transform: translate(0, 1em);
+    pointer-events: none;
+  }
+}
+
+.ink-tooltip-msg {
+  display: block;
+}
+
+.progress-tr {
+  padding: 0 0.2em;
+  &.has-tooltip {
+    .ink-tooltip-msg {
+      position: absolute;
+      margin-top: -4em;
+      margin-left: 1em;
+      background: darken(@background-color-info, 10%);
+      border-radius: 1px;
+      padding: 0.5em;
+      color: white;
+      border-radius: 3px;
+      white-space: nowrap;
+      color: white;
+      opacity: 0;
+    }
+    &:hover .ink-tooltip-msg {
+      display: block;
+      opacity: 1;
+    }
+  }
+}
