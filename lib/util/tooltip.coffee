@@ -41,7 +41,7 @@ class Tooltip
 
   show: ->
     @view.style.display = 'block'
-    @view.classList.remove 'dontshow'
+    setTimeout ( => @view.classList.remove 'dontshow'), 20
 
   destroy: ->
     document.body.removeChild @view
