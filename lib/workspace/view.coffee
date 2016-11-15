@@ -37,6 +37,7 @@ class WorkspaceElement extends HTMLElement
           ]
       div 'context', [div('header', context), table('items', rows)]
     @view = views.render div 'contexts', contexts
+    @classList.add @model.id
     @appendChild @view
 
   initialize: (@model) ->
