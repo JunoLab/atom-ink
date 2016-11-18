@@ -1,7 +1,7 @@
 {CompositeDisposable} = require 'atom'
 
 subs = new CompositeDisposable
-panes = []
+panes = new Set
 
 module.exports =
 class PaneItem
@@ -9,7 +9,7 @@ class PaneItem
   @activate: ->
     return if subs?
     subs = new CompositeDisposable
-    for Pane in panes
+    panes.forEach (Pane) ->
       Pane.registerView()
 
   @deactivate: ->
@@ -17,13 +17,16 @@ class PaneItem
     subs = null
 
   @attachView: (@View) ->
-    panes.push this
-    @registered = {}
     @registerView()
 
   @registerView: ->
+    panes.add this
+
     subs.add atom.views.addViewProvider this, (pane) =>
-      new @View().initialize pane
+      if pane.element?
+        pane.element
+      else
+        new @View().initialize pane
 
     subs.add atom.deserializers.add
       name: "Ink#{@name}"
@@ -38,6 +41,7 @@ class PaneItem
         return @fromId id
 
   @fromId = (id) ->
+    @registered ?= {}
     if (pane = @registered[id])
       pane
     else
