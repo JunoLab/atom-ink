@@ -75,7 +75,6 @@ atom-text-editor::shadow {
   border: none;
   border-radius: @component-border-radius;
   border-left: 0.15em solid @background-color-info;
-  color: @syntax-text-color;
 
   &.error {
     border-left-color: @background-color-error;
@@ -105,6 +104,11 @@ atom-text-editor::shadow {
 
   .fade {
     color: lighten(@syntax-text-color, 20%);
+  }
+
+  a {
+    color: @syntax-text-color;
+    opacity: 0.60;
   }
 }
 
