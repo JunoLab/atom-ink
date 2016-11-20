@@ -69,20 +69,43 @@ atom-text-editor::shadow {
 // TODO: more CSS sharing
 
 .ink.under {
-  font-family: @font-family;
-  color: @text-color;
-
-  cursor: default;
+  padding: @component-padding * 0.5;
+  background-color: darken(@syntax-background-color, 5%);
+  font-size: 0.9em;
+  border: none;
+  border-radius: @component-border-radius;
+  border-left: 0.15em solid @background-color-info;
+  color: @syntax-text-color;
 
   &.error {
-    color: @text-color-error;
+    border-left-color: @background-color-error;
+    color: lighten(@background-color-error, 10%);
   }
 
-  background-color: @inset-panel-background-color;
+  &.ink-hide {
+    height: 0;
+  }
 
-  border-top: 1px solid @syntax-wrap-guide-color;
-  border-bottom: 1px solid @syntax-wrap-guide-color;
-  padding-left: 5px;
+  &.invalid {
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &.loading {
+    opacity: 0.5;
+    .icon:before {
+      height: initial;
+      width: initial;
+      animation: spin 4s linear infinite;
+      @keyframes spin { 100% { transform: rotate(1turn); } }
+    }
+  }
+
+  .fade {
+    color: lighten(@syntax-text-color, 20%);
+  }
 }
 
 
