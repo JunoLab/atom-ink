@@ -66,58 +66,8 @@ atom-text-editor::shadow {
   }
 }
 
-// TODO: more CSS sharing
-
-.ink.under {
-  padding: @component-padding * 0.5;
-  background-color: darken(@syntax-background-color, 5%);
-  font-size: 0.9em;
-  border: none;
-  border-radius: @component-border-radius;
-  border-left: 0.15em solid @background-color-info;
-
-  &.error {
-    border-left-color: @background-color-error;
-    color: lighten(@background-color-error, 10%);
-  }
-
-  &.ink-hide {
-    height: 0;
-  }
-
-  &.invalid {
-    opacity: 0.5;
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  &.loading {
-    opacity: 0.5;
-    .icon:before {
-      height: initial;
-      width: initial;
-      animation: spin 4s linear infinite;
-      @keyframes spin { 100% { transform: rotate(1turn); } }
-    }
-  }
-
-  .fade {
-    color: lighten(@syntax-text-color, 20%);
-  }
-
-  a {
-    color: @syntax-text-color;
-    opacity: 0.60;
-  }
-}
-
-
-.ink.inline {
+.result-mixin() {
   color: @syntax-text-color;
-  position: relative;
-  left: 1em;
-
   pointer-events: auto;
 
   &.error {
@@ -125,11 +75,10 @@ atom-text-editor::shadow {
     border-left: 2px solid @background-color-error;
   }
 
-  background: @syntax-background-color;
   border-left: 2px solid @background-color-info;
   border-right: 2px solid contrast(@syntax-background-color,
-                             darken(@syntax-background-color, 4%),
-                             lighten(@syntax-background-color, 4%));
+                                   darken(@syntax-background-color, 4%),
+                                   lighten(@syntax-background-color, 4%));
 
   border-radius: 3px;
 
@@ -138,12 +87,16 @@ atom-text-editor::shadow {
   opacity: 1;
   cursor: default;
 
-  max-width: 400px;
   overflow: hidden;
   white-space: pre;
 
   * {
     vertical-align: top;
+  }
+
+  a {
+    color: @syntax-text-color;
+    opacity: 0.65;
   }
 
   p {
@@ -184,9 +137,7 @@ atom-text-editor::shadow {
       opacity: 1;
     }
   }
-  > .tree > .body {
-    max-height: 250px;
-  }
+
 
   .editor.editor-colors {
     color: @syntax-text-color;
@@ -195,6 +146,29 @@ atom-text-editor::shadow {
     background: none;
     padding: 0;
   }
+}
+
+.ink.inline {
+  .result-mixin;
+  background: @syntax-background-color;
+  position: relative;
+  left: 1em;
+  max-width: 400px;
+
+  > .tree > .body {
+    max-height: 250px;
+  }
+}
+
+.ink.under {
+  .result-mixin;
+  background: contrast(@syntax-background-color,
+                       darken(@syntax-background-color, 3%),
+                       lighten(@syntax-background-color, 3%));
+  font-size: 0.9em;
+  max-width: 100%;
+  white-space: pre-line;
+  padding: 0.5em 0.5em 0.5em 1em;
 }
 
 .ink.stepper {
