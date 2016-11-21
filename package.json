@@ -14,7 +14,8 @@
     "atom-space-pen-views": "^2.0.0",
     "fuzzaldrin-plus": "^0.1.0",
     "underscore-plus": "*",
-    "element-resize-detector": "*"
+    "element-resize-detector": "*",
+    "etch": "*"
   },
   "providedServices": {
     "ink": {

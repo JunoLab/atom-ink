@@ -11,7 +11,7 @@ atom-text-editor {
   clip: rect(auto auto auto auto); // Otherwise inline results spill everywhere
 }
 
-.inline-block progress.ink:indeterminate {
+progress.ink:indeterminate {
   animation-iteration-count: infinite;
 }
 
@@ -274,23 +274,4 @@ atom-text-editor::shadow {
 
 .progress-tr {
   padding: 0 0.2em;
-  &.has-tooltip {
-    .ink-tooltip-msg {
-      position: absolute;
-      margin-top: -4em;
-      margin-left: 1em;
-      background: darken(@background-color-info, 10%);
-      border-radius: 1px;
-      padding: 0.5em;
-      color: white;
-      border-radius: 3px;
-      white-space: nowrap;
-      color: white;
-      opacity: 0;
-    }
-    &:hover .ink-tooltip-msg {
-      display: block;
-      opacity: 1;
-    }
-  }
 }

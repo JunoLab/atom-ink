@@ -22,7 +22,7 @@
 
 module.exports =
 class Tooltip
-  constructor: (@parent, content, {@cond, @delay}) ->
+  constructor: (@parent, content, {@cond, @delay}={}) ->
     @cond  = (-> true) unless @cond?
     @delay = 150       unless @delay?
 
