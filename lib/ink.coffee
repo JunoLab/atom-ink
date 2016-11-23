@@ -13,6 +13,7 @@ Console = require './console/console'
 Stepper = require './debugger/stepper'
 breakpoints = require './debugger/breakpoints'
 PlotPane = require './plots/pane'
+profiler = require './plots/profiler'
 Workspace = require './workspace/workspace'
 tree = require './tree'
 goto = require './gotodef'
@@ -20,12 +21,12 @@ goto = require './gotodef'
 module.exports = Ink =
   activate: ->
     etch.setScheduler(atom.views)
-    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, breakpoints]
+    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, breakpoints, profiler]
 
   deactivate: ->
     pkg = atom.packages.getActivePackage 'ink'
     localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
-    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, progress, breakpoints]
+    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, progress, breakpoints, profiler]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
