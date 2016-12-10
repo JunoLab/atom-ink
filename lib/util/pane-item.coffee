@@ -3,6 +3,12 @@
 subs = new CompositeDisposable
 panes = new Set
 
+ensurePaneVisible = (pane) ->
+  return unless pane and pane.getFlexScale
+  if pane.getFlexScale() < 0.1
+    pane.setFlexScale 1
+  ensurePaneVisible pane.parent
+
 module.exports =
 class PaneItem
 
@@ -63,6 +69,7 @@ class PaneItem
     if (pane = @currentPane())
       pane.activate()
       pane.activateItem this
+      ensurePaneVisible pane
       return pane
     else
       return
