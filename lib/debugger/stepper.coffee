@@ -1,5 +1,6 @@
 StepperView = require './stepper-view'
 views = require '../util/views'
+{focusEditorPane} = require '../util/pane-item'
 {span} = views.tags
 
 module.exports =
@@ -33,6 +34,7 @@ class Stepper
       active.setCursorBufferPosition [line, 0]
       Promise.resolve()
     else
+      focusEditorPane()
       atom.workspace.open file,
         initialLine: line
         searchAllPanes: true
