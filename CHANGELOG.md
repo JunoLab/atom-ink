@@ -1,6 +1,11 @@
-## 0.6.0
+## 0.6.1
 
 * new progress API (#90)
+* The console and plot pane now have customisable toolbars
+
+## v0.5.1
+
+* Support for ANSI colour codes in console output
 
 ## 0.5.0
 
