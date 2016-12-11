@@ -31,6 +31,8 @@ module.exports = Ink =
     progress.consumeStatusBar bar
 
   provide: ->
+    util:
+      focusEditorPane: () -> PaneItem.focusEditorPane()
     highlight: (ed, start, end) =>
       block.highlight ed, start, end
     Loading: Loading
