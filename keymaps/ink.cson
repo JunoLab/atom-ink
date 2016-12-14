@@ -14,7 +14,7 @@
 'ink-console':
   'alt-up': 'console:previous-in-history'
   'alt-down': 'console:next-in-history'
-  'shift-space': '!unset'
+  'shift-space': 'unset!'
 
 'atom-text-editor:not([mini])':
   'escape': 'inline:clear-current'
