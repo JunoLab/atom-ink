@@ -64,11 +64,17 @@ atom-text-editor {
   .icon-chevron-right::before {
     content: "\f078";
   }
-  .icon-primitive-dot::before {
-    content: "\f052";
-  }
-  .icon-primitive-square::before {
-    content: "\f053";
+  .icon-primitive-dot {
+    color: @text-color-error;
+    &.cond {
+      color: @text-color-warning;
+    }
+    &.inactive {
+      opacity: 0.5;
+    }
+    &::before {
+      content: "\f052";
+    }
   }
 }
 
