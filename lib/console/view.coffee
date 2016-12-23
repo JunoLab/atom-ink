@@ -144,18 +144,15 @@ class ConsoleElement extends HTMLElement
     cell
 
   inputView: (item) ->
-    model = atom.workspace.buildTextEditor()
+    model = atom.workspace.textEditorRegistry.build()
     atom.textEditors.add model
     ed = atom.views.getView model
     ed.onblur = -> atom.commands.dispatch ed, 'autocomplete-plus:cancel'
     item.editor = model
-    # remove this when appropriate
-    if @atomVersion[0] is 1 and @atomVersion[1] is 10
-      item.editor.presenter.scrollPastEndOverride = false
-    else if @atomVersion[0] is 1 and @atomVersion[1] >= 11
-      item.editor.update scrollPastEnd: false
-    item.editor.setLineNumberGutterVisible(false)
-    item.editor.setSoftWrapped true
+    item.editor.update
+      scrollPastEnd: false,
+      softWrapped: true,
+      lineNumberGutterVisible: false
     @updateGrammar item
     ed
 
