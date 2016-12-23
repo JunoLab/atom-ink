@@ -115,7 +115,7 @@ class ConsoleElement extends HTMLElement
     atom.views.getView(@lastInput)?.focus()
     s = @lastInput.onDidChange =>
       atom.views.getView(@lastInput)?.focus()
-      s.dispose()
+      s?.dispose()
     @scrollTop = y
 
   # Various cell views
