@@ -29,7 +29,7 @@ class ConsoleElement extends HTMLElement
     @model.onDidClear => @clear()
     @model.onDidDeleteFirstItems (n) => @deleteFirstItems n
     @model.onDone => if @hasFocus() then @focus()
-    @model.onFocusInput (force) => @focusLast force
+    @model.onFocusInput (force) => @enterLastInput()
     @model.onLoading (status) => @loading status
     @model.onDidUpdateItem ({item, key}) =>
       if key is 'icon'    then @updateIcon item
@@ -38,7 +38,7 @@ class ConsoleElement extends HTMLElement
 
     @onfocus = =>
       if document.activeElement == this and @model.getInput()
-        @focusLast()
+        @enterLastInput()
 
     # determine if we should scroll down
     @shouldScroll = true
@@ -110,13 +110,13 @@ class ConsoleElement extends HTMLElement
     view = view.getBoundingClientRect()
     pane.bottom >= view.top >= pane.top or pane.bottom >= view.bottom >= pane.top
 
-  focusVisible: (view, force) ->
-    if force or @isVisible view
-      view.focus()
-
-  focusLast: (force) ->
-    if @hasFocus() and (view = @model.items[@model.items.length-1]?.view)
-      @focusVisible view, force
+  enterLastInput: ->
+    y = @scrollTop
+    atom.views.getView(@lastInput)?.focus()
+    s = @lastInput.onDidChange =>
+      atom.views.getView(@lastInput)?.focus()
+      s.dispose()
+    @scrollTop = y
 
   # Various cell views
   iconView: (name) ->
@@ -144,7 +144,7 @@ class ConsoleElement extends HTMLElement
     cell
 
   inputView: (item) ->
-    model = atom.workspace.textEditorRegistry.build()
+    @lastInput = model = atom.workspace.textEditorRegistry.build()
     atom.textEditors.add model
     ed = atom.views.getView model
     ed.onblur = -> atom.commands.dispatch ed, 'autocomplete-plus:cancel'
