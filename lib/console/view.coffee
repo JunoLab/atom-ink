@@ -111,6 +111,7 @@ class ConsoleElement extends HTMLElement
     pane.bottom >= view.top >= pane.top or pane.bottom >= view.bottom >= pane.top
 
   enterLastInput: ->
+    return unless @hasFocus()
     y = @scrollTop
     atom.views.getView(@lastInput)?.focus()
     s = @lastInput.onDidChange =>
