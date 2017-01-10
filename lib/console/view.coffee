@@ -29,7 +29,7 @@ class ConsoleElement extends HTMLElement
     @model.onDidClear => @clear()
     @model.onDidDeleteFirstItems (n) => @deleteFirstItems n
     @model.onDone => if @hasFocus() then @focus()
-    @model.onFocusInput (force) => @enterLastInput()
+    @model.onFocusInput () => @enterLastInput()
     @model.onLoading (status) => @loading status
     @model.onDidUpdateItem ({item, key}) =>
       if key is 'icon'    then @updateIcon item
