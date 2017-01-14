@@ -26,6 +26,32 @@ atom-overlay:last-child .ink.inline {
                              darken(@syntax-background-color, 4%),
                              lighten(@syntax-background-color, 4%));
 }
+atom-text-editor.editor{
+  .gutter[gutter-name="ink-breakpoints"] {
+    min-width: 1.2em;
+    .ink-bp {
+      transition: all 0.2s;
+
+      &.icon-primitive-dot {
+        color: @text-color-error;
+        &.cond {
+          color: @text-color-warning;
+        }
+        &.inactive {
+          opacity: 0.5;
+        }
+        &::before {
+          content: "\f052";
+        }
+      }
+
+      &.ink-hide {
+        opacity: 0;
+        transform: translate(-1em);
+      }
+    }
+  }
+}
 
 atom-text-editor {
   div.block-notify .region {
@@ -63,18 +89,6 @@ atom-text-editor {
   }
   .icon-chevron-right::before {
     content: "\f078";
-  }
-  .icon-primitive-dot {
-    color: @text-color-error;
-    &.cond {
-      color: @text-color-warning;
-    }
-    &.inactive {
-      opacity: 0.5;
-    }
-    &::before {
-      content: "\f052";
-    }
   }
 }
 
@@ -199,17 +213,6 @@ atom-text-editor {
   }
   &:hover {
     overflow: hidden;
-  }
-}
-
-atom-text-editor {
-  .ink-bp {
-    margin-left: 0.3em;
-    transition: all 0.2s;
-    &.ink-hide {
-      opacity: 0;
-      transform: translate(-1em);
-    }
   }
 }
 
