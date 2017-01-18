@@ -7,7 +7,7 @@
   "repository": "https://github.com/JunoLab/atom-ink",
   "license": "MIT",
   "engines": {
-    "atom": ">=1.0.0 <2.0.0"
+    "atom": ">=1.12.0 <2.0.0"
   },
   "dependencies": {
     "ansi-to-html": "^0.4.1",
