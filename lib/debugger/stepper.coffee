@@ -21,12 +21,15 @@ class Stepper
     ed.onDidDestroy =>
       s.destroy()
       @views = @views.filter((x) => x != s)
+    @setViewText s
+
+  setViewText: (view) ->
+    view.clear()
+    view.appendChild views.render span 'stepper-label', @text
+    view.appendChild view.buttonGroup @buttons
 
   setText: (@text) ->
-    for view in @views
-      view.clear()
-      view.appendChild views.render span 'stepper-label', @text
-      view.appendChild view.buttonGroup @buttons
+    @views.forEach (view) => @setViewText(view)
 
   edsForFile: (file) ->
     atom.workspace.getTextEditors()
