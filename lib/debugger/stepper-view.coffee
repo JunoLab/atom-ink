@@ -63,9 +63,6 @@ class StepperView
       type: 'overlay'
       item: @view
       stable: true
-    # Work around markers being destroyed when closing a split editor
-    @mListener?.dispose()
-    @mListener = @marker.onDidDestroy => @attach() unless @destroyed
 
   constructor: (@editor, @line) ->
     @createView()
@@ -93,7 +90,6 @@ class StepperView
   destroy: ->
     @destroyed = true
     @disposables.dispose()
-    @mListener.dispose()
     @rmClass @editor
     @fadeOut =>
       @marker.destroy()
