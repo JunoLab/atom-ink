@@ -16,7 +16,11 @@ class Stepper
     ]
 
   attach: (ed) ->
-    @views.push new StepperView ed, @line
+    s = new StepperView ed, @line
+    @views.push s
+    ed.onDidDestroy =>
+      s.destroy()
+      @views = @views.filter((x) => x != s)
 
   setText: (@text) ->
     for view in @views
@@ -56,7 +60,7 @@ class Stepper
         @setText @text
 
   detach: ->
-    view?.destroy() for view in @views
+    view.destroy() for view in @views
     @views = []
 
   destroy: ->
