@@ -18,12 +18,15 @@ module.exports =
     view
 
   toggle: (view) ->
+    head = view.querySelector ':scope > .header'
     body = view.querySelector ':scope > .body'
     icon = view.querySelector ':scope > .icon'
     return unless body?
     if body.style.display == ''
       body.style.display = 'none'
+      head.style.maxHeight = '1em'
       icon.classList.remove 'open'
     else
       body.style.display = ''
+      head.style.maxHeight = ''
       icon.classList.add 'open'
