@@ -24,9 +24,9 @@ module.exports =
     return unless body?
     if body.style.display == ''
       body.style.display = 'none'
-      head.style.maxHeight = '1em'
+      head.classList.add 'closed'
       icon.classList.remove 'open'
     else
       body.style.display = ''
-      head.style.maxHeight = ''
+      head.classList.remove 'closed'
       icon.classList.add 'open'

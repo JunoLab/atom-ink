@@ -178,8 +178,13 @@ atom-text-editor {
   left: 1em;
   max-width: 400px;
 
-  > .tree > .body {
-    max-height: 250px;
+  > .tree {
+    > .header.closed {
+      max-height: 1.5em;
+    }
+    > .body {
+      max-height: 250px;
+    }
   }
 }
 
