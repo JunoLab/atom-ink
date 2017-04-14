@@ -23,7 +23,7 @@ class HistoryProvider
     @position is @items.length
 
   matchesPrefix: ({input}, pre) ->
-    not pre? or input.startsWith pre
+    not pre? or input?.startsWith pre
 
   getPrevious: (prefix) ->
     delete @lastPosition
