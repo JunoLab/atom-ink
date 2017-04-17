@@ -5,6 +5,8 @@
 trees = require '../tree'
 views = require '../util/views'
 {div, span} = views.tags
+ResizeDetector = require 'element-resize-detector'
+
 
 # ## Result API
 # `Result`s are DOM elements which represent the result of some operation. They
@@ -31,25 +33,51 @@ metrics = ->
 
 metrics = throttle metrics, 60*60*1000
 
+resizer = ResizeDetector strategy: "scroll"
+
 module.exports =
 class Result
-  constructor: (@editor, [start, end], opts={}) ->
+  constructor: (@editor, [@start, @end], opts={}) ->
     metrics()
     opts.type ?= 'inline'
     {@type} = opts
     @emitter = new Emitter
     @disposables = new CompositeDisposable
-    opts.fade ?= not Result.removeLines @editor, start, end
+    opts.fade ?= not Result.removeLines @editor, @start, @end
     opts.loading ?= not opts.content
     @createView opts
-    @initMarker [start, end]
+    @initMarker()
     @text = @getText()
     @disposables.add @editor.onDidChange (e) => @validateText e
+    @expanded = false
+
+    @view.addEventListener 'dblclick', (ev) => @toggleView()
 
   fadeIn: ->
     @view.classList.add 'ink-hide'
     @timeout 20, =>
       @view.classList.remove 'ink-hide'
+
+  toggleView: () ->
+    return unless @type == 'inline'
+    if @expanded then @collapseView() else @expandView()
+
+  expandView: () ->
+    @expanded = true
+    @decoration?.destroy()
+    @marker = @editor.markBufferRange [[@start, 0], [@start, 0]]
+    mark = item: @view, avoidOverflow: false, type: 'overlay', class: 'ink-underlay'
+    @expDecoration = @editor.decorateMarker @marker, mark
+    if @l? then resizer.removeListener @l
+    el = @editor.editorElement.getElementsByClassName('scroll-view')[0]
+    setTimeout (=> @view.style.maxWidth = el.getBoundingClientRect() + "px"), 100
+    @l = resizer.listenTo el, (el) =>
+      setTimeout (=> @view.style.maxWidth = el.getBoundingClientRect() + "px"), 100
+
+  collapseView: () ->
+    @expanded = false
+    @expDecoration?.destroy()
+    @initMarker()
 
   createView: (opts) ->
     {content, fade, loading} = opts
@@ -86,20 +114,36 @@ class Result
       @view.removeChild @view.firstChild
     if error then @view.classList.add 'error' else @view.classList.remove 'error'
     if loading then @view.classList.add 'loading' else @view.classList.remove 'loading'
+    view?.onToggle = =>
+      console.log "toggle"
+      @toggleView()
     @view.appendChild view
 
   lineRange: (start, end) ->
     [[start, 0], [end, @editor.lineTextForBufferRow(end).length]]
 
-  initMarker: ([start, end]) ->
-    @marker = @editor.markBufferRange @lineRange(start, end)
+  initMarker: ->
+    @marker = @editor.markBufferRange @lineRange(@start, @end)
     @marker.result = @
     mark = item: @view, avoidOverflow: false
     switch @type
       when 'inline' then mark.type = 'overlay'; mark.class = 'ink-overlay'
       when 'block' then mark.type = 'block'; mark.position = 'after'
-    @editor.decorateMarker @marker, mark
+    @decoration = @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
+
+    if @l? then resizer.removeListener @l
+    setTimeout (=>
+      elRect = @editor.editorElement.getBoundingClientRect()
+      w = elRect.width + elRect.left - 50 -
+          @view.parentElement.getBoundingClientRect().left + "px"
+      @view.style.maxWidth = w), 100
+    @l = resizer.listenTo @editor.editorElement, (el) =>
+      setTimeout (=>
+        elRect = el.getBoundingClientRect()
+        w = elRect.width + elRect.left - 50 -
+            @view.parentElement.getBoundingClientRect().left + "px"
+        @view.style.maxWidth = w), 50
 
   toggleTree: ->
     trees.toggle $(@view).find('> .tree')
