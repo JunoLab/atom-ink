@@ -68,11 +68,12 @@ class Result
     @marker = @editor.markBufferRange [[@start, 0], [@start, 0]]
     mark = item: @view, avoidOverflow: false, type: 'overlay', class: 'ink-underlay'
     @expDecoration = @editor.decorateMarker @marker, mark
-    if @l? then resizer.removeListener @l
-    el = @editor.editorElement.getElementsByClassName('scroll-view')[0]
-    setTimeout (=> @view.style.maxWidth = el.getBoundingClientRect() + "px"), 100
-    @l = resizer.listenTo el, (el) =>
-      setTimeout (=> @view.style.maxWidth = el.getBoundingClientRect() + "px"), 100
+    el = @editor.editorElement
+    setTimeout (=>
+      elRect = el.getBoundingClientRect()
+      w = elRect.width + elRect.left - 40 -
+          @view.parentElement.getBoundingClientRect().left + "px"
+      @view.style.maxWidth = w), 50
 
   collapseView: () ->
     @expanded = false
@@ -114,9 +115,6 @@ class Result
       @view.removeChild @view.firstChild
     if error then @view.classList.add 'error' else @view.classList.remove 'error'
     if loading then @view.classList.add 'loading' else @view.classList.remove 'loading'
-    view?.onToggle = =>
-      console.log "toggle"
-      @toggleView()
     @view.appendChild view
 
   lineRange: (start, end) ->
@@ -132,16 +130,10 @@ class Result
     @decoration = @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
 
-    if @l? then resizer.removeListener @l
-    setTimeout (=>
-      elRect = @editor.editorElement.getBoundingClientRect()
-      w = elRect.width + elRect.left - 50 -
-          @view.parentElement.getBoundingClientRect().left + "px"
-      @view.style.maxWidth = w), 100
-    @l = resizer.listenTo @editor.editorElement, (el) =>
+    resizer.listenTo @editor.editorElement, (el) =>
       setTimeout (=>
         elRect = el.getBoundingClientRect()
-        w = elRect.width + elRect.left - 50 -
+        w = elRect.width + elRect.left - 40 -
             @view.parentElement.getBoundingClientRect().left + "px"
         @view.style.maxWidth = w), 50
 
