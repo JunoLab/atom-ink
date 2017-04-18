@@ -86,6 +86,12 @@ class Result
     @expanded = false
     @expMarker?.destroy()
     @decorateMarker()
+    setTimeout (=>
+      elRect = el.getBoundingClientRect()
+      w = elRect.width + elRect.left - 40 -
+          @view.parentElement.getBoundingClientRect().left
+      if w < 100 then w = 100
+      @view.style.maxWidth = w + 'px'), 50
 
   createView: (opts) ->
     {content, fade, loading} = opts
