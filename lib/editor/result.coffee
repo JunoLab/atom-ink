@@ -72,8 +72,9 @@ class Result
     setTimeout (=>
       elRect = el.getBoundingClientRect()
       w = elRect.width + elRect.left - 40 -
-          @view.parentElement.getBoundingClientRect().left + "px"
-      @view.style.maxWidth = w), 50
+          @view.parentElement.getBoundingClientRect().left
+      if w < 100 then w = 100
+      @view.style.maxWidth = w + 'px'), 50
 
   collapseView: () ->
     @expanded = false
@@ -134,8 +135,9 @@ class Result
       setTimeout (=>
         elRect = el.getBoundingClientRect()
         w = elRect.width + elRect.left - 40 -
-            @view.parentElement.getBoundingClientRect().left + "px"
-        @view.style.maxWidth = w), 50
+            @view.parentElement.getBoundingClientRect().left
+        if w < 100 then w = 100
+        @view.style.maxWidth = w + 'px'), 50
 
   toggleTree: ->
     trees.toggle $(@view).find('> .tree')
