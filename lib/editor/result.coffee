@@ -65,7 +65,8 @@ class Result
   expandView: () ->
     @expanded = true
     @decoration?.destroy()
-    @expMarker = @editor.markBufferRange [[@start, 0], [@start, 1]]
+    row = @marker.getEndBufferPosition().row
+    @expMarker = @editor.markBufferRange [[row, 0], [row, 1]]
     mark =
       item: @view
       avoidOverflow: false
@@ -84,7 +85,7 @@ class Result
   collapseView: () ->
     @expanded = false
     @expMarker?.destroy()
-    @initMarker()
+    @decorateMarker()
 
   createView: (opts) ->
     {content, fade, loading} = opts
@@ -126,14 +127,17 @@ class Result
   lineRange: (start, end) ->
     [[start, 0], [end, @editor.lineTextForBufferRow(end).length]]
 
-  initMarker: ->
-    @marker = @editor.markBufferRange @lineRange(@start, @end)
-    @marker.result = @
+  decorateMarker: ->
     mark = item: @view, avoidOverflow: false
     switch @type
       when 'inline' then mark.type = 'overlay'; mark.class = 'ink-overlay'
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @decoration = @editor.decorateMarker @marker, mark
+
+  initMarker: ->
+    @marker = @editor.markBufferRange @lineRange(@start, @end)
+    @marker.result = @
+    @decorateMarker()
     @disposables.add @marker.onDidChange (e) => @checkMarker e
     if @type == 'inline'
       resizer.listenTo @editor.editorElement, (el) =>
