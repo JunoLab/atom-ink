@@ -139,7 +139,7 @@ atom-text-editor {
   }
 
   &:hover {
-    //overflow: overlay;
+    overflow: overlay;
   }
 
   &.loading {
@@ -188,11 +188,12 @@ atom-text-editor {
   position: relative;
   left: 1em;
   min-width: 1em;
-  white-space: nowrap;
+  white-space: pre-wrap;
 
   > .tree {
     > .header.closed {
       max-height: 1.5em;
+      white-space: nowrap;
     }
     > .body {
       max-height: 250px;
@@ -207,7 +208,7 @@ atom-text-editor {
                        lighten(@syntax-background-color, 3%));
   font-size: 0.9em;
   max-width: 100%;
-  white-space: pre-line;
+  white-space: pre-wrap;
   padding: 0.5em 0.5em 0.5em 1em;
 }
 
