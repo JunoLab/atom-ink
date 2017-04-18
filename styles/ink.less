@@ -29,6 +29,13 @@ progress.ink:indeterminate {
     width: 100%;
     max-width: none;
     white-space: pre-wrap;
+    border-top: 2px solid @background-color-info;
+    &.error {
+      border-top: 2px solid @background-color-error;
+    }
+    &:hover {
+      overflow: auto;
+    }
   }
 }
 
