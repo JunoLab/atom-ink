@@ -65,9 +65,14 @@ class Result
   expandView: () ->
     @expanded = true
     @decoration?.destroy()
-    @marker = @editor.markBufferRange [[@start, 0], [@start, 0]]
-    mark = item: @view, avoidOverflow: false, type: 'overlay', class: 'ink-underlay'
-    @expDecoration = @editor.decorateMarker @marker, mark
+    @expMarker = @editor.markBufferRange [[@start, 0], [@start, 1]]
+    mark =
+      item: @view
+      avoidOverflow: false
+      type: 'overlay'
+      class: 'ink-underlay'
+      invalidate: 'never'
+    @expDecoration = @editor.decorateMarker @expMarker, mark
     el = @editor.editorElement
     setTimeout (=>
       elRect = el.getBoundingClientRect()
@@ -78,7 +83,7 @@ class Result
 
   collapseView: () ->
     @expanded = false
-    @expDecoration?.destroy()
+    @expMarker?.destroy()
     @initMarker()
 
   createView: (opts) ->
@@ -130,14 +135,14 @@ class Result
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @decoration = @editor.decorateMarker @marker, mark
     @disposables.add @marker.onDidChange (e) => @checkMarker e
-
-    resizer.listenTo @editor.editorElement, (el) =>
-      setTimeout (=>
-        elRect = el.getBoundingClientRect()
-        w = elRect.width + elRect.left - 40 -
-            @view.parentElement.getBoundingClientRect().left
-        if w < 100 then w = 100
-        @view.style.maxWidth = w + 'px'), 50
+    if @type == 'inline'
+      resizer.listenTo @editor.editorElement, (el) =>
+        setTimeout (=>
+          elRect = el.getBoundingClientRect()
+          w = elRect.width + elRect.left - 40 -
+              @view.parentElement.getBoundingClientRect().left
+          if w < 100 then w = 100
+          @view.style.maxWidth = w + 'px'), 50
 
   toggleTree: ->
     trees.toggle $(@view).find('> .tree')
@@ -150,6 +155,7 @@ class Result
     @isDestroyed = true
     @emitter.emit 'destroyed'
     @emitter.dispose()
+    @expMarker?.destroy()
     @marker.destroy()
     @disposables.dispose()
 
