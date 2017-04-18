@@ -74,9 +74,8 @@ class Result
       class: 'ink-underlay'
       invalidate: 'never'
     @expDecoration = @editor.decorateMarker @expMarker, mark
-    el = @editor.editorElement
     setTimeout (=>
-      elRect = el.getBoundingClientRect()
+      elRect = @editor.editorElement.getBoundingClientRect()
       w = elRect.width + elRect.left - 40 -
           @view.parentElement.getBoundingClientRect().left
       if w < 100 then w = 100
@@ -87,7 +86,7 @@ class Result
     @expMarker?.destroy()
     @decorateMarker()
     setTimeout (=>
-      elRect = el.getBoundingClientRect()
+      elRect = @editor.editorElement.getBoundingClientRect()
       w = elRect.width + elRect.left - 40 -
           @view.parentElement.getBoundingClientRect().left
       if w < 100 then w = 100
