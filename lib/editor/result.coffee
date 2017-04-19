@@ -95,6 +95,7 @@ class Result
   createView: (opts) ->
     {content, fade, loading} = opts
     @view = document.createElement 'div'
+    @view.setAttribute 'tabindex', '-1'
     @view.classList.add 'ink', 'result'
     switch @type
       when 'inline'
