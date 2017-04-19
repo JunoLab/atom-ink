@@ -241,7 +241,7 @@ class Result
     ed = atom.workspace.getActiveTextEditor()
     for sel in ed.getSelections()
       rs = @forLines ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row
-      rs.map (r) -> r.toggleTree()
+      rs.map (r) -> r.toggleView()
 
   # Commands
 
