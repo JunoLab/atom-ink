@@ -74,13 +74,13 @@ class Result
       class: 'ink-underlay'
       invalidate: 'never'
     @expDecoration = @editor.decorateMarker @expMarker, mark
-    @updateWidth()
+    setTimeout (=> @updateWidth()), 50
 
   collapseView: () ->
     @expanded = false
     @expMarker?.destroy()
     @decorateMarker()
-    @updateWidth()
+    setTimeout (=> @updateWidth()), 50
 
   createView: (opts) ->
     {content, fade, loading} = opts
