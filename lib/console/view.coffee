@@ -208,7 +208,7 @@ class ConsoleElement extends HTMLElement
     @isLoading = l
 
   # Scrolling
-  scrollDown: -> throttle (=> delay (=> @lastElement().scrollIntoView()), 20), 130, {leading: false}
+  scrollDown: -> throttle (=> delay (=> @lastElement()?.scrollIntoView()), 20), 130, {leading: false}
 
   lock: (f) ->
     if @isVisible @lastElement()
