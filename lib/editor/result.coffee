@@ -74,23 +74,13 @@ class Result
       class: 'ink-underlay'
       invalidate: 'never'
     @expDecoration = @editor.decorateMarker @expMarker, mark
-    setTimeout (=>
-      elRect = @editor.editorElement.getBoundingClientRect()
-      w = elRect.width + elRect.left - 40 -
-          @view.parentElement.getBoundingClientRect().left
-      if w < 100 then w = 100
-      @view.style.maxWidth = w + 'px'), 50
+    @updateWidth()
 
   collapseView: () ->
     @expanded = false
     @expMarker?.destroy()
     @decorateMarker()
-    setTimeout (=>
-      elRect = @editor.editorElement.getBoundingClientRect()
-      w = elRect.width + elRect.left - 40 -
-          @view.parentElement.getBoundingClientRect().left
-      if w < 100 then w = 100
-      @view.style.maxWidth = w + 'px'), 50
+    @updateWidth()
 
   createView: (opts) ->
     {content, fade, loading} = opts
@@ -139,20 +129,21 @@ class Result
       when 'inline' then mark.type = 'overlay'; mark.class = 'ink-overlay'
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @decoration = @editor.decorateMarker @marker, mark
+    if @type == 'inline'
+      setTimeout (=> resizer.listenTo @editor.editorElement, => @updateWidth()), 50
 
   initMarker: ->
     @marker = @editor.markBufferRange @lineRange(@start, @end)
     @marker.result = @
     @decorateMarker()
     @disposables.add @marker.onDidChange (e) => @checkMarker e
-    if @type == 'inline'
-      resizer.listenTo @editor.editorElement, (el) =>
-        setTimeout (=>
-          elRect = el.getBoundingClientRect()
-          w = elRect.width + elRect.left - 40 -
-              @view.parentElement.getBoundingClientRect().left
-          if w < 100 then w = 100
-          @view.style.maxWidth = w + 'px'), 50
+
+  updateWidth: ->
+    elRect = @editor.editorElement.getBoundingClientRect()
+    w = elRect.width + elRect.left - 40 -
+        @view.parentElement.getBoundingClientRect().left
+    if w < 100 then w = 100
+    @view.style.maxWidth = w + 'px'
 
   toggleTree: ->
     trees.toggle $(@view).find('> .tree')
