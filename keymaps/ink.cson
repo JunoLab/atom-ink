@@ -10,7 +10,6 @@
 
 'ink-console .editor':
   'enter': 'console:evaluate'
-  'alt-t': 'inline-results:toggle'
 
 'ink-console':
   'shift-space': 'unset!'
@@ -23,6 +22,7 @@
 
 'atom-text-editor:not([mini])':
   'escape': 'inline:clear-current'
+  'alt-t': 'inline-results:toggle'
 
 '.platform-darwin atom-text-editor:not([mini])':
   'cmd-i cmd-c': 'inline-results:clear-all'
