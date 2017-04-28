@@ -140,6 +140,7 @@ class Result
 
   updateWidth: ->
     elRect = @editor.editorElement.getBoundingClientRect()
+    if not @view.parentElement? then return
     w = elRect.width + elRect.left - 40 -
         @view.parentElement.getBoundingClientRect().left
     if w < 100 then w = 100
