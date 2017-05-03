@@ -1,5 +1,5 @@
 # TODO: better scrolling behaviour
-{throttle} = require 'underscore-plus'
+{throttle, debounce} = require 'underscore-plus'
 {$, $$} = require 'atom-space-pen-views'
 {CompositeDisposable, Emitter} = require 'atom'
 trees = require '../tree'
@@ -34,6 +34,8 @@ metrics = ->
 metrics = throttle metrics, 60*60*1000
 
 resizer = ResizeDetector strategy: "scroll"
+
+debouncedUpdateWidth = (res, el) -> debounce(((res, el) -> res.updateWidth(el)), 200)
 
 module.exports =
 class Result
@@ -130,7 +132,7 @@ class Result
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @decoration = @editor.decorateMarker @marker, mark
     if @type == 'inline'
-      setTimeout (=> resizer.listenTo @editor.editorElement, => @updateWidth()), 50
+      resizer.listenTo @editor.editorElement, ((el) => debouncedUpdateWidth(this, el))()
 
   initMarker: ->
     @marker = @editor.markBufferRange @lineRange(@start, @end)
@@ -138,11 +140,10 @@ class Result
     @decorateMarker()
     @disposables.add @marker.onDidChange (e) => @checkMarker e
 
-  updateWidth: ->
-    elRect = @editor.editorElement.getBoundingClientRect()
-    if not @view.parentElement? then return
-    w = elRect.width + elRect.left - 40 -
-        @view.parentElement.getBoundingClientRect().left
+  updateWidth: (el) ->
+    elRect = el.getBoundingClientRect()
+    if not @view.offsetParent? then return
+    w = elRect.width + elRect.left - 40 - @view.offsetParent.offsetLeft
     if w < 100 then w = 100
     @view.style.maxWidth = w + 'px'
 
