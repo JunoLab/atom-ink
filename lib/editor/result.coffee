@@ -139,19 +139,21 @@ class Result
       if not results.hasOwnProperty(ed.id)
         results[ed.id] = true
         listener = ->
+          ed.presenter.updating = true
+          # ed.element.component.requestAnimationFrame ->
           res = ed.findMarkers().filter((m) -> m.result?).map((m) -> m.result)
           # reads
-          # rect = el.getBoundingClientRect()
           rect = null
           fastdom.measure ->
-            rect = ed.presenter.boundingClientRect
+            rect = el.getBoundingClientRect()
             res.forEach (m) -> m.readOffsetLeft()
           # writes
           fastdom.mutate ->
             res.forEach (m) -> m.updateWidth(rect)
+          ed.presenter.updating = false
         # ed.presenter.onDidUpdateState listener
 
-        resizer.listenTo @editor.editorElement, listener
+        resizer.listenTo el, listener
 
   initMarker: ->
     @marker = @editor.markBufferRange @lineRange(@start, @end)
