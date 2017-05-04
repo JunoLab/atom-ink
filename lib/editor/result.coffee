@@ -138,8 +138,8 @@ class Result
       el = @editor.editorElement
       if not results.hasOwnProperty(ed.id)
         results[ed.id] = true
-        listener = ->
-          ed.presenter.updating = true
+        listener = debounce((->
+          window.requestAnimationFrame listener
           # ed.element.component.requestAnimationFrame ->
           res = ed.findMarkers().filter((m) -> m.result?).map((m) -> m.result)
           # reads
@@ -150,8 +150,10 @@ class Result
           # writes
           fastdom.mutate ->
             res.forEach (m) -> m.updateWidth(rect)
-          ed.presenter.updating = false
-        # ed.presenter.onDidUpdateState listener
+          ), 100)
+
+        # ed.presenter.onDidUpdateState ->
+        #   console.log "didUpdateState"
 
         resizer.listenTo el, listener
 
@@ -162,10 +164,12 @@ class Result
     @disposables.add @marker.onDidChange (e) => @checkMarker e
 
   readOffsetLeft: ->
-    return unless @view.parentElement
-    @left = parseInt @view.parentElement.style.left
+    @left = if @view.parentElement?
+      parseInt @view.parentElement.style.left
+    else
+      0
 
-  updateWidth: (elRect) ->
+  updateWidth: (elRect = @editor.editorElement.getBoundingClientRect()) ->
     w = elRect.width + elRect.left - 40 - @left
     if w < 100 then w = 100
     @view.style.maxWidth = w + 'px'
