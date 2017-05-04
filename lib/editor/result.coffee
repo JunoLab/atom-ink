@@ -6,6 +6,7 @@ trees = require '../tree'
 views = require '../util/views'
 {div, span} = views.tags
 ResizeDetector = require 'element-resize-detector'
+fastdom = require 'fastdom'
 
 
 # ## Result API
@@ -35,7 +36,7 @@ metrics = throttle metrics, 60*60*1000
 
 resizer = ResizeDetector strategy: "scroll"
 
-debouncedUpdateWidth = (res, el) -> debounce(((res, el) -> res.updateWidth(el)), 200)
+results = {}
 
 module.exports =
 class Result
@@ -76,13 +77,13 @@ class Result
       class: 'ink-underlay'
       invalidate: 'never'
     @expDecoration = @editor.decorateMarker @expMarker, mark
-    setTimeout (=> @updateWidth()), 50
+    # setTimeout (=> @updateWidth()), 50
 
   collapseView: () ->
     @expanded = false
     @expMarker?.destroy()
     @decorateMarker()
-    setTimeout (=> @updateWidth()), 50
+    # setTimeout (=> @updateWidth()), 50
 
   createView: (opts) ->
     {content, fade, loading} = opts
@@ -132,7 +133,25 @@ class Result
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @decoration = @editor.decorateMarker @marker, mark
     if @type == 'inline'
-      resizer.listenTo @editor.editorElement, ((el) => debouncedUpdateWidth(this, el))()
+      # setTimeout (=> @updateWidth()), 50
+      ed = @editor
+      el = @editor.editorElement
+      if not results.hasOwnProperty(ed.id)
+        results[ed.id] = true
+        listener = ->
+          res = ed.findMarkers().filter((m) -> m.result?).map((m) -> m.result)
+          # reads
+          # rect = el.getBoundingClientRect()
+          rect = null
+          fastdom.measure ->
+            rect = ed.presenter.boundingClientRect
+            res.forEach (m) -> m.readOffsetLeft()
+          # writes
+          fastdom.mutate ->
+            res.forEach (m) -> m.updateWidth(rect)
+        # ed.presenter.onDidUpdateState listener
+
+        resizer.listenTo @editor.editorElement, listener
 
   initMarker: ->
     @marker = @editor.markBufferRange @lineRange(@start, @end)
@@ -140,10 +159,12 @@ class Result
     @decorateMarker()
     @disposables.add @marker.onDidChange (e) => @checkMarker e
 
-  updateWidth: (el) ->
-    elRect = el.getBoundingClientRect()
-    if not @view.offsetParent? then return
-    w = elRect.width + elRect.left - 40 - @view.offsetParent.offsetLeft
+  readOffsetLeft: ->
+    return unless @view.parentElement
+    @left = parseInt @view.parentElement.style.left
+
+  updateWidth: (elRect) ->
+    w = elRect.width + elRect.left - 40 - @left
     if w < 100 then w = 100
     @view.style.maxWidth = w + 'px'
 
