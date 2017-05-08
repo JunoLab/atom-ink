@@ -5,9 +5,7 @@
 trees = require '../tree'
 views = require '../util/views'
 {div, span} = views.tags
-ResizeDetector = require 'element-resize-detector'
 fastdom = require 'fastdom'
-
 
 # ## Result API
 # `Result`s are DOM elements which represent the result of some operation. They
@@ -34,9 +32,7 @@ metrics = ->
 
 metrics = throttle metrics, 60*60*1000
 
-resizer = ResizeDetector strategy: "scroll"
-
-results = {}
+resultEditorRegistry = {}
 
 module.exports =
 class Result
@@ -134,10 +130,10 @@ class Result
     @decoration = @editor.decorateMarker @marker, mark
     if @type == 'inline'
       ed = @editor
-      if not results.hasOwnProperty(ed.id)
-        results[ed.id] = true
+      if not resultEditorRegistry.hasOwnProperty ed.id
+        resultEditorRegistry[ed.id] = true
+        # create new editor specific result animation method
         listener = debounce((->
-          window.requestAnimationFrame listener
           res = ed.findMarkers().filter((m) -> m.result?).map((m) -> m.result)
           # reads
           rect = null
@@ -147,9 +143,9 @@ class Result
           # writes
           fastdom.mutate ->
             res.forEach (m) -> m.updateWidth(rect)
-          ), 100)
-        resizer.listenTo ed.editorElement, listener
-        # ed.presenter.onDidUpdateState -> listener
+          window.requestAnimationFrame listener
+          ), 200)
+        window.requestAnimationFrame listener
 
   initMarker: ->
     @marker = @editor.markBufferRange @lineRange(@start, @end)
