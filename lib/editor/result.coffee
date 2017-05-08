@@ -77,13 +77,13 @@ class Result
       class: 'ink-underlay'
       invalidate: 'never'
     @expDecoration = @editor.decorateMarker @expMarker, mark
-    # setTimeout (=> @updateWidth()), 50
+    setTimeout (=> @updateWidth()), 50
 
   collapseView: () ->
     @expanded = false
     @expMarker?.destroy()
     @decorateMarker()
-    # setTimeout (=> @updateWidth()), 50
+    setTimeout (=> @updateWidth()), 50
 
   createView: (opts) ->
     {content, fade, loading} = opts
@@ -133,29 +133,23 @@ class Result
       when 'block' then mark.type = 'block'; mark.position = 'after'
     @decoration = @editor.decorateMarker @marker, mark
     if @type == 'inline'
-      # setTimeout (=> @updateWidth()), 50
       ed = @editor
-      el = @editor.editorElement
       if not results.hasOwnProperty(ed.id)
         results[ed.id] = true
         listener = debounce((->
           window.requestAnimationFrame listener
-          # ed.element.component.requestAnimationFrame ->
           res = ed.findMarkers().filter((m) -> m.result?).map((m) -> m.result)
           # reads
           rect = null
           fastdom.measure ->
-            rect = el.getBoundingClientRect()
+            rect = ed.editorElement.getBoundingClientRect()
             res.forEach (m) -> m.readOffsetLeft()
           # writes
           fastdom.mutate ->
             res.forEach (m) -> m.updateWidth(rect)
           ), 100)
-
-        # ed.presenter.onDidUpdateState ->
-        #   console.log "didUpdateState"
-
-        resizer.listenTo el, listener
+        resizer.listenTo ed.editorElement, listener
+        # ed.presenter.onDidUpdateState -> listener
 
   initMarker: ->
     @marker = @editor.markBufferRange @lineRange(@start, @end)
