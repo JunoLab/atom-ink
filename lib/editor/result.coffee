@@ -32,7 +32,8 @@ metrics = ->
 
 metrics = throttle metrics, 60*60*1000
 
-resultEditorRegistry = {}
+resultEditorRegistry = new Set
+layers = {}
 
 module.exports =
 class Result
@@ -134,7 +135,7 @@ class Result
         resultEditorRegistry[ed.id] = true
         # create new editor specific result animation method
         listener = debounce((->
-          res = ed.findMarkers().filter((m) -> m.result?).map((m) -> m.result)
+          res = layers[ed.id].getMarkers().filter((m) -> m.result?).map((m) -> m.result)
           # reads
           rect = null
           fastdom.measure ->
@@ -148,7 +149,9 @@ class Result
         window.requestAnimationFrame listener
 
   initMarker: ->
-    @marker = @editor.markBufferRange @lineRange(@start, @end)
+    if not layers.hasOwnProperty @editor.id
+      layers[@editor.id] = @editor.addMarkerLayer()
+    @marker = layers[@editor.id].markBufferRange @lineRange(@start, @end)
     @marker.result = @
     @decorateMarker()
     @disposables.add @marker.onDidChange (e) => @checkMarker e
@@ -218,7 +221,7 @@ class Result
   @all: -> # TODO: scope selector
     results = []
     for item in atom.workspace.getPaneItems() when atom.workspace.isTextEditor item
-      item.findMarkers().filter((m) -> m.result?).forEach (m) ->
+      layers[item.id]?.getMarkers().forEach (m) ->
         results.push m.result
     results
 
@@ -228,18 +231,18 @@ class Result
       result.invalidate()
 
   @forLines: (ed, start, end, type = 'any') ->
-    ed.findMarkers().filter((m) -> m.result? &&
-                                   m.getBufferRange().intersectsRowRange(start, end) &&
-                                  (m.result.type == type || type == 'any'))
-                    .map((m) -> m.result)
+    layers[ed.id]?.findMarkers(intersectsBufferRowRange: [start, end])
+                  .filter((m) -> (m.result.type == type || type == 'any'))
+                  .map((m) -> m.result)
 
   @removeLines: (ed, start, end, type = 'any') ->
     rs = @forLines(ed, start, end, type)
+    return unless rs?
     rs.map (r) -> r.remove()
     rs.length > 0
 
   @removeAll: (ed = atom.workspace.getActiveTextEditor()) ->
-    ed?.findMarkers().filter((m) -> m.result?).map((m) -> m.result.remove())
+    layers[ed.id]?.getMarkers().map((m) -> m.result.remove())
 
   @removeCurrent: (e) ->
     if (ed = atom.workspace.getActiveTextEditor())
@@ -252,6 +255,7 @@ class Result
     ed = atom.workspace.getActiveTextEditor()
     for sel in ed.getSelections()
       rs = @forLines ed, sel.getHeadBufferPosition().row, sel.getTailBufferPosition().row
+      continue unless rs?
       rs.map (r) -> r.toggleView()
 
   # Commands
