@@ -131,8 +131,8 @@ class Result
     @decoration = @editor.decorateMarker @marker, mark
     if @type == 'inline'
       ed = @editor
-      if not resultEditorRegistry.hasOwnProperty ed.id
-        resultEditorRegistry[ed.id] = true
+      if not resultEditorRegistry.has ed.id
+        resultEditorRegistry.add ed.id
         # create new editor specific result animation method
         listener = debounce((->
           res = layers[ed.id].getMarkers().filter((m) -> m.result?).map((m) -> m.result)
