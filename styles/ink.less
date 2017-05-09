@@ -7,6 +7,8 @@
 @import "ui-variables";
 @import "syntax-variables";
 
+@expand-indent: 1.1em;
+
 atom-text-editor {
   clip: rect(auto auto auto auto); // Otherwise inline results spill everywhere
 }
@@ -19,10 +21,25 @@ progress.ink:indeterminate {
 .ink-overlay {
   pointer-events: none;
   background-color: rgba(0, 0, 0, 0);
+
+  &:hover {
+    margin-left: -@expand-indent;
+    .ink-expander::before {
+      content: "\f0a8";
+    }
+  }
 }
 
 .ink-underlay {
   width: 100%;
+
+  &:hover {
+    margin-left: -@expand-indent;
+    .ink-expander::before {
+      content: "\f0a7";
+    }
+  }
+
   .ink.inline {
     top: 0!important;
     left: 0.5em!important;
@@ -150,8 +167,20 @@ atom-text-editor {
     font-size: 1em;
   }
 
+  .ink-expander {
+    display: none;
+    opacity: 0.6;
+  }
+
   &:hover {
     overflow: auto;
+    .ink-expander {
+      position: absolute;
+      display: inline;
+    }
+    >:nth-child(2) {
+      margin-left: @expand-indent;
+    }
   }
 
   &.loading {

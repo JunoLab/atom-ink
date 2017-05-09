@@ -51,8 +51,6 @@ class Result
     @disposables.add @editor.onDidChange (e) => @validateText e
     @expanded = false
 
-    @view.addEventListener 'dblclick', (ev) => @toggleView()
-
   fadeIn: ->
     @view.classList.add 'ink-hide'
     @timeout 20, =>
@@ -113,11 +111,18 @@ class Result
     if content? then @setContent content, opts
     if loading then @setContent views.render(span 'loading icon icon-gear'), opts
 
+  expander: ->
+    v = document.createElement 'div'
+    v.classList.add 'ink-expander', 'icon'
+    v.addEventListener 'click', => @toggleView()
+    v
+
   setContent: (view, {error, loading}={}) ->
     while @view.firstChild?
       @view.removeChild @view.firstChild
     if error then @view.classList.add 'error' else @view.classList.remove 'error'
     if loading then @view.classList.add 'loading' else @view.classList.remove 'loading'
+    @view.appendChild @expander()
     @view.appendChild view
 
   lineRange: (start, end) ->
