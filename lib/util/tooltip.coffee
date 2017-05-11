@@ -1,3 +1,5 @@
+{CompositeDisposable, Emitter} = require 'atom'
+
 # Tooltip
 #
 # Tooltips that support arbitrary HTML content.
@@ -22,14 +24,25 @@
 
 module.exports =
 class Tooltip
-  constructor: (@parent, content, {@cond, @delay}={}) ->
+  constructor: (@parent, content, {@cond, @delay, @clas}={}) ->
     @cond  = (-> true) unless @cond?
     @delay = 150       unless @delay?
-
+    @emitter = new Emitter()
     @view = @tooltipView content
     document.body.appendChild @view
+
+    # remember old mouse listeners
+    @oldOnMouseOver = @parent.onmouseover
+    @oldOnMouseOut = @parent.onmouseout
+
     @showOnHover()
     this
+
+  onDidShow: (f) ->
+    @emitter.on('didShow', f)
+
+  onDidHide: (f) ->
+    @emitter.on('didHide', f)
 
   hide_: ->
     @view.classList.add 'dontshow'
@@ -37,18 +50,24 @@ class Tooltip
 
   hide: ->
     @view.classList.add 'dontshow'
+    @emitter.emit 'didHide'
     setTimeout (=> @hide_()), 100
 
   show: ->
     @view.style.display = 'block'
+    @emitter.emit 'didShow'
     setTimeout ( => @view.classList.remove 'dontshow'), 20
 
   destroy: ->
-    document.body.removeChild @view
+    if document.body.contains @view
+      document.body.removeChild @view
+    @parent.onmouseover = @oldOnMouseOver
+    @parent.onmouseout = @oldOnMouseOut
 
   tooltipView: (content) ->
     tt = document.createElement 'div'
     tt.classList.add 'ink-tooltip', 'dontshow'
+    if @clas then tt.classList.add @clas
     tt.style.display = 'none'
     if content then tt.appendChild content
     tt
@@ -63,11 +82,12 @@ class Tooltip
     @parent.onmouseout = =>
       clearTimeout showTimer
       hideTimer = setTimeout (=> @hide()), @delay
-    @view.onmouseover  = => clearTimeout hideTimer
-    @view.onmouseout   = => hideTimer = setTimeout (=> @hide()), @delay
+    @view.onmouseover  = =>
+      clearTimeout hideTimer
+    @view.onmouseout   = =>
+      hideTimer = setTimeout (=> @hide()), @delay
 
   positionOverlay: ->
     bounding = @parent.getBoundingClientRect()
-    @view.style.bottom   = bounding.height + 'px'
+    @view.style.bottom   = document.documentElement.clientHeight - bounding.top + 'px'
     @view.style.left     = bounding.left   + 'px'
-    @view.style.minWidth = bounding.width  + 'px'
