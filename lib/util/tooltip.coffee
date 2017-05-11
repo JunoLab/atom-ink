@@ -41,6 +41,8 @@ class Tooltip
     @oldOnMouseOut = @parent.onmouseout
 
     @showOnHover()
+    @positionOverlay()
+
     this
 
   onDidShow: (f) ->
@@ -61,9 +63,7 @@ class Tooltip
   show: ->
     @view.style.display = 'block'
     @emitter.emit 'didShow'
-    setTimeout ( =>
-      @positionOverlay()
-      @view.classList.remove 'dontshow'), 20
+    setTimeout ( => @view.classList.remove 'dontshow'), 20
 
   destroy: ->
     if document.body.contains @view
@@ -94,10 +94,16 @@ class Tooltip
       hideTimer = setTimeout (=> @hide()), @hideDelay
 
   positionOverlay: ->
-    bounding = @parent.getBoundingClientRect()
-    @view.style.bottom   = document.documentElement.clientHeight - bounding.top + 'px'
-    switch @position
-      when 'left'
-        @view.style.left = bounding.left + 'px'
-      when 'right'
-        @view.style.left = bounding.left + bounding.width -  @view.offsetWidth + 'px'
+    p = @parent
+    pos = @position
+    v = @view
+    positioner = ->
+      bounding = p.getBoundingClientRect()
+      v.style.bottom   = document.documentElement.clientHeight - bounding.top + 'px'
+      switch pos
+        when 'left'
+          v.style.left = bounding.left + 'px'
+        when 'right'
+          v.style.left = bounding.left + bounding.width -  v.offsetWidth + 'px'
+      window.requestAnimationFrame positioner
+    window.requestAnimationFrame positioner
