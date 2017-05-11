@@ -110,8 +110,8 @@ class Result
     fade and @fadeIn()
 
     @view.onmouseover = =>
-      @tb ?= new Tooltip(@view, @toolbar(), clas: 'ink-result-toolbar')
-      @tb.show()
+      @tb ?= new Tooltip(@view, @toolbar(), {clas: 'ink-result-toolbar', showDelay: 300})
+      setTimeout (=> @tb?.show()), 300
       @tb.onDidHide =>
         @tb.destroy()
         @tb = null

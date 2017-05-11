@@ -10,8 +10,9 @@
 #     options:
 #        cond:  Function. If it evaluates to false when hovering over the parent,
 #               the tooltip will not be shown. Defaults to `-> true`.
-#        delay: Time in ms after which the tooltip is shown or hidden. Defaults
-#               to 150ms.
+#        hideDelay: Time in ms after which the tooltip is hidden. Defaults to 150ms.
+#        showDelay: Time in ms after which the tooltip is shown. Defaults to 150ms.
+#        clas: Custom CSS class for the tooltip.
 #
 # .show()
 #     Show the tooltip.
@@ -24,9 +25,10 @@
 
 module.exports =
 class Tooltip
-  constructor: (@parent, content, {@cond, @delay, @clas}={}) ->
+  constructor: (@parent, content, {@cond, @showDelay, @hideDelay, @clas}={}) ->
     @cond  = (-> true) unless @cond?
-    @delay = 150       unless @delay?
+    @showDelay = 150   unless @showDelay?
+    @hideDelay = 150   unless @hideDelay?
     @emitter = new Emitter()
     @view = @tooltipView content
     document.body.appendChild @view
@@ -78,14 +80,14 @@ class Tooltip
     @parent.onmouseover = =>
       @positionOverlay()
       clearTimeout hideTimer
-      if @cond() then showTimer = setTimeout (=> @show()), @delay
+      if @cond() then showTimer = setTimeout (=> @show()), @showDelay
     @parent.onmouseout = =>
       clearTimeout showTimer
-      hideTimer = setTimeout (=> @hide()), @delay
+      hideTimer = setTimeout (=> @hide()), @hideDelay
     @view.onmouseover  = =>
       clearTimeout hideTimer
     @view.onmouseout   = =>
-      hideTimer = setTimeout (=> @hide()), @delay
+      hideTimer = setTimeout (=> @hide()), @hideDelay
 
   positionOverlay: ->
     bounding = @parent.getBoundingClientRect()
