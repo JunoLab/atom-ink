@@ -13,6 +13,8 @@
 #        hideDelay: Time in ms after which the tooltip is hidden. Defaults to 150ms.
 #        showDelay: Time in ms after which the tooltip is shown. Defaults to 150ms.
 #        clas: Custom CSS class for the tooltip.
+#        position: Determines the tooltip's position relative to its parent.
+#                  Can be `left` or `right`.
 #
 # .show()
 #     Show the tooltip.
@@ -25,10 +27,11 @@
 
 module.exports =
 class Tooltip
-  constructor: (@parent, content, {@cond, @showDelay, @hideDelay, @clas}={}) ->
-    @cond  = (-> true) unless @cond?
-    @showDelay = 150   unless @showDelay?
-    @hideDelay = 150   unless @hideDelay?
+  constructor: (@parent, content, {@cond, @showDelay, @hideDelay, @clas, @position}={}) ->
+    @cond  = (-> true)  unless @cond?
+    @showDelay = 150    unless @showDelay?
+    @hideDelay = 150    unless @hideDelay?
+    @position  = 'left' unless @position?
     @emitter = new Emitter()
     @view = @tooltipView content
     document.body.appendChild @view
@@ -36,8 +39,6 @@ class Tooltip
     # remember old mouse listeners
     @oldOnMouseOver = @parent.onmouseover
     @oldOnMouseOut = @parent.onmouseout
-
-    @positionOverlay()
 
     @showOnHover()
     this
@@ -60,7 +61,9 @@ class Tooltip
   show: ->
     @view.style.display = 'block'
     @emitter.emit 'didShow'
-    setTimeout ( => @view.classList.remove 'dontshow'), 20
+    setTimeout ( =>
+      @positionOverlay()
+      @view.classList.remove 'dontshow'), 20
 
   destroy: ->
     if document.body.contains @view
@@ -80,7 +83,6 @@ class Tooltip
     hideTimer = null
     showTimer = null
     @parent.onmouseover = =>
-      @positionOverlay()
       clearTimeout hideTimer
       if @cond() then showTimer = setTimeout (=> @show()), @showDelay
     @parent.onmouseout = =>
@@ -94,4 +96,8 @@ class Tooltip
   positionOverlay: ->
     bounding = @parent.getBoundingClientRect()
     @view.style.bottom   = document.documentElement.clientHeight - bounding.top + 'px'
-    @view.style.left     = bounding.left   + 'px'
+    switch @position
+      when 'left'
+        @view.style.left = bounding.left + 'px'
+      when 'right'
+        @view.style.left = bounding.left + bounding.width -  @view.offsetWidth + 'px'
