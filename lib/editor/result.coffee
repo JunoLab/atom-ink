@@ -6,6 +6,7 @@ trees = require '../tree'
 views = require '../util/views'
 {div, span} = views.tags
 fastdom = require 'fastdom'
+Tooltip = require '../util/tooltip'
 
 # ## Result API
 # `Result`s are DOM elements which represent the result of some operation. They
@@ -108,21 +109,47 @@ class Result
       'inline-results:clear': (e) => @remove()
     fade and @fadeIn()
 
+    @view.onmouseover = =>
+      @tb ?= new Tooltip(@view, @toolbar(), clas: 'ink-result-toolbar')
+      @tb.show()
+      @tb.onDidHide =>
+        @tb.destroy()
+        @tb = null
+
     if content? then @setContent content, opts
     if loading then @setContent views.render(span 'loading icon icon-gear'), opts
 
-  expander: ->
-    v = document.createElement 'div'
-    v.classList.add 'ink-expander', 'icon'
-    v.addEventListener 'click', => @toggleView()
-    v
+  buttons: ->
+    [
+      {
+        icon: if @expanded then 'icon-fold' else 'icon-unfold'
+        onclick: =>
+          @toggleView()
+          @tb?.hide()
+      },
+      {
+        icon: 'icon-x'
+        onclick: =>
+          @remove()
+          @tb?.hide()
+      }
+    ]
+
+  toolbar: ->
+    bg = document.createElement 'div'
+    bg.classList.add 'btn-group'
+    for b in @buttons()
+      v = document.createElement 'button'
+      v.classList.add 'btn', b.icon
+      v.addEventListener 'click', b.onclick
+      bg.appendChild v
+    bg
 
   setContent: (view, {error, loading}={}) ->
     while @view.firstChild?
       @view.removeChild @view.firstChild
     if error then @view.classList.add 'error' else @view.classList.remove 'error'
     if loading then @view.classList.add 'loading' else @view.classList.remove 'loading'
-    @view.appendChild @expander()
     @view.appendChild view
 
   lineRange: (start, end) ->
