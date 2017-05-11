@@ -37,6 +37,8 @@ class Tooltip
     @oldOnMouseOver = @parent.onmouseover
     @oldOnMouseOut = @parent.onmouseout
 
+    @positionOverlay()
+
     @showOnHover()
     this
 
