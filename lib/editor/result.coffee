@@ -25,6 +25,11 @@ Tooltip = require '../util/tooltip'
 # displayed after the end of the last line contained in `range`, whereas
 # block-`Result`s will be displayed below it and span the whole width of
 # the current editor.
+# - `getButtons`: Function that will be called to get a button specification to
+# be displayed in the toolbar above an inline result. Needs to return an array
+# of `Button`s, where a `Button` is specified by
+#   - `icon`: octicon class, e.g. `icon-x`
+#   - `onclick`: Function to be called when clicking the button.
 
 metrics = ->
   if id = localStorage.getItem 'metrics.userId'
@@ -46,6 +51,7 @@ class Result
     @disposables = new CompositeDisposable
     opts.fade ?= not Result.removeLines @editor, @start, @end
     opts.loading ?= not opts.content
+    @getCustomButtons = if opts.getButtons? then opts.getButtons else -> []
     @createView opts
     @initMarker()
     @text = @getText()
@@ -133,7 +139,7 @@ class Result
           @remove()
           @tb?.hide()
       }
-    ]
+    ].concat @getCustomButtons()
 
   toolbar: ->
     bg = document.createElement 'div'
