@@ -138,7 +138,7 @@ atom-text-editor {
                                    lighten(@syntax-background-color, 4%));
 
   padding: 0px 0.5em 0px 0.5em;
-  // transition: all 0.2s;
+  transition: all 0.2s;
   opacity: 1;
   cursor: default;
   -webkit-user-select: all;
@@ -221,12 +221,15 @@ atom-text-editor {
   position: relative;
   left: 1em;
   min-width: 1em;
-  white-space: pre-wrap;
+  white-space: nowrap;
 
   > .tree {
-    > .header.closed {
-      max-height: 1.5em;
-      white-space: nowrap;
+    > .header {
+      white-space: pre-wrap;
+      &.closed {
+        max-height: 1.5em;
+        white-space: nowrap;
+      }
     }
     > .body {
       max-height: 250px;
