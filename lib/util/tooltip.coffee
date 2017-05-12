@@ -95,9 +95,9 @@ class Tooltip
 
   positionOverlay: ->
     bounding = @parent.getBoundingClientRect()
-    @view.style.bottom   = document.documentElement.clientHeight - bounding.top + 'px'
-    switch @position
+    @view.style.bottom = document.documentElement.clientHeight - bounding.top + 'px'
+    @view.style.left = switch @position
       when 'left'
-        @view.style.left = bounding.left + 'px'
+        bounding.left + 'px'
       when 'right'
-        @view.style.left = bounding.left + bounding.width -  @view.offsetWidth + 'px'
+        bounding.left + bounding.width - @view.offsetWidth + 'px'
