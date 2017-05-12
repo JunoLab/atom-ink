@@ -171,6 +171,7 @@ class Result
       ed = @editor
       edView = atom.views.getView(@editor)
       if not resultEditorRegistry.has ed.id
+        lastRect = null
         resultEditorRegistry.add ed.id
         # create new editor specific result animation method
         listener = -> setTimeout (->
@@ -186,13 +187,16 @@ class Result
             rect = edView.getBoundingClientRect()
             res.forEach (m) -> m.isInViewport(rect)
 
+
           # writes
           fastdom.mutate ->
+            #if shouldUpdate
             res.forEach (m) -> m.updateWidth(rect)
+            last = []
 
-          window.requestAnimationFrame listener
-          ), 200
-
+          # batching updates:
+          process.nextTick -> requestAnimationFrame listener
+          ), 15*1000/60
         window.requestAnimationFrame listener
 
   initMarker: ->
@@ -203,19 +207,25 @@ class Result
     @decorateMarker()
     @disposables.add @marker.onDidChange (e) => @checkMarker e
 
+  lastRect: {width: -1}
+
   isInViewport: (edRect) ->
     @isVisible = false
     @left = 0
+    @shouldUpdate = false
     if @view.parentElement?
       rect = @view.getBoundingClientRect()
       @isVisible = rect.top < edRect.bottom && rect.bottom > edRect.top
       @left = parseInt @view.parentElement.style.left
+      @shouldUpdate = edRect.width != @lastRect.width
 
   updateWidth: (elRect = @editor.editorElement.getBoundingClientRect()) ->
-    if @isVisible
+    if @isVisible and @shouldUpdate
+      console.log 'updating'
       w = elRect.width + elRect.left - 40 - @left
       if w < 100 then w = 100
       @view.style.maxWidth = w + 'px'
+      @lastRect = elRect
 
   toggleTree: ->
     trees.toggle $(@view).find('> .tree')
