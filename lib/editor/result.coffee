@@ -169,21 +169,30 @@ class Result
     @decoration = @editor.decorateMarker @marker, mark
     if @type == 'inline'
       ed = @editor
+      edView = atom.views.getView(@editor)
       if not resultEditorRegistry.has ed.id
         resultEditorRegistry.add ed.id
         # create new editor specific result animation method
-        listener = debounce((->
-          res = layers[ed.id].getMarkers().filter((m) -> m.result?).map((m) -> m.result)
+        listener = -> setTimeout (->
+          res = layers[ed.id].getMarkers().map((m) -> m.result)
+
+          if res.length == 0
+            resultEditorRegistry.delete ed.id
+            return
+
           # reads
           rect = null
           fastdom.measure ->
-            rect = ed.editorElement.getBoundingClientRect()
-            res.forEach (m) -> m.readOffsetLeft()
+            rect = edView.getBoundingClientRect()
+            res.forEach (m) -> m.isInViewport(rect)
+
           # writes
           fastdom.mutate ->
             res.forEach (m) -> m.updateWidth(rect)
+
           window.requestAnimationFrame listener
-          ), 200)
+          ), 200
+
         window.requestAnimationFrame listener
 
   initMarker: ->
@@ -194,16 +203,19 @@ class Result
     @decorateMarker()
     @disposables.add @marker.onDidChange (e) => @checkMarker e
 
-  readOffsetLeft: ->
-    @left = if @view.parentElement?
-      parseInt @view.parentElement.style.left
-    else
-      0
+  isInViewport: (edRect) ->
+    @isVisible = false
+    @left = 0
+    if @view.parentElement?
+      rect = @view.getBoundingClientRect()
+      @isVisible = rect.top < edRect.bottom && rect.bottom > edRect.top
+      @left = parseInt @view.parentElement.style.left
 
   updateWidth: (elRect = @editor.editorElement.getBoundingClientRect()) ->
-    w = elRect.width + elRect.left - 40 - @left
-    if w < 100 then w = 100
-    @view.style.maxWidth = w + 'px'
+    if @isVisible
+      w = elRect.width + elRect.left - 40 - @left
+      if w < 100 then w = 100
+      @view.style.maxWidth = w + 'px'
 
   toggleTree: ->
     trees.toggle $(@view).find('> .tree')
