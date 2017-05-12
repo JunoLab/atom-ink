@@ -171,7 +171,6 @@ class Result
       ed = @editor
       edView = atom.views.getView(@editor)
       if not resultEditorRegistry.has ed.id
-        lastRect = null
         resultEditorRegistry.add ed.id
         # create new editor specific result animation method
         listener = -> setTimeout (->
@@ -181,22 +180,19 @@ class Result
             resultEditorRegistry.delete ed.id
             return
 
-          # reads
+          # reads:
           rect = null
           fastdom.measure ->
             rect = edView.getBoundingClientRect()
-            res.forEach (m) -> m.isInViewport(rect)
+            res.forEach (m) -> m.decideUpdate(rect)
 
-
-          # writes
+          # writes:
           fastdom.mutate ->
-            #if shouldUpdate
             res.forEach (m) -> m.updateWidth(rect)
-            last = []
 
-          # batching updates:
+          # batched updates:
           process.nextTick -> requestAnimationFrame listener
-          ), 15*1000/60
+          ), 15*1000/60 # update every 15th frame
         window.requestAnimationFrame listener
 
   initMarker: ->
@@ -209,7 +205,7 @@ class Result
 
   lastRect: {width: -1}
 
-  isInViewport: (edRect) ->
+  decideUpdate: (edRect) ->
     @isVisible = false
     @left = 0
     @shouldUpdate = false
