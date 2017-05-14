@@ -79,13 +79,13 @@ class Result
       class: 'ink-underlay'
       invalidate: 'never'
     @expDecoration = @editor.decorateMarker @expMarker, mark
-    setTimeout (=> @updateWidth()), 50
+    @newStyle = true
 
   collapseView: () ->
     @expanded = false
     @expMarker?.destroy()
     @decorateMarker()
-    setTimeout (=> @updateWidth()), 50
+    @newStyle = true
 
   createView: (opts) ->
     {content, fade, loading} = opts
@@ -216,12 +216,13 @@ class Result
       @shouldUpdate = edRect.width != @lastRect.width
 
   updateWidth: (elRect = @editor.editorElement.getBoundingClientRect()) ->
-    if @isVisible and @shouldUpdate
+    if (@isVisible and @shouldUpdate) or @newStyle
       console.log 'updating'
       w = elRect.width + elRect.left - 40 - @left
       if w < 100 then w = 100
       @view.style.maxWidth = w + 'px'
       @lastRect = elRect
+      @newStyle = false
 
   toggleTree: ->
     trees.toggle $(@view).find('> .tree')
