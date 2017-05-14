@@ -15,18 +15,39 @@ progress.ink:indeterminate {
   animation-iteration-count: infinite;
 }
 
-.ink-tooltip.ink-result-toolbar {
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
+.ink-result-toolbar {
+  right: 0;
+  transition: visibility 0s linear 0.2s, opacity 0.1s linear;
   font-family: 'Octicons Regular';
   font-size: 0.5em!important;
-  opacity: 0.5;
+  opacity: 0;
+
+  visibility: hidden;
+  position: absolute;
+
+  top: -4em;
 
   .btn::before {
-    line-height: 1.4em;
+    line-height: 1.5em;
   }
   &:hover {
-    opacity: 1;
+    transition: visibility 0s linear, opacity 0s linear;
+    opacity: 1!important;
+    visibility: visible;
+  }
+}
+
+.ink-result-container {
+  left: 1em;
+  min-width: 5em;
+  position: relative;
+  pointer-events: auto;
+
+  &:hover {
+    .ink-result-toolbar {
+      opacity: 0.5;
+      visibility: visible;
+    }
   }
 }
 
@@ -39,9 +60,12 @@ progress.ink:indeterminate {
 .ink-underlay {
   width: 100%;
 
-  .ink.inline {
+  .ink-result-container {
     top: 0!important;
     left: 0.5em!important;
+  }
+
+  .ink.inline {
     width: 100%;
     max-width: none;
     white-space: pre-wrap;
@@ -138,7 +162,7 @@ atom-text-editor {
                                    lighten(@syntax-background-color, 4%));
 
   padding: 0px 0.5em 0px 0.5em;
-  //transition: all 0.2s;
+  transition: all 0.2s;
   opacity: 1;
   cursor: default;
   -webkit-user-select: all;
@@ -164,11 +188,6 @@ atom-text-editor {
 
   code, pre {
     font-size: 1em;
-  }
-
-  .ink-expander {
-    display: none;
-    opacity: 0.6;
   }
 
   &:hover {
@@ -219,7 +238,6 @@ atom-text-editor {
   .result-mixin;
   background: @syntax-background-color;
   position: relative;
-  left: 1em;
   min-width: 1em;
   white-space: nowrap;
 
