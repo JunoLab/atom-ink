@@ -12,7 +12,7 @@
 #               the tooltip will not be shown. Defaults to `-> true`.
 #        hideDelay: Time in ms after which the tooltip is hidden. Defaults to 150ms.
 #        showDelay: Time in ms after which the tooltip is shown. Defaults to 150ms.
-#        clas: Custom CSS class for the tooltip.
+#        className: Custom CSS class for the tooltip.
 #        position: Determines the tooltip's position relative to its parent.
 #                  Can be `left` or `right`.
 #
@@ -27,7 +27,7 @@
 
 module.exports =
 class Tooltip
-  constructor: (@parent, content, {@cond, @showDelay, @hideDelay, @clas, @position}={}) ->
+  constructor: (@parent, content, {@cond, @showDelay, @hideDelay, @className, @position}={}) ->
     @cond  = (-> true)  unless @cond?
     @showDelay = 150    unless @showDelay?
     @hideDelay = 150    unless @hideDelay?
@@ -74,7 +74,7 @@ class Tooltip
   tooltipView: (content) ->
     tt = document.createElement 'div'
     tt.classList.add 'ink-tooltip', 'dontshow'
-    if @clas then tt.classList.add @clas
+    if @clas then tt.classList.add @className
     tt.style.display = 'none'
     if content then tt.appendChild content
     tt

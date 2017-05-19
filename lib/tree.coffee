@@ -10,13 +10,9 @@ module.exports =
       div 'body gutted', children
     ]
     for sel in [':scope > .header', ':scope > .icon']
-      clicks = 0
       view.querySelector(sel).onclick = =>
-        clicks += 1
-        timeout = setTimeout (=> clicks = 0), 200
-        if clicks == 1
-          onToggle?()
-          setTimeout (=> @toggle view), 0
+        onToggle?()
+        window.requestAnimationFrame => @toggle view
     view.onToggle = onToggle
     @toggle view unless expand
     view
