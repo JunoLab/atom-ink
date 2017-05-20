@@ -16,7 +16,7 @@ progress.ink:indeterminate {
 }
 
 .ink-result-toolbar {
-  right: -20px;
+  right: 0;
   transition: visibility 0s linear 0.2s, opacity 0.1s linear;
   font-family: 'Octicons Regular';
   font-size: 8px!important;
@@ -27,9 +27,11 @@ progress.ink:indeterminate {
 
   display: inline-block;
 
-  min-width: 80px;
+  min-width: 150px;
 
-  top: -4em;
+  top: -28px;
+
+  transform: scale(0.9);
 
   .btn::before {
     line-height: 1.5em;
@@ -41,6 +43,9 @@ progress.ink:indeterminate {
   }
   &.hide {
     display: none!important;
+  }
+  > .btn-group {
+    float: right;
   }
 }
 
