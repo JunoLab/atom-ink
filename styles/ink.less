@@ -25,13 +25,13 @@ progress.ink:indeterminate {
   visibility: hidden;
   position: absolute;
 
-  display: inline-block;
-
-  min-width: 150px;
-
+  min-width: 500px;
   top: -28px;
 
+  pointer-events: none;
+
   transform: scale(0.9);
+  transform-origin: right;
 
   .btn::before {
     line-height: 1.5em;
@@ -46,6 +46,7 @@ progress.ink:indeterminate {
   }
   > .btn-group {
     float: right;
+    pointer-events: auto;
   }
 }
 
