@@ -183,7 +183,7 @@ atom-text-editor {
   border-radius: 3px;
 
   overflow: hidden;
-  white-space: pre-wrap;
+  white-space: pre;
 
   * {
     vertical-align: top;
@@ -252,14 +252,14 @@ atom-text-editor {
   background: @syntax-background-color;
   position: relative;
   min-width: 1em;
-  white-space: pre-wrap;
+  white-space: pre;
 
   > .tree {
     > .header {
       white-space: pre-wrap;
       &.closed {
         max-height: 1.5em;
-        white-space: nowrap;
+        white-space: pre;
       }
     }
     > .body {
