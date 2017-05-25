@@ -14,6 +14,8 @@ os:
   - linux
   - osx
 
+dist: trusty
+
 ### Generic setup follows ###
 script:
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
@@ -21,9 +23,7 @@ script:
   - ./build-package.sh
 
 notifications:
-  email:
-    on_success: never
-    on_failure: change
+  email: false
 
 branches:
   only:
@@ -40,4 +40,5 @@ addons:
     - build-essential
     - git
     - libgnome-keyring-dev
+    - libsecret-1-dev
     - fakeroot
