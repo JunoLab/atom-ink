@@ -114,8 +114,10 @@ class ConsoleElement extends HTMLElement
     return unless @hasFocus()
     y = @scrollTop
     atom.views.getView(@lastInput)?.focus()
-    s = @lastInput.onDidChange =>
-      atom.views.getView(@lastInput)?.focus()
+    s = @lastInput.onDidChange (e) =>
+      # check if e is empty object
+      if not (Object.keys(e).length is 0 and e.constructor is Object)
+        atom.views.getView(@lastInput)?.focus()
       s?.dispose()
     @scrollTop = y
 
