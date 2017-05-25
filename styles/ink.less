@@ -15,10 +15,81 @@ progress.ink:indeterminate {
   animation-iteration-count: infinite;
 }
 
+.ink-result-toolbar {
+  right: 0;
+  transition: visibility 0s linear 0.2s, opacity 0.1s linear;
+  font-family: 'Octicons Regular';
+  font-size: 8px!important;
+  opacity: 0;
+
+  visibility: hidden;
+  position: absolute;
+
+  min-width: 500px;
+  top: -23px;
+
+  pointer-events: none;
+
+  transform: scale(0.75);
+  transform-origin: right;
+
+  .btn::before {
+    line-height: 1.5em;
+  }
+  &:hover {
+    transition: visibility 0s linear, opacity 0s linear;
+    opacity: 1!important;
+    visibility: visible;
+  }
+  &.hide {
+    display: none!important;
+  }
+  > .btn-group {
+    float: right;
+    pointer-events: auto;
+  }
+}
+
+.ink-result-container {
+  left: 1em;
+  min-width: 1em;
+  position: relative;
+  pointer-events: auto;
+
+  &:hover {
+    .ink-result-toolbar {
+      opacity: 0.5;
+      visibility: visible;
+    }
+  }
+}
+
 // for the atom-overlay positioned below the current line
 .ink-overlay {
   pointer-events: none;
   background-color: rgba(0, 0, 0, 0);
+}
+
+.ink-underlay {
+  width: 100%;
+
+  .ink-result-container {
+    top: 0!important;
+    left: 0.5em!important;
+  }
+
+  .ink.inline {
+    width: 100%;
+    max-width: none;
+    white-space: pre-wrap;
+    border-top: 2px solid @background-color-info;
+    &.error {
+      border-top: 2px solid @background-color-error;
+    }
+    &:hover {
+      overflow: auto;
+    }
+  }
 }
 
 atom-overlay:last-child .ink.inline {
@@ -37,7 +108,7 @@ atom-text-editor.editor{
         &.inactive {
           opacity: 0.5;
         }
-        &::before {
+        &:before {
           content: "\f052";
         }
       }
@@ -103,15 +174,16 @@ atom-text-editor {
                                    darken(@syntax-background-color, 4%),
                                    lighten(@syntax-background-color, 4%));
 
-  border-radius: 3px;
-
   padding: 0px 0.5em 0px 0.5em;
   transition: all 0.2s;
   opacity: 1;
   cursor: default;
+  -webkit-user-select: all;
+
+  border-radius: 3px;
 
   overflow: hidden;
-  white-space: pre-wrap;
+  white-space: pre;
 
   * {
     vertical-align: top;
@@ -127,8 +199,12 @@ atom-text-editor {
     padding: 0;
   }
 
+  code, pre {
+    font-size: 1em;
+  }
+
   &:hover {
-    overflow: overlay;
+    overflow: auto;
   }
 
   &.loading {
@@ -175,12 +251,16 @@ atom-text-editor {
   .result-mixin;
   background: @syntax-background-color;
   position: relative;
-  left: 1em;
-  max-width: 1000px;
+  min-width: 1em;
+  white-space: pre;
 
   > .tree {
-    > .header.closed {
-      max-height: 1.5em;
+    > .header {
+      white-space: pre-wrap;
+      &.closed {
+        max-height: 1.5em;
+        white-space: pre;
+      }
     }
     > .body {
       max-height: 250px;
@@ -195,7 +275,7 @@ atom-text-editor {
                        lighten(@syntax-background-color, 3%));
   font-size: 0.9em;
   max-width: 100%;
-  white-space: pre-line;
+  white-space: pre-wrap;
   padding: 0.5em 0.5em 0.5em 1em;
 }
 

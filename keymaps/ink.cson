@@ -14,8 +14,15 @@
 'ink-console':
   'shift-space': 'unset!'
 
+'.platform-win32 .ink, .platform-linux .ink':
+  'ctrl-c': 'native!'
+
+'.platform-darwin .ink':
+  'cmd-c': 'native!'
+
 'atom-text-editor:not([mini])':
   'escape': 'inline:clear-current'
+  'alt-t': 'inline-results:toggle'
 
 '.platform-darwin atom-text-editor:not([mini])':
   'cmd-i cmd-c': 'inline-results:clear-all'

@@ -12,7 +12,7 @@ module.exports =
     for sel in [':scope > .header', ':scope > .icon']
       view.querySelector(sel).onclick = =>
         onToggle?()
-        setTimeout (=> @toggle view), 0
+        window.requestAnimationFrame => @toggle view
     view.onToggle = onToggle
     @toggle view unless expand
     view

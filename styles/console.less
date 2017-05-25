@@ -26,6 +26,9 @@ ink-console {
     .cursor-line {
       background: none;
     }
+    &.is-focused {
+      box-shadow: none;
+    }
   }
 
   .divider {
@@ -96,7 +99,6 @@ ink-console {
       color: @text-color-info;
     }
     .result {
-      -webkit-user-select: none;
       cursor: default;
       &.error {
         color: @text-color-error;

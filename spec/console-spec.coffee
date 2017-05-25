@@ -1,6 +1,6 @@
 Console = require '../lib/console/console'
 
-{model, view, pane, editor} = {}
+{model, view, consoleElementView, pane, editor} = {}
 
 describe "the console", ->
 
@@ -12,6 +12,7 @@ describe "the console", ->
     runs ->
       model = new Console initialInput: false
       view = atom.views.getView(model)
+      consoleElementView = view.querySelector('ink-console')
       view.style.height = '500px'
       view.style.width = '800px'
     waitsForPromise ->
@@ -22,7 +23,7 @@ describe "the console", ->
       pane.activateItem model
 
   it "has an ink-console view", ->
-    expect(view.tagName.toLowerCase()).toBe 'ink-console'
+    expect(consoleElementView.tagName.toLowerCase()).toBe 'ink-console'
 
   it "displays in a pane", ->
     pview = atom.views.getView(pane)
@@ -60,7 +61,7 @@ describe "the console", ->
         expect(view.querySelectorAll('.cell').length).toBe 0
 
       it 'retains focus', ->
-        expect(document.activeElement).toBe view
+        expect(document.activeElement).toBe consoleElementView
 
   describe 'when an input is created', ->
     beforeEach ->
@@ -181,7 +182,7 @@ describe "the console", ->
       expect(model.getInput()).toBeTruthy()
 
     it 'focuses the input', ->
-      expect(document.activeElement).toBe model.items[0].view
+      expect(model.items[0].view.contains document.activeElement).toBeTruthy()
 
     it 'emits eval events', ->
       expect(@evalSpy).not.toHaveBeenCalled()
@@ -190,7 +191,7 @@ describe "the console", ->
 
     it 'defocuses the input on done', ->
       model.done()
-      expect(document.activeElement).toBe view
+      expect(document.activeElement).toBe consoleElementView
 
     it 'recognises the input state after done', ->
       model.done()
