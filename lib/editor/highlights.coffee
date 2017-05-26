@@ -43,6 +43,7 @@ module.exports =
       ed.decorateMarker m,
         type: 'overlay'
         item: @profileLineView ed, count
+        class: 'ink-profile-overlay'
     destroy: ->
       watch.dispose()
       m.destroy() for m in markers
