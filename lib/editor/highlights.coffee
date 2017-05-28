@@ -44,6 +44,7 @@ module.exports =
         type: 'overlay'
         item: @profileLineView ed, count
         class: 'ink-profile-overlay'
-    destroy: ->
+        avoidOverflow: false
+    destroy: =>
       watch.dispose()
       m.destroy() for m in markers
