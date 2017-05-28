@@ -92,7 +92,7 @@ progress.ink:indeterminate {
   }
 }
 
-atom-overlay:last-child .ink.inline {
+atom-overlay.ink-overlay:last-child .ink.inline {
   background-color: contrast(@syntax-background-color,
                              darken(@syntax-background-color, 4%),
                              lighten(@syntax-background-color, 4%));
@@ -120,8 +120,9 @@ atom-text-editor.editor{
     }
   }
 }
-.ink-profile-overlay{
+atom-overlay.ink-profile-overlay{
   pointer-events: none;
+  z-index: 3;
   .ink-profile-line {
     position: relative;
     height: 1.5em;
