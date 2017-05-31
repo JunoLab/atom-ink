@@ -2,6 +2,7 @@ StepperView = require './stepper-view'
 views = require '../util/views'
 {focusEditorPane} = require '../util/pane-item'
 {span} = views.tags
+{open} = require '../util/opener'
 
 module.exports =
 class Stepper
@@ -42,10 +43,7 @@ class Stepper
       Promise.resolve()
     else
       focusEditorPane()
-      atom.workspace.open file,
-        initialLine: line
-        searchAllPanes: true
-        pending: true
+      open(file, line, {pending: true})
 
   goto: (file, @line) ->
     @listener ?= atom.workspace.observeTextEditors (ed) =>

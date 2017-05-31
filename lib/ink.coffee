@@ -50,3 +50,4 @@ module.exports = Ink =
     goto: goto
     Tooltip: Tooltip
     Profiler: profiler
+    Opener: require('./util/opener')
