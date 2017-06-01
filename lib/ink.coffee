@@ -13,6 +13,7 @@ Console = require './console/console'
 Stepper = require './debugger/stepper'
 breakpoints = require './debugger/breakpoints'
 PlotPane = require './plots/pane'
+profiler = require './plots/profiler'
 Workspace = require './workspace/workspace'
 tree = require './tree'
 goto = require './gotodef'
@@ -25,7 +26,7 @@ module.exports = Ink =
   deactivate: ->
     pkg = atom.packages.getActivePackage 'ink'
     localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
-    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, progress]
+    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, PlotPane]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
@@ -48,3 +49,5 @@ module.exports = Ink =
     InlineDoc: Docs
     goto: goto
     Tooltip: Tooltip
+    Profiler: profiler
+    Opener: require('./util/opener')

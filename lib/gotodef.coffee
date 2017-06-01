@@ -1,5 +1,6 @@
 {$$, SelectListView} = require 'atom-space-pen-views'
 fuzzaldrinPlus = require 'fuzzaldrin-plus'
+{open} = require './util/opener'
 
 # ## GoToDef-Panel
 #
@@ -101,5 +102,4 @@ class GotoView extends SelectListView
     @hide()
 
   @openItem: (item) ->
-    atom.workspace.open item.file,
-      initialLine: item.line
+    open(item.file, item.line)
