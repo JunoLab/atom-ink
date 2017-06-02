@@ -89,6 +89,9 @@ progress.ink:indeterminate {
     &:hover {
       overflow: auto;
     }
+    background-color: contrast(@syntax-background-color,
+                               darken(@syntax-background-color, 4%),
+                               lighten(@syntax-background-color, 4%));
   }
 }
 
