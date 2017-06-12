@@ -40,12 +40,14 @@ class ConsoleElement extends HTMLElement
       if document.activeElement == this and @model.getInput()
         @enterLastInput()
 
+    @scrollDown = throttle (=> @lastElement()?.scrollIntoView()), 130, {leading: false}
+    
     # determine if we should scroll down
     @shouldScroll = true
     @items.parentElement.onscroll =
       throttle (=> @shouldScroll = @isVisible @lastElement()), 150
     # scroll down on subtree modifications if last element is visible
-    @resizer.listenTo @items, => if @shouldScroll then @scrollDown()()
+    @resizer.listenTo @items, => if @shouldScroll then @scrollDown()
     for item in @model.items
       @addItem item
     atom.config.observe 'editor.fontFamily', (value) =>
@@ -209,12 +211,9 @@ class ConsoleElement extends HTMLElement
       @items.querySelector('.divider.loading')?.classList.remove 'loading'
     @isLoading = l
 
-  # Scrolling
-  scrollDown: -> throttle (=> delay (=> @lastElement()?.scrollIntoView()), 20), 130, {leading: false}
-
   lock: (f) ->
     if @isVisible @lastElement()
-      @scrollDown()()
+      @scrollDown()
     f()
 
 module.exports = ConsoleElement = document.registerElement 'ink-console', prototype: ConsoleElement.prototype
