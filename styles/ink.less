@@ -200,10 +200,6 @@ atom-text-editor {
   overflow: hidden;
   white-space: pre;
 
-  * {
-    vertical-align: top;
-  }
-
   a {
     color: @syntax-text-color;
     opacity: 0.65;
@@ -326,6 +322,11 @@ atom-text-editor {
 }
 
 .ink.tree {
+  vertical-align: top;
+  > * {
+    vertical-align: baseline;
+  }
+
   display: inline-block;
   > .icon {
     float: left;
