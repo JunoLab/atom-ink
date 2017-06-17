@@ -36,9 +36,10 @@ sudo: false
 
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
     packages:
-    - build-essential
-    - git
-    - libgnome-keyring-dev
-    - libsecret-1-dev
+    - g++-6
     - fakeroot
+    - git
+    - libsecret-1-dev
