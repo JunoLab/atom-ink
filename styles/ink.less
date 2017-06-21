@@ -228,15 +228,6 @@ atom-text-editor {
     }
   }
 
-  .icon {
-    text-align: center;
-    &:before {
-      width: 1em;
-      margin: 0;
-      font-size: inherit;
-    }
-  }
-
   &.ink-hide, &.ink-hide.invalid {
     opacity: 0;
     transform: translate(1em);
@@ -340,6 +331,11 @@ atom-text-editor {
     transition: all 0.1s ease-out;
     &.open {
       transform: rotate(0.25turn);
+    }
+    &:before {
+      width: 1em;
+      margin: 0;
+      font-size: inherit;
     }
   }
 }
