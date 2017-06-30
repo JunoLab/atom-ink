@@ -9,7 +9,7 @@ module.exports =
           type: 'highlight'
           class: 'block-notify'
     @timeout 20, =>
-      for region in atom.views.getView(ed).rootElement.querySelectorAll '.block-notify'
+      for region in atom.views.getView(ed).querySelectorAll '.block-notify'
         region.classList.add 'hidden'
     @timeout 320, =>
       m.destroy()
@@ -22,7 +22,7 @@ module.exports =
     div
 
   # highlights the start-end range of the provided editor object for 20 ms
-  # ed is an object like atom.workspace.getActiveTextEditor(), start and 
+  # ed is an object like atom.workspace.getActiveTextEditor(), start and
   # end are integers
   highlight: (ed, start, end) ->
     div = @blockDiv()

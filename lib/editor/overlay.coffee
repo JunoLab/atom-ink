@@ -1,6 +1,6 @@
 module.exports =
   show: (ed, view, {scroll}={}) ->
-    dom = atom.views.getView(ed).rootElement.querySelector('.lines')
+    dom = atom.views.getView(ed).querySelector('.lines')
     view.style.position = 'absolute'
     view.style.zIndex = 100
     dom.appendChild view
