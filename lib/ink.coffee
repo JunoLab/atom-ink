@@ -45,6 +45,7 @@ module.exports = Ink =
     breakpoints: breakpoints
     Workspace: Workspace
     PlotPane: PlotPane
+    DocPane: require('./docs/docpane')
     Pannable: Pannable
     highlights: highlights
     tree: tree
