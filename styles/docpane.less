@@ -1,6 +1,29 @@
+@import "ui-variables";
+@import "syntax-variables";
+
 .docpane {
-  overflow: auto;
-  .items tr {
-    border-bottom: 1px solid #888;
+  .header {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+    height: 40px;
+
+    background: @syntax-background-color;
+
+    atom-text-editor {
+      flex: 1;
+    }
+  }
+
+  .items {
+    // keep less from overwriting `calc`:
+    height: ~"calc(100% - 40px)";
+    overflow: auto;
+    tr {
+      border-bottom: 1px solid #888;
+  }
   }
 }
