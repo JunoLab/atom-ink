@@ -13,6 +13,10 @@
 
     background: @syntax-background-color;
 
+    .icon {
+      padding: 0 10px 0 10px;
+    }
+
     atom-text-editor {
       flex: 1;
     }
@@ -23,7 +27,10 @@
     height: ~"calc(100% - 40px)";
     overflow: auto;
     tr {
-      border-bottom: 1px solid #888;
+      border-bottom: 1px solid @syntax-background-color;
+      td {
+        padding: 5px;
+      }
   }
   }
 }
