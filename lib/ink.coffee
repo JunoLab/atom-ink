@@ -13,6 +13,7 @@ Console = require './console/console'
 Stepper = require './debugger/stepper'
 breakpoints = require './debugger/breakpoints'
 PlotPane = require './plots/pane'
+DocPane = require('./docs/docpane')
 {Pannable} = require './plots/canopy'
 profiler = require './plots/profiler'
 Workspace = require './workspace/workspace'
@@ -45,7 +46,7 @@ module.exports = Ink =
     breakpoints: breakpoints
     Workspace: Workspace
     PlotPane: PlotPane
-    DocPane: require('./docs/docpane')
+    DocPane: DocPane
     Pannable: Pannable
     highlights: highlights
     tree: tree
