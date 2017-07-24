@@ -25,7 +25,7 @@ module.exports = Ink =
     etch.setScheduler(atom.views)
     mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane]
     # include katex styles
-    require('./util/misc').loadCSS(require.resolve('katex')+'/../dist/katex.min.css')
+    require('./util/katex').loadResource(require.resolve('katex')+'/../dist/katex.min.css')
 
   deactivate: ->
     pkg = atom.packages.getActivePackage 'ink'
@@ -57,3 +57,4 @@ module.exports = Ink =
     Tooltip: Tooltip
     Profiler: profiler
     Opener: require('./util/opener')
+    KaTeX: require('./util/katex')
