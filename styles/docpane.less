@@ -1,5 +1,6 @@
 @import "ui-variables";
 @import "syntax-variables";
+@import "icons.less";
 
 .docpane {
   .header {
@@ -35,10 +36,22 @@
       border-bottom: 1px solid @syntax-background-color;
       td {
         padding: 5px;
+
+        .icon {
+          .icon-mixin;
+          height: 2em;
+          line-height: 2em;
+        }
       }
 
       .name {
         cursor: pointer;
+      }
+
+      .docs .markdown {
+        pre {
+          margin-bottom: 0.5em;
+        }
       }
     }
 
