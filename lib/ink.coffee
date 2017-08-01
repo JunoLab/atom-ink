@@ -25,7 +25,7 @@ module.exports = Ink =
     etch.setScheduler(atom.views)
     mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane]
     # include katex styles
-    require('./util/katex').loadResource(require.resolve('katex')+'/../dist/katex.min.css')
+    # require('./util/katex').loadResource('atom://atom-ink/res/katex/katex.css')
 
   deactivate: ->
     pkg = atom.packages.getActivePackage 'ink'
