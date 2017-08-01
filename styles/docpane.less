@@ -36,21 +36,27 @@
     // keep less from overwriting `calc`:
     height: ~"calc(100% - 40px)";
     overflow: auto;
-    tr {
-      border-bottom: 1px solid @syntax-background-color;
-      td {
-        padding: 5px;
+    .item {
+      padding: 5px;
 
-        .icon {
-          .icon-mixin;
-          height: 2em;
-          line-height: 2em;
-        }
+      .icon {
+        .icon-mixin;
+        height: 2em;
+        line-height: 2em;
+      }
+
+      .item-body {
+        margin: 1em;
       }
 
       .name {
+        display: inline-block;
         cursor: pointer;
         font-weight: bold;
+        padding: 0 0.5em;
+        height: 2em;
+        line-height: 2em;
+        background-color: fadeout(@text-color, 90%);
       }
 
       .docs .markdown {
