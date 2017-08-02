@@ -4,8 +4,6 @@ AnsiConverter = require 'ansi-to-html'
 converter = new AnsiConverter()
 
 class ConsoleElement extends HTMLElement
-  atomVersion: atom.appVersion.split('.').map (x) -> parseInt x, 10
-
   createdCallback: ->
     @setAttribute 'tabindex', -1
     @items = document.createElement 'div'
@@ -41,7 +39,7 @@ class ConsoleElement extends HTMLElement
         @enterLastInput()
 
     @scrollDown = throttle (=> @lastElement()?.scrollIntoView()), 130, {leading: false}
-    
+
     # determine if we should scroll down
     @shouldScroll = true
     @items.parentElement.onscroll =
@@ -132,7 +130,7 @@ class ConsoleElement extends HTMLElement
   cellView: (item) ->
     {view, icon} = item
     cell = document.createElement 'div'
-    cell.classList.add 'cell'
+    cell.classList.add 'cell', 'ink'
     cell.setAttribute 'tabindex', -1
 
     gutter = document.createElement 'div'
