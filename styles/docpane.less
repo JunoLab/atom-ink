@@ -66,6 +66,15 @@
         line-height: 2em;
         margin-right: 1em;
       }
+
+      a {
+        text-decoration: underline;
+        text-decoration-color: fadeout(@text-color, 50%);
+
+        &:hover {
+          text-decoration-color: @text-color;
+        }
+      }
     }
 
     .loading {
