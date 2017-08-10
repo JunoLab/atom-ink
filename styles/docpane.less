@@ -39,7 +39,7 @@
     .item {
       padding: 5px;
 
-      .icon {
+      .typ .icon {
         .icon-mixin;
         height: 2em;
         width: 2em;
@@ -70,6 +70,19 @@
         height: 2em;
         line-height: 2em;
         background-color: fadeout(@text-color, 90%);
+      }
+
+      .exported {
+        margin: 0 1em;
+        opacity: 0.1;
+
+        &:empty {
+          display: inline;
+        }
+
+        &.is-exported {
+          opacity: 0.6;
+        }
       }
 
       .module {
