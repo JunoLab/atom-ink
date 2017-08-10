@@ -3,6 +3,9 @@
 @import "icons.less";
 
 .docpane {
+  background: @syntax-background-color;
+  color: @syntax-text-color;
+
   .header {
     flex: 1;
     display: flex;
@@ -11,8 +14,7 @@
     justify-content: space-between;
     padding: 5px;
     height: 40px;
-
-    background: @syntax-background-color;
+    border-bottom: @base-border-color 1px solid;
 
     .icon {
       padding: 0 10px 0 10px;
@@ -50,11 +52,11 @@
         margin: 1em;
 
         h1 {
-          font-size: 1.5em;
+          font-size: 1.3em;
         }
 
         h2 {
-          font-size: 1.3em;
+          font-size: 1.2em;
         }
 
         h3 {
@@ -75,6 +77,7 @@
       .exported {
         margin: 0 1em;
         opacity: 0.1;
+        font-size: .6em;
 
         &:empty {
           display: inline;
