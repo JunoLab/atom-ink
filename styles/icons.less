@@ -9,7 +9,7 @@
   width: 2em;
   color: @text-color-subtle;
   background: fadeout(@text-color, 90%);
-  &:empty { display: none; }
+  // &:empty { display: none; }
   > *::before {
     position: relative;
     left: 0.2em;
@@ -44,7 +44,10 @@
 .make-type-icon(@type, @color) {
   &.@{type} {
     color: @color;
-    background: fadeout(@color, 80%)
+    background: fadeout(@color, 80%);
+    &::before {
+      margin: 0;
+    }
   }
 }
 
@@ -55,5 +58,8 @@
     @corrected-color: contrast(@overlay-background-color, darken(@color, 30%), lighten(@color, 30%));
     color: @corrected-color;
     background: fadeout(@corrected-color, 80%);
+    &::before {
+      margin: 0;
+    }
   }
 }
