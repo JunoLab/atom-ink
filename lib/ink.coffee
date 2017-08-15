@@ -57,4 +57,4 @@ module.exports = Ink =
     Tooltip: Tooltip
     Profiler: profiler
     Opener: require('./util/opener')
-    KaTeX: require('./util/katex')
+    KaTeX: require('./util/katexify')
