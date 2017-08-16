@@ -15,6 +15,7 @@ breakpoints = require './debugger/breakpoints'
 PlotPane = require './plots/pane'
 DocPane = require('./docs/docpane')
 {Pannable} = require './plots/canopy'
+katex = require('./util/katexify')
 profiler = require './plots/profiler'
 Workspace = require './workspace/workspace'
 tree = require './tree'
@@ -57,4 +58,4 @@ module.exports = Ink =
     Tooltip: Tooltip
     Profiler: profiler
     Opener: require('./util/opener')
-    KaTeX: require('./util/katexify')
+    KaTeX: katex

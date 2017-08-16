@@ -15,8 +15,7 @@
     "fuzzaldrin-plus": "^0.1.0",
     "underscore-plus": "*",
     "element-resize-detector": "*",
-    "etch": "*",
-    "katex": "*"
+    "etch": "*"
   },
   "providedServices": {
     "ink": {
