@@ -1,112 +1,112 @@
 @font-face {
   font-family: 'KaTeX_AMS';
-  src: url('fonts/KaTeX_AMS-Regular.eot');
-  src: url('fonts/KaTeX_AMS-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_AMS-Regular.woff2') format('woff2'), url('fonts/KaTeX_AMS-Regular.woff') format('woff'), url('fonts/KaTeX_AMS-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_AMS-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_AMS-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_AMS-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_AMS-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_AMS-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Caligraphic';
-  src: url('fonts/KaTeX_Caligraphic-Bold.eot');
-  src: url('fonts/KaTeX_Caligraphic-Bold.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Caligraphic-Bold.woff2') format('woff2'), url('fonts/KaTeX_Caligraphic-Bold.woff') format('woff'), url('fonts/KaTeX_Caligraphic-Bold.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Caligraphic-Bold.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Caligraphic-Bold.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Caligraphic-Bold.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Caligraphic-Bold.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Caligraphic-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Caligraphic';
-  src: url('fonts/KaTeX_Caligraphic-Regular.eot');
-  src: url('fonts/KaTeX_Caligraphic-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Caligraphic-Regular.woff2') format('woff2'), url('fonts/KaTeX_Caligraphic-Regular.woff') format('woff'), url('fonts/KaTeX_Caligraphic-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Caligraphic-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Caligraphic-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Caligraphic-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Caligraphic-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Caligraphic-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Fraktur';
-  src: url('fonts/KaTeX_Fraktur-Bold.eot');
-  src: url('fonts/KaTeX_Fraktur-Bold.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Fraktur-Bold.woff2') format('woff2'), url('fonts/KaTeX_Fraktur-Bold.woff') format('woff'), url('fonts/KaTeX_Fraktur-Bold.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Fraktur-Bold.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Fraktur-Bold.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Fraktur-Bold.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Fraktur-Bold.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Fraktur-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Fraktur';
-  src: url('fonts/KaTeX_Fraktur-Regular.eot');
-  src: url('fonts/KaTeX_Fraktur-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Fraktur-Regular.woff2') format('woff2'), url('fonts/KaTeX_Fraktur-Regular.woff') format('woff'), url('fonts/KaTeX_Fraktur-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Fraktur-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Fraktur-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Fraktur-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Fraktur-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Fraktur-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Main';
-  src: url('fonts/KaTeX_Main-Bold.eot');
-  src: url('fonts/KaTeX_Main-Bold.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Main-Bold.woff2') format('woff2'), url('fonts/KaTeX_Main-Bold.woff') format('woff'), url('fonts/KaTeX_Main-Bold.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Main-Bold.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Main-Bold.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Main-Bold.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Main-Bold.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Main-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Main';
-  src: url('fonts/KaTeX_Main-Italic.eot');
-  src: url('fonts/KaTeX_Main-Italic.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Main-Italic.woff2') format('woff2'), url('fonts/KaTeX_Main-Italic.woff') format('woff'), url('fonts/KaTeX_Main-Italic.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Main-Italic.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Main-Italic.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Main-Italic.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Main-Italic.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Main-Italic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'KaTeX_Main';
-  src: url('fonts/KaTeX_Main-Regular.eot');
-  src: url('fonts/KaTeX_Main-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Main-Regular.woff2') format('woff2'), url('fonts/KaTeX_Main-Regular.woff') format('woff'), url('fonts/KaTeX_Main-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Main-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Main-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Main-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Main-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Main-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Math';
-  src: url('fonts/KaTeX_Math-Italic.eot');
-  src: url('fonts/KaTeX_Math-Italic.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Math-Italic.woff2') format('woff2'), url('fonts/KaTeX_Math-Italic.woff') format('woff'), url('fonts/KaTeX_Math-Italic.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Math-Italic.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Math-Italic.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Math-Italic.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Math-Italic.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Math-Italic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'KaTeX_SansSerif';
-  src: url('fonts/KaTeX_SansSerif-Regular.eot');
-  src: url('fonts/KaTeX_SansSerif-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_SansSerif-Regular.woff2') format('woff2'), url('fonts/KaTeX_SansSerif-Regular.woff') format('woff'), url('fonts/KaTeX_SansSerif-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_SansSerif-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_SansSerif-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_SansSerif-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_SansSerif-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_SansSerif-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Script';
-  src: url('fonts/KaTeX_Script-Regular.eot');
-  src: url('fonts/KaTeX_Script-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Script-Regular.woff2') format('woff2'), url('fonts/KaTeX_Script-Regular.woff') format('woff'), url('fonts/KaTeX_Script-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Script-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Script-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Script-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Script-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Script-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size1';
-  src: url('fonts/KaTeX_Size1-Regular.eot');
-  src: url('fonts/KaTeX_Size1-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Size1-Regular.woff2') format('woff2'), url('fonts/KaTeX_Size1-Regular.woff') format('woff'), url('fonts/KaTeX_Size1-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Size1-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Size1-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Size1-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Size1-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Size1-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size2';
-  src: url('fonts/KaTeX_Size2-Regular.eot');
-  src: url('fonts/KaTeX_Size2-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Size2-Regular.woff2') format('woff2'), url('fonts/KaTeX_Size2-Regular.woff') format('woff'), url('fonts/KaTeX_Size2-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Size2-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Size2-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Size2-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Size2-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Size2-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size3';
-  src: url('fonts/KaTeX_Size3-Regular.eot');
-  src: url('fonts/KaTeX_Size3-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Size3-Regular.woff2') format('woff2'), url('fonts/KaTeX_Size3-Regular.woff') format('woff'), url('fonts/KaTeX_Size3-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Size3-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Size3-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Size3-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Size3-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Size3-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size4';
-  src: url('fonts/KaTeX_Size4-Regular.eot');
-  src: url('fonts/KaTeX_Size4-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Size4-Regular.woff2') format('woff2'), url('fonts/KaTeX_Size4-Regular.woff') format('woff'), url('fonts/KaTeX_Size4-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Size4-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Size4-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Size4-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Size4-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Size4-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Typewriter';
-  src: url('fonts/KaTeX_Typewriter-Regular.eot');
-  src: url('fonts/KaTeX_Typewriter-Regular.eot#iefix') format('embedded-opentype'), url('fonts/KaTeX_Typewriter-Regular.woff2') format('woff2'), url('fonts/KaTeX_Typewriter-Regular.woff') format('woff'), url('fonts/KaTeX_Typewriter-Regular.ttf') format('truetype');
+  src: url('atom://ink/styles/fonts/KaTeX_Typewriter-Regular.eot');
+  src: url('atom://ink/styles/fonts/KaTeX_Typewriter-Regular.eot#iefix') format('embedded-opentype'), url('atom://ink/styles/fonts/KaTeX_Typewriter-Regular.woff2') format('woff2'), url('atom://ink/styles/fonts/KaTeX_Typewriter-Regular.woff') format('woff'), url('atom://ink/styles/fonts/KaTeX_Typewriter-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -1063,190 +1063,190 @@
 }
 .katex .widehat1 {
   height: 0.24em;
-  background-image: url(images/widehat1.svg);
+  background-image: url(atom://ink/styles/images/widehat1.svg);
 }
 .katex .widehat2 {
   height: 0.30em;
-  background-image: url(images/widehat2.svg);
+  background-image: url(atom://ink/styles/images/widehat2.svg);
 }
 .katex .widehat3 {
   height: 0.36em;
-  background-image: url(images/widehat3.svg);
+  background-image: url(atom://ink/styles/images/widehat3.svg);
 }
 .katex .widehat4 {
   height: 0.42em;
-  background-image: url(images/widehat4.svg);
+  background-image: url(atom://ink/styles/images/widehat4.svg);
 }
 .katex .tilde1 {
   height: 0.26em;
-  background-image: url(images/tilde1.svg);
+  background-image: url(atom://ink/styles/images/tilde1.svg);
 }
 .katex .tilde2 {
   height: 0.29em;
-  background-image: url(images/tilde2.svg);
+  background-image: url(atom://ink/styles/images/tilde2.svg);
 }
 .katex .tilde3 {
   height: 0.306em;
-  background-image: url(images/tilde3.svg);
+  background-image: url(atom://ink/styles/images/tilde3.svg);
 }
 .katex .tilde4 {
   height: 0.312em;
-  background-image: url(images/tilde4.svg);
+  background-image: url(atom://ink/styles/images/tilde4.svg);
 }
 .katex .rightarrow {
   height: 0.522em;
   min-width: 0.5em;
-  background-image: url(images/rightarrow.svg);
+  background-image: url(atom://ink/styles/images/rightarrow.svg);
 }
 .katex .xrightarrow {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/rightarrow.svg);
+  background-image: url(atom://ink/styles/images/rightarrow.svg);
 }
 .katex .leftarrow {
   height: 0.522em;
   min-width: 0.5em;
-  background-image: url(images/leftarrow.svg);
+  background-image: url(atom://ink/styles/images/leftarrow.svg);
 }
 .katex .xleftarrow {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/leftarrow.svg);
+  background-image: url(atom://ink/styles/images/leftarrow.svg);
 }
 .katex .overbrace {
   height: 0.548em;
   min-width: 1.6em;
-  background-image: url(images/overbrace.svg);
+  background-image: url(atom://ink/styles/images/overbrace.svg);
 }
 .katex .underbrace {
   height: 0.548em;
   min-width: 1.6em;
-  background-image: url(images/underbrace.svg);
+  background-image: url(atom://ink/styles/images/underbrace.svg);
 }
 .katex .leftrightarrow {
   height: 0.522em;
   min-width: 0.5em;
-  background-image: url(images/leftrightarrow.svg);
+  background-image: url(atom://ink/styles/images/leftrightarrow.svg);
 }
 .katex .xleftrightarrow {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/leftrightarrow.svg);
+  background-image: url(atom://ink/styles/images/leftrightarrow.svg);
 }
 .katex .doublerightarrow {
   height: 0.56em;
   min-width: 0.783em;
-  background-image: url(images/doublerightarrow.svg);
+  background-image: url(atom://ink/styles/images/doublerightarrow.svg);
 }
 .katex .doubleleftarrow {
   height: 0.56em;
   min-width: 0.783em;
-  background-image: url(images/doubleleftarrow.svg);
+  background-image: url(atom://ink/styles/images/doubleleftarrow.svg);
 }
 .katex .doubleleftrightarrow {
   height: 0.56em;
   min-width: 0.955em;
-  background-image: url(images/doubleleftrightarrow.svg);
+  background-image: url(atom://ink/styles/images/doubleleftrightarrow.svg);
 }
 .katex .leftharpoon {
   height: 0.522em;
   min-width: 0.5em;
-  background-image: url(images/leftharpoon.svg);
+  background-image: url(atom://ink/styles/images/leftharpoon.svg);
 }
 .katex .leftharpoon {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/leftharpoon.svg);
+  background-image: url(atom://ink/styles/images/leftharpoon.svg);
 }
 .katex .rightharpoon {
   height: 0.522em;
   min-width: 0.5em;
-  background-image: url(images/rightharpoon.svg);
+  background-image: url(atom://ink/styles/images/rightharpoon.svg);
 }
 .katex .xrightharpoon {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/rightharpoon.svg);
+  background-image: url(atom://ink/styles/images/rightharpoon.svg);
 }
 .katex .hookleftarrow {
   height: 0.522em;
   min-width: 0.87em;
-  background-image: url(images/hookleftarrow.svg);
+  background-image: url(atom://ink/styles/images/hookleftarrow.svg);
 }
 .katex .hookrightarrow {
   min-width: 0.87em;
   height: 0.522em;
-  background-image: url(images/hookrightarrow.svg);
+  background-image: url(atom://ink/styles/images/hookrightarrow.svg);
 }
 .katex .mapsto {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/mapsto.svg);
+  background-image: url(atom://ink/styles/images/mapsto.svg);
 }
 .katex .leftharpoondown {
   height: 0.522em;
   min-width: 0.5em;
-  background-image: url(images/leftharpoondown.svg);
+  background-image: url(atom://ink/styles/images/leftharpoondown.svg);
 }
 .katex .leftharpoondown {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/leftharpoondown.svg);
+  background-image: url(atom://ink/styles/images/leftharpoondown.svg);
 }
 .katex .rightharpoondown {
   height: 0.522em;
   min-width: 0.5em;
-  background-image: url(images/rightharpoondown.svg);
+  background-image: url(atom://ink/styles/images/rightharpoondown.svg);
 }
 .katex .xrightharpoondown {
   height: 0.522em;
   min-width: 0.783em;
-  background-image: url(images/rightharpoondown.svg);
+  background-image: url(atom://ink/styles/images/rightharpoondown.svg);
 }
 .katex .rightleftharpoons {
   height: 0.716em;
   min-width: 0.783em;
-  background-image: url(images/rightleftharpoons.svg);
+  background-image: url(atom://ink/styles/images/rightleftharpoons.svg);
 }
 .katex .leftrightharpoons {
   height: 0.716em;
   min-width: 0.783em;
-  background-image: url(images/leftrightharpoons.svg);
+  background-image: url(atom://ink/styles/images/leftrightharpoons.svg);
 }
 .katex .overgroup {
   height: 0.342em;
   min-width: 0.87em;
-  background-image: url(images/overgroup.svg);
+  background-image: url(atom://ink/styles/images/overgroup.svg);
 }
 .katex .undergroup {
   height: 0.342em;
   min-width: 0.87em;
-  background-image: url(images/undergroup.svg);
+  background-image: url(atom://ink/styles/images/undergroup.svg);
 }
 .katex .twoheadleftarrow {
   height: 0.334em;
   min-width: 0.86em;
-  background-image: url(images/twoheadleftarrow.svg);
+  background-image: url(atom://ink/styles/images/twoheadleftarrow.svg);
 }
 .katex .twoheadrightarrow {
   height: 0.334em;
   min-width: 0.86em;
-  background-image: url(images/twoheadrightarrow.svg);
+  background-image: url(atom://ink/styles/images/twoheadrightarrow.svg);
 }
 .katex .linesegment {
   height: 0.414em;
   min-width: 0.5em;
-  background-image: url(images/linesegment.svg);
+  background-image: url(atom://ink/styles/images/linesegment.svg);
 }
 .katex .longequal {
   height: 0.334em;
   min-width: 0.5em;
-  background-image: url(images/longequal.svg);
+  background-image: url(atom://ink/styles/images/longequal.svg);
 }
 .katex .tofrom {
   height: 0.528em;
   min-width: 0.86em;
-  background-image: url(images/tofrom.svg);
+  background-image: url(atom://ink/styles/images/tofrom.svg);
 }
 .katex .cancel {
   background: linear-gradient(to top left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) calc(50% - 0.04em - 0.5px), #000000 calc(50% - 0.04em), #000000 calc(50% + 0.04em), rgba(0, 0, 0, 0) calc(50% + 0.04em + 0.5px), rgba(0, 0, 0, 0) 100%);
@@ -1264,17 +1264,17 @@
   .katex .bcancel,
   .katex .bcancel-mask {
     background-color: transparent !important;
-    background-image: url(images/bcancel.svg);
+    background-image: url(atom://ink/styles/images/bcancel.svg);
   }
   .katex .cancel,
   .katex .cancel-mask {
     background-color: transparent !important;
-    background-image: url(images/cancel.svg);
+    background-image: url(atom://ink/styles/images/cancel.svg);
   }
   .katex .xcancel,
   .katex .xcancel-mask {
     background-color: transparent !important;
-    background-image: url(images/xcancel.svg);
+    background-image: url(atom://ink/styles/images/xcancel.svg);
   }
 }
 @supports ((mask-image:none) or (-webkit-mask:none)) {
@@ -1315,174 +1315,174 @@
   .katex .bcancel,
   .katex .bcancel-mask {
     background-color: transparent !important;
-    background-image: url(images/bcancel.svg);
+    background-image: url(atom://ink/styles/images/bcancel.svg);
   }
   .katex .cancel,
   .katex .cancel-mask {
     background-color: transparent !important;
-    background-image: url(images/cancel.svg);
+    background-image: url(atom://ink/styles/images/cancel.svg);
   }
   .katex .xcancel,
   .katex .xcancel-mask {
     background-color: transparent !important;
-    background-image: url(images/xcancel.svg);
+    background-image: url(atom://ink/styles/images/xcancel.svg);
   }
 }
 .katex .widehat1-mask {
-  -webkit-mask: url(images/widehat1.svg);
-  mask: url(images/widehat1.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/widehat1.svg);
+  mask: url(atom://ink/styles/images/widehat1.svg) no-repeat;
 }
 .katex .widehat2-mask {
-  -webkit-mask: url(images/widehat2.svg);
-  mask: url(images/widehat2.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/widehat2.svg);
+  mask: url(atom://ink/styles/images/widehat2.svg) no-repeat;
 }
 .katex .widehat3-mask {
-  -webkit-mask: url(images/widehat3.svg);
-  mask: url(images/widehat3.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/widehat3.svg);
+  mask: url(atom://ink/styles/images/widehat3.svg) no-repeat;
 }
 .katex .widehat4-mask {
-  -webkit-mask: url(images/widehat4.svg);
-  mask: url(images/widehat4.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/widehat4.svg);
+  mask: url(atom://ink/styles/images/widehat4.svg) no-repeat;
 }
 .katex .tilde1-mask {
-  -webkit-mask: url(images/tilde1.svg);
-  mask: url(images/tilde1.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/tilde1.svg);
+  mask: url(atom://ink/styles/images/tilde1.svg) no-repeat;
 }
 .katex .tilde2-mask {
-  -webkit-mask: url(images/tilde2.svg);
-  mask: url(images/tilde2.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/tilde2.svg);
+  mask: url(atom://ink/styles/images/tilde2.svg) no-repeat;
 }
 .katex .tilde3-mask {
-  -webkit-mask: url(images/tilde3.svg);
-  mask: url(images/tilde3.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/tilde3.svg);
+  mask: url(atom://ink/styles/images/tilde3.svg) no-repeat;
 }
 .katex .tilde4-mask {
-  -webkit-mask: url(images/tilde4.svg);
-  mask: url(images/tilde4.svg) no-repeat;
+  -webkit-mask: url(atom://ink/styles/images/tilde4.svg);
+  mask: url(atom://ink/styles/images/tilde4.svg) no-repeat;
 }
 .katex .rightarrow-mask {
-  mask: url(images/rightarrow.svg);
-  -webkit-mask: url(images/rightarrow.svg);
+  mask: url(atom://ink/styles/images/rightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/rightarrow.svg);
 }
 .katex .xrightarrow-mask {
-  mask: url(images/rightarrow.svg);
-  -webkit-mask: url(images/rightarrow.svg);
+  mask: url(atom://ink/styles/images/rightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/rightarrow.svg);
 }
 .katex .leftarrow-mask {
-  mask: url(images/leftarrow.svg);
-  -webkit-mask: url(images/leftarrow.svg);
+  mask: url(atom://ink/styles/images/leftarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftarrow.svg);
 }
 .katex .xleftarrow-mask {
-  mask: url(images/leftarrow.svg);
-  -webkit-mask: url(images/leftarrow.svg);
+  mask: url(atom://ink/styles/images/leftarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftarrow.svg);
 }
 .katex .overbrace-mask {
   min-width: 1.6em;
-  mask: url(images/overbrace.svg);
-  -webkit-mask: url(images/overbrace.svg);
+  mask: url(atom://ink/styles/images/overbrace.svg);
+  -webkit-mask: url(atom://ink/styles/images/overbrace.svg);
 }
 .katex .underbrace-mask {
   min-width: 1.6em;
-  mask: url(images/underbrace.svg);
-  -webkit-mask: url(images/underbrace.svg);
+  mask: url(atom://ink/styles/images/underbrace.svg);
+  -webkit-mask: url(atom://ink/styles/images/underbrace.svg);
 }
 .katex .leftrightarrow-mask {
-  mask: url(images/leftrightarrow.svg);
-  -webkit-mask: url(images/leftrightarrow.svg);
+  mask: url(atom://ink/styles/images/leftrightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftrightarrow.svg);
 }
 .katex .xleftrightarrow-mask {
-  mask: url(images/leftrightarrow.svg);
-  -webkit-mask: url(images/leftrightarrow.svg);
+  mask: url(atom://ink/styles/images/leftrightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftrightarrow.svg);
 }
 .katex .doublerightarrow-mask {
-  mask: url(images/doublerightarrow.svg);
-  -webkit-mask: url(images/doublerightarrow.svg);
+  mask: url(atom://ink/styles/images/doublerightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/doublerightarrow.svg);
 }
 .katex .doubleleftarrow-mask {
-  mask: url(images/doubleleftarrow.svg);
-  -webkit-mask: url(images/doubleleftarrow.svg);
+  mask: url(atom://ink/styles/images/doubleleftarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/doubleleftarrow.svg);
 }
 .katex .doubleleftrightarrow-mask {
-  mask: url(images/doubleleftrightarrow.svg);
-  -webkit-mask: url(images/doubleleftrightarrow.svg);
+  mask: url(atom://ink/styles/images/doubleleftrightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/doubleleftrightarrow.svg);
 }
 .katex .leftharpoon-mask {
-  mask: url(images/leftharpoon.svg);
-  -webkit-mask: url(images/leftharpoon.svg);
+  mask: url(atom://ink/styles/images/leftharpoon.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftharpoon.svg);
 }
 .katex .xleftharpoon-mask {
-  mask: url(images/leftharpoon.svg);
-  -webkit-mask: url(images/leftharpoon.svg);
+  mask: url(atom://ink/styles/images/leftharpoon.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftharpoon.svg);
 }
 .katex .rightharpoon-mask {
-  mask: url(images/rightharpoon.svg);
-  -webkit-mask: url(images/rightharpoon.svg);
+  mask: url(atom://ink/styles/images/rightharpoon.svg);
+  -webkit-mask: url(atom://ink/styles/images/rightharpoon.svg);
 }
 .katex .xrightharpoon-mask {
-  mask: url(images/rightharpoon.svg);
-  -webkit-mask: url(images/rightharpoon.svg);
+  mask: url(atom://ink/styles/images/rightharpoon.svg);
+  -webkit-mask: url(atom://ink/styles/images/rightharpoon.svg);
 }
 .katex .hookleftarrow-mask {
-  mask: url(images/hookleftarrow.svg);
-  -webkit-mask: url(images/hookleftarrow.svg);
+  mask: url(atom://ink/styles/images/hookleftarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/hookleftarrow.svg);
 }
 .katex .hookrightarrow-mask {
-  mask: url(images/hookrightarrow.svg);
-  -webkit-mask: url(images/hookrightarrow.svg);
+  mask: url(atom://ink/styles/images/hookrightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/hookrightarrow.svg);
 }
 .katex .mapsto-mask {
-  mask: url(images/mapsto.svg);
-  -webkit-mask: url(images/mapsto.svg);
+  mask: url(atom://ink/styles/images/mapsto.svg);
+  -webkit-mask: url(atom://ink/styles/images/mapsto.svg);
 }
 .katex .leftharpoondown-mask {
-  mask: url(images/leftharpoondown.svg);
-  -webkit-mask: url(images/leftharpoondown.svg);
+  mask: url(atom://ink/styles/images/leftharpoondown.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftharpoondown.svg);
 }
 .katex .xleftharpoondown-mask {
-  mask: url(images/leftharpoondown.svg);
-  -webkit-mask: url(images/leftharpoondown.svg);
+  mask: url(atom://ink/styles/images/leftharpoondown.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftharpoondown.svg);
 }
 .katex .rightharpoondown-mask {
-  mask: url(images/rightharpoondown.svg);
-  -webkit-mask: url(images/rightharpoondown.svg);
+  mask: url(atom://ink/styles/images/rightharpoondown.svg);
+  -webkit-mask: url(atom://ink/styles/images/rightharpoondown.svg);
 }
 .katex .xrightharpoondown-mask {
-  mask: url(images/rightharpoondown.svg);
-  -webkit-mask: url(images/rightharpoondown.svg);
+  mask: url(atom://ink/styles/images/rightharpoondown.svg);
+  -webkit-mask: url(atom://ink/styles/images/rightharpoondown.svg);
 }
 .katex .rightleftharpoons-mask {
-  mask: url(images/rightleftharpoons.svg);
-  -webkit-mask: url(images/rightleftharpoons.svg);
+  mask: url(atom://ink/styles/images/rightleftharpoons.svg);
+  -webkit-mask: url(atom://ink/styles/images/rightleftharpoons.svg);
 }
 .katex .leftrightharpoons-mask {
-  mask: url(images/leftrightharpoons.svg);
-  -webkit-mask: url(images/leftrightharpoons.svg);
+  mask: url(atom://ink/styles/images/leftrightharpoons.svg);
+  -webkit-mask: url(atom://ink/styles/images/leftrightharpoons.svg);
 }
 .katex .overgroup-mask {
-  mask: url(images/overgroup.svg);
-  -webkit-mask: url(images/overgroup.svg);
+  mask: url(atom://ink/styles/images/overgroup.svg);
+  -webkit-mask: url(atom://ink/styles/images/overgroup.svg);
 }
 .katex .undergroup-mask {
-  mask: url(images/undergroup.svg);
-  -webkit-mask: url(images/undergroup.svg);
+  mask: url(atom://ink/styles/images/undergroup.svg);
+  -webkit-mask: url(atom://ink/styles/images/undergroup.svg);
 }
 .katex .twoheadleftarrow-mask {
-  mask: url(images/twoheadleftarrow.svg);
-  -webkit-mask: url(images/twoheadleftarrow.svg);
+  mask: url(atom://ink/styles/images/twoheadleftarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/twoheadleftarrow.svg);
 }
 .katex .twoheadrightarrow-mask {
-  mask: url(images/twoheadrightarrow.svg);
-  -webkit-mask: url(images/twoheadrightarrow.svg);
+  mask: url(atom://ink/styles/images/twoheadrightarrow.svg);
+  -webkit-mask: url(atom://ink/styles/images/twoheadrightarrow.svg);
 }
 .katex .linesegment-mask {
-  mask: url(images/linesegment.svg);
-  -webkit-mask: url(images/linesegment.svg);
+  mask: url(atom://ink/styles/images/linesegment.svg);
+  -webkit-mask: url(atom://ink/styles/images/linesegment.svg);
 }
 .katex .longequal-mask {
-  mask: url(images/longequal.svg);
-  -webkit-mask: url(images/longequal.svg);
+  mask: url(atom://ink/styles/images/longequal.svg);
+  -webkit-mask: url(atom://ink/styles/images/longequal.svg);
 }
 .katex .tofrom-mask {
-  mask: url(images/tofrom.svg);
-  -webkit-mask: url(images/tofrom.svg);
+  mask: url(atom://ink/styles/images/tofrom.svg);
+  -webkit-mask: url(atom://ink/styles/images/tofrom.svg);
 }
