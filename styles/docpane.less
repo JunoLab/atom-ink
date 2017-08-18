@@ -7,17 +7,30 @@
   color: @syntax-text-color;
 
   .header {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
     padding: 5px;
-    height: 40px;
+    // height: 40px;
     border-bottom: @base-border-color 1px solid;
 
     .icon {
       padding: 0 10px 0 10px;
+    }
+
+    .btn-group {
+      margin: 0 0.2em;
+    }
+
+    .header-main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .header-options {
+      padding: 0.5em 0 0.1em 2em;
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      background: @syntax-background-color;
     }
 
     .search-editor {
@@ -25,16 +38,13 @@
       margin: 0 0.5em;
     }
     .module-editor {
-      flex: 0.5;
-      margin: 0 0.5em;
-    }
-
-    .all-loaded-radiobutton {
+      flex: 1;
       margin: 0 0.5em;
     }
   }
 
   .content {
+    position: absolute;
     // keep less from overwriting `calc`:
     height: ~"calc(100% - 40px)";
 
@@ -106,6 +116,26 @@
           text-decoration-color: @text-color;
         }
       }
+
+      // &.closed {
+      //   .item-body {
+      //     height: 7em;
+      //     overflow: hidden;
+      //   }
+      //   // margin-bottom: -5em;
+      //
+      //   &::after {
+      //     content: '';
+      //     box-shadow: inset 0em -1em 1em @syntax-background-color;
+      //     width: 100%;
+      //     padding: 0m 50%;
+      //     height: 1em;
+      //     display: inline-block;
+      //     // position: fixed;
+      //     position: relative;
+      //     top: -2em;
+      //   }
+      // }
     }
 
     .loading {
