@@ -6,9 +6,11 @@
   background: @syntax-background-color;
   color: @syntax-text-color;
 
+  display: flex;
+  flex-direction: column;
+
   .header {
     padding: 5px;
-    // height: 40px;
     border-bottom: @base-border-color 1px solid;
 
     .icon {
@@ -44,11 +46,7 @@
   }
 
   .content {
-    position: absolute;
-    // keep less from overwriting `calc`:
-    height: ~"calc(100% - 40px)";
     width: 100%;
-
     padding: 1em;
 
     overflow: auto;
@@ -141,7 +139,7 @@
 
     .loading {
       margin: 0 auto;
-      top: 45%;
+      margin-top: 45%;
       opacity: 0.6;
     }
   }
