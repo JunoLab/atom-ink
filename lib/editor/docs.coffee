@@ -15,6 +15,7 @@ class InlineDoc
   createView: ({content}) ->
     @view = document.createElement 'div'
     @view.classList.add 'ink', 'docs', 'under'
+    @view.setAttribute('tabindex', '-1')
     @view.style.pointerEvents = 'auto'
     @disposables.add atom.commands.add @view,
       'inline-docs:clear': (e) => @remove()

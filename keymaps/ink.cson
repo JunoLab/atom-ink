@@ -30,3 +30,6 @@
 '.platform-win32 atom-text-editor:not([mini]),
  .platform-linux atom-text-editor:not([mini])':
   'ctrl-i ctrl-c': 'inline-results:clear-all'
+
+'.docpane .header .editor':
+  'enter': 'docpane:search'

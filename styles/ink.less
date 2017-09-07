@@ -7,12 +7,26 @@
 @import "ui-variables";
 @import "syntax-variables";
 
+// @import "atom://ink/redist/katex/katex.css";
+
 atom-text-editor {
   clip: rect(auto auto auto auto); // Otherwise inline results spill everywhere
 }
 
 progress.ink:indeterminate {
   animation-iteration-count: infinite;
+}
+
+.ink .markdown {
+  font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+  pre {
+    font-size: inherit;
+    margin-bottom: 0.5em;
+  }
+
+  code {
+    font-size: inherit;
+  }
 }
 
 .ink-result-toolbar {

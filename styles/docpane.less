@@ -1,0 +1,161 @@
+@import "ui-variables";
+@import "syntax-variables";
+@import "icons.less";
+
+.docpane {
+  background: @syntax-background-color;
+  color: @syntax-text-color;
+
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    padding: 5px;
+    border-bottom: @base-border-color 1px solid;
+
+    .icon {
+      padding: 0 10px 0 10px;
+    }
+
+    .btn-group {
+      margin: 0 0.2em;
+    }
+
+    .header-main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .header-options {
+      padding: 0.5em 0 0.1em 2em;
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      background: @syntax-background-color;
+    }
+
+    .search-editor {
+      flex: 1;
+      margin: 0 0.5em;
+    }
+    .module-editor {
+      flex: 1;
+      margin: 0 0.5em;
+    }
+  }
+
+  .content {
+    width: 100%;
+    padding: 1em;
+
+    overflow: auto;
+    .item {
+      padding: 5px;
+
+      .typ .icon {
+        .icon-mixin;
+        height: 2em;
+        width: 2em;
+        line-height: 2em;
+      }
+
+      .item-body {
+        &.collapsed {
+          overflow: hidden;
+          position: relative;
+          line-height: 1.2em;
+          max-height: 8em;
+          // padding-bottom: 0;
+
+          .expander {
+            position: absolute;
+            right: 47%;
+            bottom: 0em;
+            background: linear-gradient(to bottom, mix(@text-color, @syntax-background-color, 20%),
+                                                   @syntax-background-color);
+            line-height: 1.5em;
+            vertical-align: bottom;
+            padding: 0 1em;
+            cursor: pointer;
+            display: inherit;
+          }
+
+          &:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            width: 100%;
+            height: 1.5em;
+            margin-top: -1.5em;
+            background: @syntax-background-color;
+          }
+        }
+
+        .expander {
+          display: none;
+        }
+
+        margin: 1em;
+        // padding-bottom: 1.5em;
+
+        h1 {
+          font-size: 1.3em;
+        }
+
+        h2 {
+          font-size: 1.2em;
+        }
+
+        h3 {
+          font-size: 1.1em;
+        }
+      }
+
+      .name {
+        display: inline-block;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 0 0.5em;
+        height: 2em;
+        line-height: 2em;
+        background-color: fadeout(@text-color, 90%);
+      }
+
+      .exported {
+        margin: 0 1em;
+        opacity: 0.1;
+        font-size: .6em;
+
+        &:empty {
+          display: inline;
+        }
+
+        &.is-exported {
+          opacity: 0.6;
+        }
+      }
+
+      .module {
+        float: right;
+        cursor: pointer;
+        line-height: 2em;
+        margin-right: 1em;
+      }
+
+      a {
+        text-decoration: underline;
+        text-decoration-color: fadeout(@text-color, 50%);
+
+        &:hover {
+          text-decoration-color: @text-color;
+        }
+      }
+    }
+
+    .loading {
+      margin: 1em auto;
+      opacity: 0.6;
+    }
+  }
+}
