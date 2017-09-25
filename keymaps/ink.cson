@@ -15,10 +15,10 @@
   'shift-space': 'unset!'
 
 '.platform-win32 .ink, .platform-linux .ink':
-  'ctrl-c': 'native!'
+  'ctrl-c': 'core:copy'
 
 '.platform-darwin .ink':
-  'cmd-c': 'native!'
+  'cmd-c': 'core:copy'
 
 'atom-text-editor:not([mini])':
   'escape': 'inline:clear-current'
