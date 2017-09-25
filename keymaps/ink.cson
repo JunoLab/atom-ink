@@ -33,3 +33,9 @@
 
 '.docpane .header .editor':
   'enter': 'docpane:search'
+
+'.platform-win32 .docpane, .platform-linux .docpane':
+  'ctrl-c': 'native!'
+
+'.platform-darwin .docpane, .platform-linux .docpane':
+  'cmd-c': 'native!'
