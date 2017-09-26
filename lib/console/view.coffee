@@ -150,6 +150,8 @@ class ConsoleElement extends HTMLElement
     @lastInput = model = atom.workspace.textEditorRegistry.build()
     atom.textEditors.add model
     ed = atom.views.getView model
+    if @model.watchEditor?
+      @model.watchEditor(model, ['workspace-center', 'symbol-provider'])
     ed.onblur = -> atom.commands.dispatch ed, 'autocomplete-plus:cancel'
     item.editor = model
     item.editor.update
