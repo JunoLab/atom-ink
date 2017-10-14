@@ -51,11 +51,11 @@ class StepperView
   addClass: (ed) ->
     @onReady ed, =>
       [ed, tab] = @edAndTab ed
-      x?.classList.add 'debug' for x in [ed, tab]
+      x?.classList.toggle('debug') for x in [ed, tab]
 
   rmClass: (ed) ->
     [ed, tab] = @edAndTab ed
-    x?.classList.remove 'debug' for x in [ed, tab]
+    x?.classList.toggle('debug') for x in [ed, tab]
 
   attach: ->
     @marker = @editor.markBufferPosition [@line, Infinity]

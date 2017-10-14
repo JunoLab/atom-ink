@@ -302,18 +302,28 @@ atom-text-editor {
 }
 
 .ink.stepper {
-  .ink.inline();
+  .result-mixin;
+
+  background: contrast(@syntax-background-color,
+                       darken(@syntax-background-color, 3%),
+                       lighten(@syntax-background-color, 3%));
+
+  left: 1em;
   max-width: initial;
   padding-right: 0;
-  border-rigth: 0;
+  position: relative;
   .fade {
     opacity: 0.5;
   }
   .btn-group {
+    vertical-align: bottom;
     padding-left: .4em;
-  }
-  button:before {
-    font-size: 1.2em;
+    button {
+      height: 1.8em;
+      &:before {
+        font-size: 1.2em;
+      }
+    }
   }
   &:hover {
     overflow: hidden;
@@ -322,12 +332,8 @@ atom-text-editor {
 
 .tab.debug .title:before {
   font-family: "Octicons Regular";
-  font-size: medium;
-  text-align: center;
   content: "\f091";
   font-style: normal !important;
-  margin-right: 5px;
-  vertical-align: top;
   // For better visualisation in Mac OS
   -webkit-font-smoothing: antialiased;
 }
