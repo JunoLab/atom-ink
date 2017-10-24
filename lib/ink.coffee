@@ -37,8 +37,8 @@ module.exports = Ink =
   provide: ->
     util:
       focusEditorPane: () -> PaneItem.focusEditorPane()
-    highlight: (ed, start, end) =>
-      block.highlight ed, start, end
+    highlight: (ed, start, end, clas) =>
+      block.highlight ed, start, end, clas
     Loading: Loading
     progress: progress
     Result: Result
