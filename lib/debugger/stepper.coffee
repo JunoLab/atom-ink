@@ -32,9 +32,9 @@ class Stepper
   setText: (@text) ->
     @views.forEach (view) => @setViewText(view)
 
-  edsForFile: (file) ->
+  edForFile: (file) ->
     atom.workspace.getTextEditors()
-      .filter((x)->x.getPath() is file)
+      .filter((x)->x.getPath() is file)[0]
 
   activate: (file, line) ->
     active = atom.workspace.getActiveTextEditor()
@@ -55,7 +55,7 @@ class Stepper
       else
         @file = file
         @detach()
-        @attach(ed) for ed in @edsForFile file
+        @attach(@edForFile(file))
         @setText @text
 
   detach: ->
