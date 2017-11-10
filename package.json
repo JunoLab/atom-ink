@@ -15,7 +15,10 @@
     "fuzzaldrin-plus": "^0.1.0",
     "underscore-plus": "*",
     "element-resize-detector": "*",
-    "etch": "^0.12.5"
+    "etch": "^0.12.5",
+    "ptyw.js": "*",
+    "consistent-env": "*",
+    "xterm": "*"
   },
   "providedServices": {
     "ink": {
