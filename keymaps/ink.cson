@@ -21,10 +21,10 @@
   'cmd-c': 'native!'
 
 'ink-console .platform-win32 .ink, .platform-linux .ink':
-  'ctrl-c': 'core:copy!'
+  'ctrl-c': 'core:copy'
 
 'ink-console .platform-darwin .ink':
-  'cmd-c': 'core:copy!'
+  'cmd-c': 'core:copy'
 
 'atom-text-editor:not([mini])':
   'escape': 'inline:clear-current'
