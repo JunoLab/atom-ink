@@ -16,8 +16,7 @@
     "underscore-plus": "*",
     "element-resize-detector": "*",
     "etch": "^0.12.5",
-    "ptyw.js": "*",
-    "consistent-env": "*",
+    "node-pty": "*",
     "xterm": "*"
   },
   "providedServices": {

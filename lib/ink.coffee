@@ -14,7 +14,7 @@ Stepper = require './debugger/stepper'
 breakpoints = require './debugger/breakpoints'
 PlotPane = require './plots/pane'
 DocPane = require('./docs/docpane')
-XTermConsole = require('./console2/console')
+InkTerminal = require('./console2/console')
 {Pannable} = require './plots/canopy'
 katex = require('./util/katexify')
 profiler = require './plots/profiler'
@@ -58,4 +58,4 @@ module.exports = Ink =
     Profiler: profiler
     Opener: require('./util/opener')
     KaTeX: katex
-    XTermConsole: XTermConsole
+    InkTerminal: InkTerminal
