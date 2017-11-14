@@ -62,7 +62,7 @@ class StepperView
     @editor.decorateMarker @marker,
       type: 'overlay'
       item: @view
-      stable: true
+      avoidOverflow: false
 
   constructor: (@editor, @line) ->
     @createView()
