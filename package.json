@@ -17,7 +17,7 @@
     "element-resize-detector": "*",
     "etch": "^0.12.5",
     "node-pty": "*",
-    "xterm": "*"
+    "xterm": "Tyriar/xterm.js#vscode-release/1.19"
   },
   "providedServices": {
     "ink": {
