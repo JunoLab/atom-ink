@@ -16,7 +16,7 @@
     "underscore-plus": "*",
     "element-resize-detector": "*",
     "etch": "^0.12.5",
-    "node-pty": "*",
+    "pty.js": "platformio/pty.js#prebuilt",
     "xterm": "Tyriar/xterm.js#vscode-release/1.19"
   },
   "providedServices": {
