@@ -25,12 +25,12 @@ goto = require './gotodef'
 module.exports = Ink =
   activate: ->
     etch.setScheduler(atom.views)
-    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane]
+    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal]
 
   deactivate: ->
-    pkg = atom.packages.getActivePackage 'ink'
-    localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
-    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, PlotPane]
+    # pkg = atom.packages.getActivePackage 'ink'
+    # localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
+    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
