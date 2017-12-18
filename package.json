@@ -16,7 +16,13 @@
     "underscore-plus": "*",
     "element-resize-detector": "*",
     "etch": "^0.12.5",
+    "katex": "^0.8.3",
+    "fs-extra": "^5.0.0",
+    "replace-in-file": "^3.0.0",
     "xterm": "Tyriar/xterm.js#vscode-release/1.19"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
   },
   "providedServices": {
     "ink": {
