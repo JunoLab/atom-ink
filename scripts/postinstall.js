@@ -19,7 +19,8 @@ function installKaTeX () {
 }
 
 function installXTerm () {
-
+  fs.copySync(__dirname + '/../node_modules/xterm/lib/xterm.css', __dirname + '/../styles/xterm.css')
 }
 
 installKaTeX()
+installXTerm()
