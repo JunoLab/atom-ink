@@ -1,4 +1,5 @@
 StepperView = require './stepper-view'
+{DebuggerToolbar} = require('./toolbar')
 views = require '../util/views'
 {focusEditorPane} = require '../util/pane-item'
 {span} = views.tags
@@ -6,7 +7,6 @@ views = require '../util/views'
 
 module.exports =
 class Stepper
-
   constructor: ({@buttons}) ->
     @views = []
     @text = "Grand Steppin'"
@@ -18,16 +18,20 @@ class Stepper
 
   attach: (ed) ->
     s = new StepperView ed, @line
+    @toolbar?.destroy()
+    @toolbar = new DebuggerToolbar(@buttons)
+    @toolbar.attach(ed)
     @views.push s
     ed.onDidDestroy =>
       s.destroy()
+      @toolbar.destroy()
       @views = @views.filter((x) => x != s)
     @setViewText s
 
   setViewText: (view) ->
     view.clear()
     view.appendChild views.render span 'stepper-label', @text
-    view.appendChild view.buttonGroup @buttons
+    # view.appendChild view.buttonGroup @buttons
 
   setText: (@text) ->
     @views.forEach (view) => @setViewText(view)
@@ -67,10 +71,12 @@ class Stepper
 
   detach: ->
     view.destroy() for view in @views
+    @toolbar?.destroy()
     @views = []
 
   destroy: ->
     @detach()
+    @toolbar?.destroy()
     @listener?.dispose()
     delete @listener
     delete @file
