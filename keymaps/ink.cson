@@ -45,3 +45,11 @@
 
 '.platform-darwin .docpane, .platform-linux .docpane':
   'cmd-c': 'native!'
+
+'.platform-win32 ink-terminal, .platform-linux ink-terminal':
+  'ctrl-shift-c': 'ink-terminal:copy'
+  'ctrl-shift-v': 'ink-terminal:paste'
+
+'.platform-darwin ink-terminal':
+  'cmd-c': 'ink-terminal:copy'
+  'cmd-v': 'ink-terminal:paste'

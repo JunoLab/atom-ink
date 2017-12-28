@@ -10,12 +10,19 @@
     "atom": ">=1.12.0 <2.0.0"
   },
   "dependencies": {
-    "ansi-to-html": "^0.4.1",
+    "ansi-to-html": "^0.6.3",
     "atom-space-pen-views": "^2.0.0",
     "fuzzaldrin-plus": "^0.1.0",
     "underscore-plus": "*",
     "element-resize-detector": "*",
-    "etch": "^0.12.5"
+    "etch": "^0.12.5",
+    "katex": "^0.8.3",
+    "fs-extra": "^5.0.0",
+    "replace-in-file": "^3.0.0",
+    "xterm": "Tyriar/xterm.js#vscode-release/1.19"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
   },
   "providedServices": {
     "ink": {

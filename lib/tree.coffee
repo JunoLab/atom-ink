@@ -10,7 +10,7 @@ module.exports =
       div 'body gutted', children
     ]
     for sel in [':scope > .header', ':scope > .icon']
-      view.querySelector(sel).onclick = =>
+      view.querySelector(sel).addEventListener 'click', () =>
         onToggle?()
         window.requestAnimationFrame => @toggle view
     view.onToggle = onToggle

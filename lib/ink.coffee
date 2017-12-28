@@ -14,6 +14,7 @@ Stepper = require './debugger/stepper'
 breakpoints = require './debugger/breakpoints'
 PlotPane = require './plots/pane'
 DocPane = require('./docs/docpane')
+InkTerminal = require('./console2/console')
 {Pannable} = require './plots/canopy'
 katex = require('./util/katexify')
 profiler = require './plots/profiler'
@@ -24,12 +25,12 @@ goto = require './gotodef'
 module.exports = Ink =
   activate: ->
     etch.setScheduler(atom.views)
-    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane]
+    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal]
 
   deactivate: ->
-    pkg = atom.packages.getActivePackage 'ink'
-    localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
-    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, PlotPane]
+    # pkg = atom.packages.getActivePackage 'ink'
+    # localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
+    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
@@ -57,3 +58,4 @@ module.exports = Ink =
     Profiler: profiler
     Opener: require('./util/opener')
     KaTeX: katex
+    InkTerminal: InkTerminal

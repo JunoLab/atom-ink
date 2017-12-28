@@ -1,0 +1,20 @@
+@import "syntax-variables";
+
+
+ink-terminal, .ink-terminal {
+  height: 100%;
+  padding-left: 0.5em;
+  background-color: @syntax-background-color;
+  color: @syntax-text-color;
+
+  canvas {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: auto;
+  }
+
+  .xterm-viewport {
+    background-color: @syntax-background-color !important;
+  }
+}
