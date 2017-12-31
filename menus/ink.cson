@@ -11,3 +11,7 @@
     {label: 'Copy', command: 'core:copy'}
     {type: 'separator'}
   ]
+  'ink-terminal': [
+    {label: 'Copy', command: 'ink-terminal:copy'}
+    {label: 'Paste', command: 'ink-terminal:paste'}
+  ]

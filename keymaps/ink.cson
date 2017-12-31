@@ -43,7 +43,7 @@
 '.platform-win32 .docpane, .platform-linux .docpane':
   'ctrl-c': 'native!'
 
-'.platform-darwin .docpane, .platform-linux .docpane':
+'.platform-darwin .docpane':
   'cmd-c': 'native!'
 
 '.platform-win32 ink-terminal, .platform-linux ink-terminal':

@@ -9,6 +9,7 @@ module.exports =
 class Stepper
   constructor: ({@buttons}) ->
     @views = []
+    @bars = []
     @text = "Grand Steppin'"
     @buttons ?= [
       {icon: 'arrow-down'}
@@ -18,14 +19,15 @@ class Stepper
 
   attach: (ed) ->
     s = new StepperView ed, @line
-    @toolbar?.destroy()
-    @toolbar = new DebuggerToolbar(@buttons)
-    @toolbar.attach(ed)
+    toolbar = new DebuggerToolbar(@buttons)
+    toolbar.attach(ed)
     @views.push s
+    @bars.push toolbar
     ed.onDidDestroy =>
       s.destroy()
-      @toolbar.destroy()
+      toolbar.destroy()
       @views = @views.filter((x) => x != s)
+      @bars = @bars.filter((x) => x != s)
     @setViewText s
 
   setViewText: (view) ->
@@ -71,12 +73,12 @@ class Stepper
 
   detach: ->
     view.destroy() for view in @views
-    @toolbar?.destroy()
+    bar.destroy() for bar in @bars
     @views = []
+    @bars = []
 
   destroy: ->
     @detach()
-    @toolbar?.destroy()
     @listener?.dispose()
     delete @listener
     delete @file
