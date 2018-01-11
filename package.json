@@ -19,7 +19,7 @@
     "katex": "^0.8.3",
     "fs-extra": "^5.0.0",
     "replace-in-file": "^3.0.0",
-    "xterm": "Tyriar/xterm.js#vscode-release/1.19"
+    "xterm": "^3.0.1"
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
