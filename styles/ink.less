@@ -14,7 +14,8 @@ atom-text-editor {
 }
 
 progress.ink:indeterminate {
-  animation-iteration-count: infinite;
+  animation: none;
+  // animation-iteration-count: infinite;
 }
 
 .ink .markdown {
@@ -234,10 +235,10 @@ atom-text-editor {
 
   &.loading {
     opacity: 0.5;
-    .icon:before {
-      animation: spin 4s linear infinite;
-      @keyframes spin { 100% { transform: rotate(1turn); } }
-    }
+    // .icon:before {
+    //   animation: spin 4s linear infinite;
+    //   @keyframes spin { 100% { transform: rotate(1turn); } }
+    // }
   }
 
   &.ink-hide, &.ink-hide.invalid {
