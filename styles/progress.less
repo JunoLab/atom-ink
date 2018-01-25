@@ -1,0 +1,39 @@
+@import "ui-variables";
+
+@progress-height: 8px;
+@progress-background-color: @text-color-info;
+@progress-buffer-color: fade(@text-color-info, 20%);
+
+.progress-tr {
+  padding: 0 0.2em;
+}
+
+progress.ink {
+  -webkit-appearance: none;
+  height: @progress-height;
+  border-radius: 2px;
+  background-color: @input-background-color;
+  box-shadow: inset 0 0 0 1px @input-border-color;
+
+  &::-webkit-progress-bar {
+    background-color: transparent;
+  }
+
+  &::-webkit-progress-value {
+    border-radius: 2px;
+    background-color: @progress-background-color;
+  }
+
+  // Is buffering (when no value is set)
+  &:indeterminate {
+    background-image:
+       linear-gradient(-45deg, transparent 33%, @progress-buffer-color 33%,
+                               @progress-buffer-color 66%, transparent 66%);
+    background-size: 25px @progress-height, 100% 100%, 100% 100%;
+    animation: none;
+  }
+
+  &[value] {
+    background-color: @input-background-color;
+  }
+}
