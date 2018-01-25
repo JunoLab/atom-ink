@@ -13,10 +13,6 @@ atom-text-editor {
   clip: rect(auto auto auto auto); // Otherwise inline results spill everywhere
 }
 
-progress.ink:indeterminate {
-  animation-iteration-count: infinite;
-}
-
 .ink .markdown {
   font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
   pre {
@@ -234,10 +230,10 @@ atom-text-editor {
 
   &.loading {
     opacity: 0.5;
-    .icon:before {
-      animation: spin 4s linear infinite;
-      @keyframes spin { 100% { transform: rotate(1turn); } }
-    }
+    // .icon:before {
+    //   animation: spin 4s linear infinite;
+    //   @keyframes spin { 100% { transform: rotate(1turn); } }
+    // }
   }
 
   &.ink-hide, &.ink-hide.invalid {
@@ -391,14 +387,14 @@ atom-text-editor {
 
 .ink-tooltip {
   position: absolute;
-  background: contrast(@syntax-background-color,
-                       darken(@syntax-background-color, 4%),
-                       lighten(@syntax-background-color, 4%));
+  background: contrast(@app-background-color,
+                       darken(@app-background-color, 4%),
+                       lighten(@app-background-color, 4%));
   border-left: 2px solid @background-color-info;
   border-right: 2px solid @background-color-info;
   border-radius: 3px;
   font-size: 1.15em;
-  color: @syntax-text-color;
+  color: @text-color;
   padding: 0.5em;
   z-index: 100;
   opacity: 1;
@@ -414,10 +410,6 @@ atom-text-editor {
 
 .ink-tooltip-msg {
   display: block;
-}
-
-.progress-tr {
-  padding: 0 0.2em;
 }
 
 .xterm .xterm-viewport {
