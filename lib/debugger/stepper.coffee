@@ -7,10 +7,11 @@ views = require '../util/views'
 
 module.exports =
 class Stepper
-  constructor: ({@buttons}) ->
+  constructor: ({@buttons, @pending}) ->
     @views = []
     @bars = []
     @text = "Grand Steppin'"
+    @pending ?= true
     @buttons ?= [
       {icon: 'arrow-down'}
       {icon: 'link-external'}
@@ -53,7 +54,7 @@ class Stepper
       Promise.resolve()
     else
       focusEditorPane()
-      open(file, line, {pending: true})
+      open(file, line, {pending: @pending})
 
   goto: (file, @line) ->
     @listener ?= atom.workspace.observeTextEditors (ed) =>
