@@ -63,6 +63,23 @@ class StepperView
       type: 'overlay'
       item: @view
       avoidOverflow: false
+    @widthListener = () =>
+      ed = atom.views.getView(@editor)
+      return unless ed?
+      rect = ed.getBoundingClientRect()
+      w = rect.width + rect.left - 40 - parseInt(@view.parentElement.style.left)
+      if w < 100 then w = 100
+      @view.style.maxWidth = w + 'px'
+
+      console.log w
+
+      setTimeout((() => process.nextTick(() => window.requestAnimationFrame(@widthListener))), 15*1000/60)
+
+    window.requestAnimationFrame(@widthListener)
+
+    @editor.decorateMarker @marker,
+      type: 'line'
+      class: 'ink-stepper-line'
 
   constructor: (@editor, @line) ->
     @createView()
@@ -89,6 +106,7 @@ class StepperView
 
   destroy: ->
     @destroyed = true
+    @widthListener = () =>
     @disposables.dispose()
     @rmClass @editor
     @fadeOut =>

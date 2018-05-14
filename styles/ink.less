@@ -25,6 +25,10 @@ atom-text-editor {
   }
 }
 
+.ink-stepper-line {
+  background-color: fade(@background-color-info, 20%) !important;
+}
+
 .ink-result-toolbar {
   right: 0;
   transition: visibility 0s linear 0.2s, opacity 0.1s linear;
@@ -320,9 +324,6 @@ atom-text-editor {
         font-size: 1.2em;
       }
     }
-  }
-  &:hover {
-    overflow: hidden;
   }
 }
 
