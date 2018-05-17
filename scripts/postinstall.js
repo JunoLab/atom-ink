@@ -3,18 +3,12 @@ var replace = require('replace-in-file')
 
 function installKaTeX () {
   fs.copySync(__dirname + '/../node_modules/katex/dist/fonts', __dirname + '/../styles/fonts')
-  // fs.copySync(__dirname + '/../node_modules/katex/dist/images', __dirname + '/../styles/images')
   fs.copySync(__dirname + '/../node_modules/katex/dist/katex.css', __dirname + '/../styles/katex.css')
 
   replace.sync({
     files: __dirname + '/../styles/katex.css',
-    from:  /url\('fonts/g,
-    to:    'url(\'atom:\/\/ink\/styles\/fonts'
-  })
-  replace.sync({
-    files: __dirname + '/../styles/katex.css',
-    from:  /url\(images/g,
-    to:    'url(atom:\/\/ink\/styles\/images'
+    from:  /url\(fonts/g,
+    to:    'url(atom:\/\/ink\/styles\/fonts'
   })
 }
 
