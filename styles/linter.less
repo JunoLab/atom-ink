@@ -1,0 +1,89 @@
+@import "ui-variables";
+@import "syntax-variables";
+
+// inline linter popups
+@ink-linter-border-width: 8px;
+.ink-lint-inline {
+  .ink-lint-description-container {
+    color: @syntax-text-color;
+    padding: 0px 0.5em 0px 0.5em;
+    transition: all 0.2s;
+    opacity: 1;
+    cursor: default;
+    user-select: auto;
+    pointer-events: auto;
+
+    background-color: contrast(@syntax-background-color,
+      darken(@syntax-background-color, 4%),
+      lighten(@syntax-background-color, 4%));
+
+    border-left: @ink-linter-border-width solid @background-color-warning;
+    // border-top: 3px solid @background-color-warning;
+  }
+  .ink-lint-arrow-up {
+    height: 0px;
+    width: 100%;
+    border-left: @ink-linter-border-width solid @background-color-warning;
+    border-top: @ink-linter-border-width solid rgba(0,0,0,0);
+  }
+}
+
+.ink-lint-line {
+  border-bottom: 1px solid @syntax-background-color;
+}
+
+
+// dotted underline stuff
+.ink-linter-warning {
+  z-index: 2 !important;
+  border-bottom: 1px dotted @background-color-warning;
+}
+
+.ink-linter-error {
+  z-index: 2 !important;
+  border-bottom: 1px dotted @background-color-error;
+}
+
+// dots in gutter
+.ink-linter-gutter-warning {
+  color: @background-color-warning;
+}
+
+.ink-linter-gutter-error {
+  color: @background-color-error;
+}
+
+.gutter[gutter-name="ink-linter-gutter"] {
+  width: 1.4em;
+}
+
+// linter pane
+.linter-table-container {
+  overflow-y: auto;
+
+  .linter-table {
+    width: 100%;
+
+    .table-header {
+      background: @background-color-highlight;
+      &.table-cell-sev, &.table-cell-line, &.table-cell-prov {
+        width: 10%
+      }
+    }
+
+    .table-cell {
+      padding: 0.4em 0.5em 0.4em 1em;
+      border-right: 1px solid @base-border-color;
+    }
+
+    tbody {
+      .table-cell-file {
+        cursor: pointer;
+      }
+
+      tr:nth-child(even) {
+        background-color: mix(@background-color-highlight, @base-background-color, 5%)
+      }
+    }
+  }
+}

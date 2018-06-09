@@ -29,6 +29,18 @@ atom-text-editor {
   background-color: fade(@background-color-info, 20%) !important;
 }
 
+.ink-stepper-line-gutter {
+  visibility: hidden;
+  &:before {
+    visibility: visible;
+    content: "\f078";
+    font-family: 'Octicons Regular';
+    margin-left: 1.1em;
+    font-size: 0.9em;
+  }
+}
+
+
 .ink-result-toolbar {
   right: 0;
   transition: visibility 0s linear 0.2s, opacity 0.1s linear;
@@ -109,11 +121,6 @@ atom-text-editor {
   }
 }
 
-atom-overlay.ink-overlay:last-child .ink.inline {
-  background-color: contrast(@syntax-background-color,
-                             darken(@syntax-background-color, 4%),
-                             lighten(@syntax-background-color, 4%));
-}
 atom-text-editor.editor{
   .gutter[gutter-name="ink-breakpoints"] {
     min-width: 1.2em;
@@ -271,7 +278,9 @@ atom-text-editor {
 
 .ink.inline {
   .result-mixin;
-  background: @syntax-background-color;
+  background-color: contrast(@syntax-background-color,
+                             darken(@syntax-background-color, 4%),
+                             lighten(@syntax-background-color, 4%));
   position: relative;
   min-width: 1em;
   white-space: pre;

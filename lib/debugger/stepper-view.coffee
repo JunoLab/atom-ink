@@ -74,6 +74,10 @@ class StepperView
 
     window.requestAnimationFrame(@widthListener)
 
+    @editor.gutterWithName('line-number').decorateMarker @marker,
+      type: 'line-number'
+      class: 'ink-stepper-line-gutter'
+
     @editor.decorateMarker @marker,
       type: 'line'
       class: 'ink-stepper-line'

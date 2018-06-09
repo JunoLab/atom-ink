@@ -19,18 +19,19 @@ InkTerminal = require('./console2/console')
 katex = require('./util/katexify')
 profiler = require './plots/profiler'
 Workspace = require './workspace/workspace'
+Linter  = require './linter/linter'
 tree = require './tree'
 goto = require './gotodef'
 
 module.exports = Ink =
   activate: ->
     etch.setScheduler(atom.views)
-    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal]
+    mod.activate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal, Linter]
 
   deactivate: ->
     # pkg = atom.packages.getActivePackage 'ink'
     # localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), false
-    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal]
+    mod.deactivate() for mod in [PaneItem, Result, Docs, Console, PlotPane, InkTerminal, Linter]
 
   consumeStatusBar: (bar) ->
     progress.consumeStatusBar bar
@@ -59,3 +60,4 @@ module.exports = Ink =
     Opener: require('./util/opener')
     KaTeX: katex
     InkTerminal: InkTerminal
+    Linter: Linter
