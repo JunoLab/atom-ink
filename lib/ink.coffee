@@ -21,7 +21,7 @@ profiler = require './plots/profiler'
 Workspace = require './workspace/workspace'
 Linter  = require './linter/linter'
 tree = require './tree'
-goto = require './gotodef'
+goto = require './util/gotodef'
 
 module.exports = Ink =
   activate: ->
@@ -61,3 +61,4 @@ module.exports = Ink =
     KaTeX: katex
     InkTerminal: InkTerminal
     Linter: Linter
+    matchHighlighter: require './util/matchHighlighter'
