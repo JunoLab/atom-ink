@@ -3,49 +3,78 @@
 @import "icons.less";
 
 .ink-workspace {
-
   -webkit-user-select: none;
   cursor: default;
   overflow: auto;
   white-space: pre;
   font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 
-  * { vertical-align: top; }
-
-  .context > .header {
-    font-family: @font-family;
-    font-size: 1.1em;
-    color: @text-color;
-    padding: 5px;
+  * {
+    vertical-align: top;
   }
 
-  .context table {
-    background-color: @syntax-background-color;
-    color: @syntax-text-color;
+  display: flex;
+  flex-direction: column;
 
-    td {
-      padding-top: 3px;
-      padding-bottom: 3px;
+  >.workspace-header {
+    background: @syntax-background-color;
+    border-bottom: @base-border-color 1px solid;
+    padding: 5px;
+
+    .header-main {
+      display: flex;
+      flex-direction: row;
+
+      >*{
+        margin: 0 0.5em;
+      }
+
+      .search-editor {
+        flex: 1;
+      }
+    }
+  }
+
+  >.workspace-content {
+    overflow: auto;
+
+    .context > .header {
+      font-family: @font-family;
+      font-size: 1.1em;
+      color: @text-color;
+      padding: 5px;
     }
 
-    td.name {
-      padding-left: 10px;
-      width: 30%;
-    }
+    .context table {
+      background-color: @syntax-background-color;
+      color: @syntax-text-color;
+      font-family: var(--editor-font-family);
+      font-size: var(--editor-font-size);
 
-    td.value {
-      padding-left: 10px;
-      width: 100%;
-    }
+      td {
+        padding-top: 3px;
+        padding-bottom: 3px;
+      }
 
-    // https://github.com/atom/autocomplete-plus/blob/master/styles/autocomplete.less
-    td.icon {
-      .icon-mixin;
-    }
+      td.name {
+        padding-left: 10px;
+        width: 30%;
+      }
 
-    .editor.editor-colors {
-      background: none;
-      padding: 0;
+      td.value {
+        padding-left: 10px;
+        width: 100%;
+      }
+
+      // https://github.com/atom/autocomplete-plus/blob/master/styles/autocomplete.less
+      td.icon {
+        .icon-mixin;
+      }
+
+      .editor.editor-colors {
+        background: none;
+        padding: 0;
+      }
     }
   }
 }
