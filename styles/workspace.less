@@ -37,6 +37,7 @@
 
   >.workspace-content {
     overflow: auto;
+    height: 100%;
 
     .context > .header {
       font-family: @font-family;
@@ -58,12 +59,15 @@
 
       td.name {
         padding-left: 10px;
-        width: 30%;
+        max-width: 15em;
+        overflow: hidden;
+        &:hover {
+          overflow: auto;
+        }
       }
 
       td.value {
         padding-left: 10px;
-        width: 100%;
       }
 
       // https://github.com/atom/autocomplete-plus/blob/master/styles/autocomplete.less

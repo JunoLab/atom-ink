@@ -7,8 +7,6 @@
 @import "ui-variables";
 @import "syntax-variables";
 
-// @import "atom://ink/redist/katex/katex.css";
-
 atom-text-editor {
   clip: rect(auto auto auto auto); // Otherwise inline results spill everywhere
 }
@@ -16,12 +14,14 @@ atom-text-editor {
 .ink .markdown {
   font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
   pre {
-    font-size: inherit;
     margin-bottom: 0.5em;
+    font-size: var(--editor-font-size);
+    font-family: var(--editor-font-family);
   }
 
   code {
-    font-size: inherit;
+    font-family: var(--editor-font-family);
+    font-size: var(--editor-font-size);
   }
 }
 
