@@ -1,6 +1,6 @@
 {$$, SelectListView} = require 'atom-space-pen-views'
-{open} = require './opener'
-{highlightMatches} = require './matchHighlighter'
+fuzzaldrinPlus = require 'fuzzaldrin-plus'
+{open} = require './util/opener'
 
 # ## GoToDef-Panel
 #
@@ -53,22 +53,32 @@ class GotoView extends SelectListView
   viewForItem: ({text, secondary, line}) ->
     # the highlighting is taken verbatim from https://github.com/atom/command-palette
     filterQuery = @getFilterQuery()
+    matches = fuzzaldrinPlus.match(text, filterQuery)
 
-    li = document.createElement('li')
-    li.classList.add('two-lines')
+    $$ ->
+      highlighter = (command, matches, offsetIndex) =>
+        lastIndex = 0
+        matchedChars = [] # Build up a set of matched chars to be more semantic
 
-    l1 = document.createElement('div')
-    l1.classList.add('primary-line')
-    l1.appendChild(highlightMatches(text, filterQuery, 0))
+        for matchIndex in matches
+          matchIndex -= offsetIndex
+          continue if matchIndex < 0 # If marking up the basename, omit command matches
+          unmatched = command.substring(lastIndex, matchIndex)
+          if unmatched
+            @span matchedChars.join(''), class: 'character-match' if matchedChars.length
+            matchedChars = []
+            @text unmatched
+          matchedChars.push(command[matchIndex])
+          lastIndex = matchIndex + 1
 
-    l2 = document.createElement('div')
-    l2.classList.add('secondary-line')
-    l2.innerText = secondary
+        @span matchedChars.join(''), class: 'character-match' if matchedChars.length
 
-    li.appendChild(l1)
-    li.appendChild(l2)
+        # Remaining characters are plain text
+        @text command.substring(lastIndex)
 
-    return li
+      @li class: 'two-lines', =>
+        @div class: 'primary-line', -> highlighter(text, matches, 0)
+        @div secondary, class: 'secondary-line'
 
   # Only `item.text` is searchable.
   getFilterKey: -> 'text'
