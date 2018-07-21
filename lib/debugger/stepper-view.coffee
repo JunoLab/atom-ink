@@ -66,13 +66,18 @@ class StepperView
     @widthListener = () =>
       ed = atom.views.getView(@editor)
       return unless ed?
-      rect = ed.getBoundingClientRect()
-      w = rect.width + rect.left - 40 - parseInt(@view.parentElement.style.left)
-      if w < 100 then w = 100
-      @view.style.maxWidth = w + 'px'
+      if @view?.parentElement?
+        rect = ed.getBoundingClientRect()
+        w = rect.width + rect.left - 40 - parseInt(@view.parentElement.style.left)
+        if w < 100 then w = 100
+        @view.style.maxWidth = w + 'px'
       setTimeout((() => process.nextTick(() => window.requestAnimationFrame(@widthListener))), 15*1000/60)
 
     window.requestAnimationFrame(@widthListener)
+
+    @editor.gutterWithName('line-number').decorateMarker @marker,
+      type: 'line-number'
+      class: 'ink-stepper-line-gutter'
 
     @editor.decorateMarker @marker,
       type: 'line'

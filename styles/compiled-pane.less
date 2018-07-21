@@ -1,0 +1,32 @@
+@import "ui-variables";
+@import "syntax-variables";
+
+
+.ink-compiled-code-container {
+  .ink-compiled-header {
+    padding: 0.5em;
+  }
+
+  .ink-compiled-code {
+    background-color: @syntax-background-color;
+    color: @syntax-text-color;
+    font-family: var(--editor-font-family);
+    font-size: var(--editor-font-size);
+    line-height: var(--editor-line-heith);
+
+    white-space: pre-wrap;
+
+    .ink-compiled-line-number {
+      min-width: 3.5em;
+      border-right: 1px solid @base-border-color;
+      display: table-cell;
+      text-align: right;
+      padding: 0 0.5em;
+    }
+
+    .ink-compiled-line-content {
+      display: table-cell;
+      padding: 0 0.5em;
+    }
+  }
+}
