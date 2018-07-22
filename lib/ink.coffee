@@ -62,3 +62,4 @@ module.exports = Ink =
     InkTerminal: InkTerminal
     Linter: Linter
     matchHighlighter: require './util/matchHighlighter'
+    ansiToHTML: require './util/ansitohtml'
