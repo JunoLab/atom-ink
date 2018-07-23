@@ -189,7 +189,7 @@ class ConsoleElement extends HTMLElement
     return unless cell? and text?
     out = cell.querySelector '.stream'
     out.innerText = text
-    out.innerHTML = converter.toHtml(out.innerHTML) if ansi
+    out.innerHTML = ansiToHTML(out.innerHTML) if ansi
 
   updateIcon: ({cell, icon}) ->
     return unless cell? and icon?
