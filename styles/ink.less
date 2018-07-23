@@ -13,7 +13,9 @@ atom-text-editor {
 
 .ink .markdown {
   font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
-  
+
+  white-space: normal;
+
   pre {
     margin-bottom: 0.5em;
     font-size: var(--editor-font-size);
@@ -23,6 +25,12 @@ atom-text-editor {
   code {
     font-family: var(--editor-font-family);
     font-size: var(--editor-font-size);
+  }
+
+  hr {
+    background: @base-border-color;
+    height: 1px;
+    border: 0;
   }
 }
 
