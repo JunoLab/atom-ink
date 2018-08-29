@@ -103,6 +103,13 @@ autocomplete-suggestion-list.select-list.popover-list {
 .ink-overlay {
   pointer-events: none;
   background-color: rgba(0, 0, 0, 0);
+
+  &:hover {
+    z-index: 5!important;
+    .ink-result-container {
+      max-width: none!important;
+    }
+  }
 }
 
 .ink-underlay {
@@ -217,8 +224,8 @@ atom-text-editor {
 
   border-left: 2px solid @background-color-info;
   border-right: 2px solid contrast(@syntax-background-color,
-                                   darken(@syntax-background-color, 4%),
-                                   lighten(@syntax-background-color, 4%));
+                                   darken(@syntax-background-color, 8%),
+                                   lighten(@syntax-background-color, 8%));
 
   padding: 0px 0.5em 0px 0.5em;
   transition: all 0.2s;
