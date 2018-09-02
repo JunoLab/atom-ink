@@ -51,7 +51,7 @@ autocomplete-suggestion-list.select-list.popover-list {
 
 
 .ink-result-toolbar {
-  right: 0;
+  left: 0;
   transition: visibility 0s linear 0.2s, opacity 0.1s linear;
   font-family: 'Octicons Regular';
   font-size: 8px!important;
@@ -66,7 +66,7 @@ autocomplete-suggestion-list.select-list.popover-list {
   pointer-events: none;
 
   transform: scale(0.75);
-  transform-origin: right;
+  transform-origin: left;
 
   .btn::before {
     line-height: 1.5em;
@@ -80,7 +80,7 @@ autocomplete-suggestion-list.select-list.popover-list {
     display: none!important;
   }
   > .btn-group {
-    float: right;
+    float: left;
     pointer-events: auto;
   }
 }
@@ -92,6 +92,7 @@ autocomplete-suggestion-list.select-list.popover-list {
   pointer-events: auto;
 
   &:hover {
+    opacity: 1 !important;
     .ink-result-toolbar {
       opacity: 0.5;
       visibility: visible;
