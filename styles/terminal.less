@@ -15,3 +15,15 @@ ink-terminal, .ink-terminal {
     }
   }
 }
+
+.scrollbars-visible-always {
+  ink-terminal {
+    ::-webkit-scrollbar-thumb {
+      border-color: @syntax-background-color;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: @syntax-background-color;
+    }
+  }
+}
