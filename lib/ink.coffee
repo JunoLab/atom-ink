@@ -49,6 +49,8 @@ module.exports = Ink =
     # localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), exportables.false()
     mod.deactivate() for mod in [exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
 
+  config: require('./config')
+
   consumeStatusBar: (bar) ->
     exportables.progress().consumeStatusBar bar
 
