@@ -167,8 +167,10 @@ class ConsoleElement extends HTMLElement
   streamView: (item, type, ansi) ->
     out = document.createElement 'div'
     item.ansi = ansi
-    out.innerText = item.text
-    out.innerHTML = ansiToHTML(out).innerHTML if ansi
+    if ansi
+      out.innerHTML = ansiToHTML(item.text)
+    else
+      out.innerText = item.text
     out.classList.add type, 'stream'
     out
 
@@ -188,8 +190,10 @@ class ConsoleElement extends HTMLElement
   updateStream: ({cell, text, ansi}) ->
     return unless cell? and text?
     out = cell.querySelector '.stream'
-    out.innerText = text
-    out.innerHTML = ansiToHTML(out).innerHTML if ansi
+    if ansi
+      out.innerHTML = ansiToHTML(text)
+    else
+      out.innerText = text
 
   updateIcon: ({cell, icon}) ->
     return unless cell? and icon?
