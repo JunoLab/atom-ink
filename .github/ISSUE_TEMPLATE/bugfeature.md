@@ -1,5 +1,5 @@
 ---
-name: Juno: Bug report/Feature request
+name: Juno -- Bug report/Feature request
 about: Please open your issue at https://github.com/JunoLab/Juno.jl/.
 ---
 
