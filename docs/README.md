@@ -2,7 +2,7 @@
 
 This folder provides the developer documentation for the Ink package. If you want to use Ink's features in your language plugin or IDE, you've come to the right place!
 
-This is a work in progress, so if there's something you're particularly interested in we can probably help out over on [Gitter](https://gitter.im/JunoLab/Juno).
+This is a work in progress, so if there's something you're particularly interested in we can probably help out over on [Gitter](https://gitter.im/JunoLab/atom-ink).
 
 ## Setting Up
 
