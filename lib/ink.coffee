@@ -54,6 +54,9 @@ module.exports = Ink =
   consumeStatusBar: (bar) ->
     exportables.progress().consumeStatusBar bar
 
+  consumeRemoteFileOpener: (opener) ->
+    exportables.Opener().consumeRemoteFileOpener(opener)
+
   provide: ->
     obj =
       util:
