@@ -37,6 +37,11 @@
       "versions": {
         "^1.0.0": "consumeStatusBar"
       }
+    },
+    "ftp-remote.openFile": {
+      "versions": {
+        "0.1.0": "consumeRemoteFileOpener"
+      }
     }
   }
 }
