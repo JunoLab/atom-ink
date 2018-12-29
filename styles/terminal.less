@@ -1,5 +1,5 @@
 @import "syntax-variables";
-
+@import "ui-variables";
 
 ink-terminal, .ink-terminal {
   height: 100%;
@@ -12,6 +12,35 @@ ink-terminal, .ink-terminal {
 
     .xterm-viewport {
       background-color: @syntax-background-color !important;
+    }
+  }
+
+  .search {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 0.5em;
+    right: 1em;
+    background-color: @app-background-color;
+    width: 30em;
+    padding: 0.5em;
+    z-index: 5;
+    transition: border-color 0.2s;
+    border: 2px @base-border-color solid;
+    border-radius: 2px;
+
+    >* {
+      padding-left: 0.5em;
+      margin: auto;
+    }
+
+    .searchinput {
+      flex: 1;
+      padding-left: 0;
+    }
+
+    &.nothingfound {
+      border-color: @background-color-error;
     }
   }
 }
