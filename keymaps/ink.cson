@@ -49,7 +49,14 @@
 '.platform-win32 ink-terminal, .platform-linux ink-terminal':
   'ctrl-shift-c': 'ink-terminal:copy'
   'ctrl-shift-v': 'ink-terminal:paste'
+  'ctrl-shift-f': 'ink-terminal:show-search'
 
 '.platform-darwin ink-terminal':
   'cmd-c': 'ink-terminal:copy'
   'cmd-v': 'ink-terminal:paste'
+  'cmd-f': 'ink-terminal:show-search'
+
+'ink-terminal .search .searchinput atom-text-editor':
+  'enter': 'ink-terminal:find-next'
+  'shift-enter': 'ink-terminal:find-previous'
+  'escape': 'ink-terminal:close-search'
