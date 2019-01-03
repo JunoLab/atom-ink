@@ -17,8 +17,6 @@ ink-terminal, .ink-terminal {
 
   .search {
     position: absolute;
-    display: flex;
-    flex-direction: row;
     top: 0.5em;
     right: 1em;
     background-color: @app-background-color;
@@ -29,14 +27,24 @@ ink-terminal, .ink-terminal {
     border: 2px @base-border-color solid;
     border-radius: 2px;
 
-    >* {
-      padding-left: 0.5em;
-      margin: auto;
+    .inputs {
+      flex-direction: row;
+      display: flex;
+
+      >* {
+        padding-left: 0.5em;
+        margin: auto;
+      }
+
+      .searchinput {
+        flex: 1;
+        padding-left: 0;
+      }
     }
 
-    .searchinput {
-      flex: 1;
-      padding-left: 0;
+    .errormessage {
+      color: @text-color-error;
+      margin-top: 0.5em;
     }
 
     &.nothingfound {
