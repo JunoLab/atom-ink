@@ -1,6 +1,7 @@
 StepperView = require './stepper-view'
 {DebuggerToolbar} = require('./toolbar')
 views = require '../util/views'
+{Emitter} = require 'atom'
 {focusEditorPane} = require '../util/pane-item'
 {span} = views.tags
 {open, isUntitled, getUntitledId} = require '../util/opener'
@@ -11,6 +12,7 @@ class Stepper
     @views = []
     @bars = []
     @text = "Grand Steppin'"
+    @emitter = new Emitter()
     @pending ?= true
     @buttons ?= [
       {icon: 'arrow-down'}
@@ -19,6 +21,7 @@ class Stepper
     ]
 
   attach: (ed) ->
+    return unless ed
     s = new StepperView ed, @line
     toolbar = new DebuggerToolbar(@buttons)
     toolbar.attach(ed)
@@ -71,6 +74,15 @@ class Stepper
         @detach()
         @attach(@edForFile(file))
         @setText @text
+
+  step: (file, line, text, info) ->
+    console.log file, line, text, info
+    @goto(file, line - 1)
+    @setText(text)
+    @emitter.emit('step', {file, line, text: text.cloneNode(true), info})
+
+  onStep: (f) ->
+    @emitter.on('step', f)
 
   detach: ->
     view.destroy() for view in @views

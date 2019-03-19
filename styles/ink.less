@@ -450,3 +450,33 @@ atom-text-editor {
 .xterm .xterm-viewport {
   cursor: default;
 }
+
+.ink-table-container {
+  overflow-y: auto;
+
+  .ink-table {
+    width: 100%;
+
+    .table-header {
+      background: @background-color-highlight;
+      &.table-cell-sev, &.table-cell-line, &.table-cell-prov {
+        width: 10%
+      }
+    }
+
+    .table-cell {
+      padding: 0.4em 0.5em 0.4em 1em;
+      border-right: 1px solid @base-border-color;
+    }
+
+    tbody {
+      .table-cell-file {
+        cursor: pointer;
+      }
+
+      tr:nth-child(even) {
+        background-color: mix(@background-color-highlight, @base-background-color, 5%)
+      }
+    }
+  }
+}

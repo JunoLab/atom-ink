@@ -1,0 +1,33 @@
+@import "ui-variables";
+@import "syntax-variables";
+
+.ink-debugger-container {
+  .debugger-editor {
+    pointer-events: none;
+  }
+  .item {
+    border-bottom: 1px solid @base-border-color;
+  }
+
+  .toolbar {
+    padding-left: 1em;
+    line-height: 2.6em;
+    display: flex;
+    justify-content: space-between;
+
+    .next-expression {
+      padding-top: 0.4em;
+    }
+
+    .ink-debug-toolbar {
+      position: relative;
+      transform: none;
+      left: 0;
+      background-color: inherit;
+    }
+  }
+
+  h4 {
+    text-align: center;
+  }
+}
