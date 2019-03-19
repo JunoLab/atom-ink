@@ -2,6 +2,11 @@
 @import "syntax-variables";
 
 .ink-debugger-container {
+  .inner-container {
+    overflow-y: auto;
+    height: ~"calc(100% - 47px)";
+  }
+
   .debugger-editor {
     pointer-events: none;
   }
@@ -11,9 +16,11 @@
 
   .toolbar {
     padding-left: 1em;
+    padding-right: 0.5em;
     line-height: 2.6em;
-    display: flex;
-    justify-content: space-between;
+    // height: 47px;
+    // display: flex;
+    // justify-content: space-between;
 
     .next-expression {
       padding-top: 0.4em;
@@ -25,9 +32,27 @@
       left: 0;
       background-color: inherit;
     }
+
+    .code {
+      font-family: var(--editor-font-family);
+      font-size: var(--editor-font-size);
+    }
   }
 
-  h4 {
-    text-align: center;
+  .ink-table-container {
+    min-height: 5em;
+  }
+
+  .header {
+    justify-content: space-between;
+    display: flex;
+    padding: 1em 1em 0.7em 1em;
+    background-color: mix(@background-color-highlight, @base-background-color, 40%);
+
+    h4 {
+      line-height: 2em;
+      margin: 0;
+      font-weight: bold;
+    }
   }
 }
