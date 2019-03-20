@@ -1,5 +1,5 @@
 StepperView = require './stepper-view'
-{DebuggerToolbar} = require('./toolbar')
+# {DebuggerToolbar} = require('./toolbar')
 views = require '../util/views'
 {Emitter} = require 'atom'
 {focusEditorPane} = require '../util/pane-item'
@@ -10,7 +10,7 @@ module.exports =
 class Stepper
   constructor: ({@buttons, @pending}) ->
     @views = []
-    @bars = []
+    # @bars = []
     @text = "Grand Steppin'"
     @emitter = new Emitter()
     @pending ?= true
@@ -23,15 +23,15 @@ class Stepper
   attach: (ed) ->
     return unless ed
     s = new StepperView ed, @line
-    toolbar = new DebuggerToolbar(@buttons)
-    toolbar.attach(ed)
+    # toolbar = new DebuggerToolbar(@buttons)
+    # toolbar.attach(ed)
     @views.push s
-    @bars.push toolbar
+    # @bars.push toolbar
     ed.onDidDestroy =>
       s.destroy()
-      toolbar.destroy()
+      # toolbar.destroy()
       @views = @views.filter((x) => x != s)
-      @bars = @bars.filter((x) => x != s)
+      # @bars = @bars.filter((x) => x != s)
     @setViewText s
 
   setViewText: (view) ->
@@ -76,8 +76,7 @@ class Stepper
         @setText @text
 
   step: (file, line, text, info) ->
-    console.log file, line, text, info
-    @goto(file, line - 1)
+    @goto(file, line)
     @setText(text)
     @emitter.emit('step', {file, line, text: text.cloneNode(true), info})
 
@@ -86,9 +85,9 @@ class Stepper
 
   detach: ->
     view.destroy() for view in @views
-    bar.destroy() for bar in @bars
+    # bar.destroy() for bar in @bars
     @views = []
-    @bars = []
+    # @bars = []
 
   destroy: ->
     @detach()

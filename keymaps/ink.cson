@@ -40,6 +40,9 @@
 '.docpane .header .editor':
   'enter': 'docpane:search'
 
+'.ink-breakpoint-container .editor':
+  'enter': 'breakpoint:add'
+
 '.platform-win32 .docpane, .platform-linux .docpane':
   'ctrl-c': 'native!'
 

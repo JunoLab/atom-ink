@@ -142,15 +142,15 @@ autocomplete-suggestion-list.select-list.popover-list {
 }
 
 atom-text-editor.editor{
-  .gutter[gutter-name="ink-breakpoints"] {
-    min-width: 1.2em;
+  .gutter {
+    // min-width: 1.2em;
     .ink-bp {
       transition: all 0.2s;
 
-      &.icon-primitive-dot {
-        color: @text-color-info;
+      &.icon {
+        color: @background-color-error;
         &.inactive {
-          opacity: 0.5;
+          color: mix(@syntax-text-color, @syntax-background-color, 50%);
         }
         &:before {
           content: "\f052";
@@ -337,21 +337,24 @@ atom-text-editor {
                        darken(@syntax-background-color, 3%),
                        lighten(@syntax-background-color, 3%));
 
-  left: 1em;
-  max-width: initial;
   position: relative;
-  .fade {
-    opacity: 0.5;
-  }
-  .btn-group {
-    vertical-align: bottom;
-    padding-left: .4em;
-    button {
-      height: 1.8em;
-      &:before {
-        font-size: 1.2em;
+  min-width: 1em;
+  white-space: pre;
+
+  > .tree {
+    > .header {
+      white-space: pre-wrap;
+      &.closed {
+        max-height: 1.5em;
+        white-space: pre;
       }
     }
+    > .body {
+      max-height: 250px;
+    }
+  }
+  .fade {
+    opacity: 0.5;
   }
 }
 
@@ -480,4 +483,9 @@ atom-text-editor {
       }
     }
   }
+}
+
+.px1 {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
