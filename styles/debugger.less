@@ -10,6 +10,10 @@
     height: ~"calc(100% - 47px)";
   }
 
+  .code {
+    font-family: var(--editor-font-family);
+  }
+
   .debugger-editor {
     pointer-events: none;
     border-bottom: 1px solid @base-border-color;
@@ -24,6 +28,11 @@
     line-height: 2.6em;
 
     .next-expression {
+      .code {
+        font-family: var(--editor-font-family);
+        font-size: var(--editor-font-size);
+      }
+
       padding-top: 0.4em;
       white-space: pre;
       .tree {
@@ -45,11 +54,11 @@
       transform: none;
       left: 0;
       background-color: inherit;
-    }
 
-    .code {
-      font-family: var(--editor-font-family);
-      font-size: var(--editor-font-size);
+      .code {
+        font-family: var(--editor-font-family);
+        font-size: var(--editor-font-size);
+      }
     }
   }
 
