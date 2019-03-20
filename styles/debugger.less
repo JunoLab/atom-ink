@@ -1,0 +1,115 @@
+@import "ui-variables";
+@import "syntax-variables";
+
+.ink-debugger-container {
+  background: @syntax-background-color;
+  color: @syntax-text-color;
+
+  .inner-container {
+    overflow-y: auto;
+    height: ~"calc(100% - 47px)";
+  }
+
+  .code {
+    font-family: var(--editor-font-family);
+  }
+
+  .debugger-editor {
+    pointer-events: none;
+    border-bottom: 1px solid @base-border-color;
+  }
+  .item {
+    border-bottom: 1px solid @base-border-color;
+  }
+
+  .toolbar {
+    padding-left: 1em;
+    padding-right: 0.5em;
+    line-height: 2.6em;
+
+    .next-expression {
+      .code {
+        font-family: var(--editor-font-family);
+        font-size: var(--editor-font-size);
+      }
+
+      padding-top: 0.4em;
+      white-space: pre;
+      .tree {
+        > .header {
+          white-space: pre;
+          &.closed {
+            max-height: 1.5em;
+            white-space: pre;
+          }
+        }
+        > .body {
+          max-height: 250px;
+        }
+      }
+    }
+
+    .ink-debug-toolbar {
+      position: relative;
+      transform: none;
+      left: 0;
+      background-color: inherit;
+
+      .code {
+        font-family: var(--editor-font-family);
+        font-size: var(--editor-font-size);
+      }
+    }
+  }
+
+  .ink-breakpoint-container {
+    .second.ellipsis {
+      max-width: calc(100% - 6em);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      direction: rtl;
+      text-align: left;
+    }
+  }
+
+
+  .flex-table-container {
+    padding: 1em;
+    .flex-table {
+      display: flex;
+      .flex-row {
+        padding: 0 0.5em;
+        line-height: 2em;
+      }
+      .second {
+        flex: 1 1 auto;
+      }
+    }
+
+    .new-bp {
+      padding-top: 1em;
+      padding-bottom: 2em;
+    }
+  }
+
+  .header {
+    justify-content: space-between;
+    display: flex;
+    padding: 1em 1em 0.7em 1em;
+    // background-color: mix(@background-color-highlight, @base-background-color, 40%);
+
+    h4 {
+      line-height: 2em;
+      margin: 0;
+      font-weight: bold;
+    }
+  }
+  .ink-table-container {
+    .ink-table {
+      .table-cell {
+        padding: 0.4em 0.5em 0.4em 1em;
+        border: none;
+      }
+    }
+  }
+}
