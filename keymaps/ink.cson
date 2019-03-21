@@ -43,6 +43,10 @@
 '.ink-breakpoint-container .editor':
   'enter': 'breakpoint:add'
 
+'.basic-modal .editor':
+  'enter': 'basic-modal:confirm'
+  'escape': 'basic-modal:cancel'
+
 '.platform-win32 .docpane, .platform-linux .docpane':
   'ctrl-c': 'native!'
 

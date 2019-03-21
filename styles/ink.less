@@ -141,29 +141,6 @@ autocomplete-suggestion-list.select-list.popover-list {
   }
 }
 
-atom-text-editor.editor{
-  .gutter {
-    // min-width: 1.2em;
-    .ink-bp {
-      transition: all 0.2s;
-
-      &.icon {
-        color: @background-color-error;
-        &.inactive {
-          color: mix(@syntax-text-color, @syntax-background-color, 50%);
-        }
-        &:before {
-          content: "\f052";
-        }
-      }
-
-      &.ink-hide {
-        opacity: 0;
-        transform: translate(-1em);
-      }
-    }
-  }
-}
 atom-overlay.ink-profile-overlay{
   pointer-events: none;
   z-index: 3;
@@ -489,4 +466,23 @@ atom-text-editor {
 .px1 {
   padding-left: 0.5em;
   padding-right: 0.5em;
+}
+
+.basic-modal {
+  padding: 1em;
+  .flex-table {
+    display: flex;
+    justify-content: space-between;
+    .flex-row {
+      padding: 0 0.5em;
+      line-height: 2em;
+
+      &.second {
+        flex: 1;
+      }
+    }
+  }
+  .confirm-cancel {
+    padding-top: 1em;
+  }
 }

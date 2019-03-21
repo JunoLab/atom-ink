@@ -69,7 +69,7 @@
   }
 
   .ink-breakpoint-container {
-    .second.ellipsis {
+    .ellipsis {
       max-width: calc(100% - 6em);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -88,7 +88,10 @@
         line-height: 2em;
       }
       .second {
-        flex: 1 1 auto;
+        flex: 2;
+      }
+      .condition {
+        flex: 1.5;
       }
     }
 
@@ -115,6 +118,32 @@
       .table-cell {
         padding: 0.4em 0.5em 0.4em 1em;
         border: none;
+      }
+    }
+  }
+}
+
+atom-text-editor.editor{
+  .gutter {
+    .ink-bp {
+      transition: all 0.2s;
+
+      &.icon {
+        color: @background-color-error;
+        &.inactive {
+          color: mix(@background-color-error, @syntax-background-color, 50%);
+        }
+        &.conditional {
+          color: @background-color-info;
+          &.inactive {
+            color: mix(@background-color-info, @syntax-background-color, 50%);
+          }
+        }
+      }
+
+      &.ink-hide {
+        opacity: 0;
+        transform: translate(-1em);
       }
     }
   }
