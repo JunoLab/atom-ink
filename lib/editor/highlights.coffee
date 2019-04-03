@@ -1,13 +1,10 @@
-module.exports =
-  matchesPath: (ed, path) ->
-    ed.getPath() == path ||
-      (!ed.getPath() &&
-        ed.getBuffer().id == path.match(/untitled-([\d\w]*)/)?[1])
+{editorMatchesFile} = require '../util/opener'
 
+module.exports =
   observeLines: (ls, f) ->
     atom.workspace.observeTextEditors (ed) =>
       for l in ls
-        if @matchesPath ed, l.file
+        if editorMatchesFile(ed, l.file)
           f ed, l
 
 # Adds a red background color to the provided line specifications

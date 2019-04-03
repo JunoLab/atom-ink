@@ -4,7 +4,7 @@ views = require '../util/views'
 {Emitter} = require 'atom'
 {focusEditorPane} = require '../util/pane-item'
 {span} = views.tags
-{open, isUntitled, getUntitledId} = require '../util/opener'
+{open, isUntitled, getUntitledId, editorMatchesFile} = require '../util/opener'
 
 module.exports =
 class Stepper
@@ -43,12 +43,8 @@ class Stepper
     @views.forEach (view) => @setViewText(view)
 
   edForFile: (file) ->
-    if isUntitled(file)
-      atom.workspace.getTextEditors()
-        .filter((x)->x.getBuffer().id is getUntitledId(file))[0]
-    else
-      atom.workspace.getTextEditors()
-        .filter((x)->x.getPath() is file)[0]
+    atom.workspace.getTextEditors()
+      .filter((ed) -> editorMatchesFile(ed, file))[0]
 
   activate: (file, line) ->
     active = atom.workspace.getActiveTextEditor()
@@ -61,9 +57,7 @@ class Stepper
 
   goto: (file, @line) ->
     @listener ?= atom.workspace.observeTextEditors (ed) =>
-      if isUntitled(file) and ed.getBuffer().id is getUntitledId(file)
-        @attach(ed)
-      else if ed.getPath() is @file
+      if editorMatchesFile(ed, file)
         @attach(ed)
 
     @activate(file, @line).then =>
