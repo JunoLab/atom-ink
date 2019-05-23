@@ -69,12 +69,34 @@
   }
 
   .ink-breakpoint-container {
-    .ellipsis {
+    .ellipsis-outer {
       max-width: calc(100% - 6em);
-      overflow: hidden;
-      text-overflow: ellipsis;
       direction: rtl;
+      position: relative;
+      overflow: hidden;
       text-align: left;
+    }
+
+    .ellipsis-outer:before, .ellipsis-inner:before{
+      position: absolute;
+      content: '...';
+      background: @syntax-background-color;
+      left: 0;
+      z-index:1;
+    }
+
+    .ellipsis-inner {
+      display: inline-block;
+      white-space: nowrap;
+      text-indent: 1em;
+      direction: ltr;
+      position: relative;
+      white-space: pre;
+
+      &:before {
+        color: @syntax-background-color;
+        margin-left: -1em;
+      }
     }
   }
 
