@@ -44,12 +44,12 @@ exportables =
 module.exports = Ink =
   activate: ->
     etch.setScheduler(atom.views)
-    mod.activate() for mod in [exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
+    mod.activate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
 
   deactivate: ->
     # pkg = atom.packages.getActivePackage 'ink'
     # localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), exportables.false()
-    mod.deactivate() for mod in [exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
+    mod.deactivate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
 
   config: require('./config')
 
