@@ -48,7 +48,7 @@ class Stepper
 
   activate: (file, line) ->
     active = atom.workspace.getActiveTextEditor()
-    if active?.getPath() is file
+    if editorMatchesFile(active, file)
       active.setCursorBufferPosition [line, 0]
       Promise.resolve()
     else
