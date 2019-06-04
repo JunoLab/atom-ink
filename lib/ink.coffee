@@ -49,7 +49,7 @@ module.exports = Ink =
   deactivate: ->
     # pkg = atom.packages.getActivePackage 'ink'
     # localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), exportables.false()
-    mod.deactivate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
+    mod.deactivate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.DocPane(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
 
   config: require('./config')
 
