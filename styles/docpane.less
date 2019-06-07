@@ -5,6 +5,7 @@
 .docpane {
   background: @syntax-background-color;
   color: @syntax-text-color;
+  font-family: var(--editor-font-family);
 
   display: flex;
   flex-direction: column;
@@ -53,7 +54,8 @@
 
     .item {
       padding: 5px;
-      border-bottom: @base-border-color 1px solid;
+      border-top: @base-border-color 1px solid;
+      margin-bottom: -1.3em;
 
       .typ .icon {
         .icon-mixin;
@@ -68,7 +70,6 @@
           position: relative;
           line-height: 1.2em;
           max-height: 8em;
-          // padding-bottom: 0;
 
           .expander {
             position: absolute;
@@ -92,6 +93,10 @@
             margin-top: -1.5em;
             background: @syntax-background-color;
           }
+        }
+
+        .docs {
+          padding-bottom: 1.5em;
         }
 
         .expander {
