@@ -1,4 +1,3 @@
-### Project specific config ###
 language: generic
 
 env:
@@ -12,34 +11,25 @@ env:
 
 os:
   - linux
-  - osx
+  # - osx
 
-dist: trusty
-
-### Generic setup follows ###
 script:
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
   - chmod u+x build-package.sh
   - ./build-package.sh
 
-notifications:
-  email: false
-
-branches:
-  only:
-    - master
-
-git:
-  depth: 10
-
 sudo: false
-
+dist: xenial
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - g++-6
+    - build-essential
     - fakeroot
     - git
     - libsecret-1-dev
+    - libgconf2-4 # @TODO: Remove once Atom v1.39 comes to be stable
+
+notifications:
+  email: false
