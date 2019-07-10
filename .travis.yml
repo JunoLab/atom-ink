@@ -11,7 +11,7 @@ env:
 
 os:
   - linux
-  - osx
+  # - osx
 
 script:
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
