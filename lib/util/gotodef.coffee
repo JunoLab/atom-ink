@@ -92,4 +92,6 @@ class GotoView extends SelectListView
     @hide()
 
   @openItem: (item) ->
-    open(item.file, item.line)
+    open(item.file, item.line, {
+      pending: true
+    })
