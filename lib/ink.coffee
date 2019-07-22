@@ -40,6 +40,7 @@ exportables =
   Opener: once(=> require('./util/opener'))
   matchHighlighter: once(=> require './util/matchHighlighter')
   ansiToHTML: once(=> require './util/ansitohtml')
+  basicModal: once(=> require './util/basic-modal')
 
 module.exports = Ink =
   activate: ->
