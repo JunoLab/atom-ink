@@ -22,8 +22,9 @@
 
 
 module.exports =
-goto: (symbolTableOrPromise) ->
+goto: (symbolTableOrPromise, opts) ->
   @view ?= new GotoView()
+  @view.pending = opts?.pending
 
   # this allows either a promise or a symbolTable as the input
   promise = Promise.resolve symbolTableOrPromise
@@ -33,7 +34,7 @@ goto: (symbolTableOrPromise) ->
       @view.setError symbolTable.items
       @view.show()
     else if symbolTable.items.length == 1
-      GotoView.openItem symbolTable.items[0]
+      @view.openItem symbolTable.items[0]
     else if symbolTable.items.length > 1
       @view.setItems symbolTable.items
       @view.show()
@@ -84,12 +85,14 @@ class GotoView extends SelectListView
 
   # Jump to `item.file` at line `item.line`, when an item was selected.
   confirmed: (item) ->
-    GotoView.openItem item
+    @openItem item
     @hide()
 
   # Return to previously focused element when the modal panel is cancelled.
   cancelled: ->
     @hide()
 
-  @openItem: (item) ->
-    open(item.file, item.line)
+  openItem: (item) ->
+    open(item.file, item.line, {
+      pending: @pending
+    })
