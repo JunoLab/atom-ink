@@ -59,11 +59,15 @@
 
       .typ .icon {
         .icon-mixin;
-        width: 2em;
         line-height: 2em;
+        width: 2em;
         display: table-cell;
         float: inherit;
         color: inherit;
+        .icon::before {
+          top: 0.15em;
+          left: 0.15em;
+        }
       }
 
       .item-body {
