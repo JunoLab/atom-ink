@@ -4,18 +4,16 @@ etch = require 'etch'
 
 # these need to be loaded first so deserialization works fine
 PaneItem = require './util/pane-item'
-Console = require './console/console'
 PlotPane = require './plots/pane'
 HTMLPane = require './plots/htmlpane'
 DocPane = require('./docs/docpane')
 DebuggerPane = require('./debugger/debugger-pane')
-InkTerminal = require('./console2/console')
+InkTerminal = require('./console/console')
 Workspace = require './workspace/workspace'
 Linter = require './linter/linter'
 
 exportables =
   PaneItem: once(=> PaneItem)
-  Console: once(=> Console)
   PlotPane: once(=> PlotPane)
   DocPane: once(=> DocPane)
   DebuggerPane: once(=> DebuggerPane)
@@ -44,12 +42,12 @@ exportables =
 module.exports = Ink =
   activate: ->
     etch.setScheduler(atom.views)
-    mod.activate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
+    mod.activate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.InlineDoc(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
 
   deactivate: ->
     # pkg = atom.packages.getActivePackage 'ink'
     # localStorage.setItem pkg.getCanDeferMainModuleRequireStorageKey(), exportables.false()
-    mod.deactivate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.DocPane(), exportables.InlineDoc(), exportables.Console(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
+    mod.deactivate() for mod in [exportables.Opener(), exportables.PaneItem(), exportables.Result(), exportables.DocPane(), exportables.InlineDoc(), exportables.PlotPane(), exportables.InkTerminal(), exportables.Linter()]
 
   config: require('./config')
 

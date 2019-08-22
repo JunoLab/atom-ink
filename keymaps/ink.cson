@@ -8,23 +8,11 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 
-'ink-console .editor':
-  'enter': 'console:evaluate'
-
-'ink-console':
-  'shift-space': 'unset!'
-
 '.platform-win32 .ink, .platform-linux .ink':
   'ctrl-c': 'native!'
 
 '.platform-darwin .ink':
   'cmd-c': 'native!'
-
-'.platform-win32 ink-console .ink, .platform-linux ink-console .ink':
-  'ctrl-c': 'core:copy'
-
-'.platform-darwin ink-console .ink':
-  'cmd-c': 'core:copy'
 
 'atom-text-editor:not([mini])':
   'escape': 'inline:clear-current'
