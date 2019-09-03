@@ -10,6 +10,7 @@ DocPane = require('./docs/docpane')
 DebuggerPane = require('./debugger/debugger-pane')
 InkTerminal = require('./console/console')
 Workspace = require './workspace/workspace'
+Outline = require './outline/outline'
 Linter = require './linter/linter'
 
 exportables =
@@ -19,6 +20,7 @@ exportables =
   DebuggerPane: once(=> DebuggerPane)
   InkTerminal: once(=> InkTerminal)
   Workspace: once(=> Workspace)
+  Outline: once(=> Outline)
   Linter: once(=> Linter)
   HTMLPane: once(=> HTMLPane)
   Loading: once(=> require './util/loading')
