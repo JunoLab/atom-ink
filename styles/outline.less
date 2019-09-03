@@ -1,0 +1,70 @@
+@import "syntax-variables";
+@import "ui-variables";
+@import "icons.less";
+
+.ink-outline {
+  -webkit-user-select: none;
+  cursor: default;
+  overflow: auto;
+  white-space: pre;
+
+  * {
+    vertical-align: top;
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  >.outline-header {
+    border-bottom: @base-border-color 1px solid;
+    padding: 5px;
+
+    .header-main {
+      display: flex;
+      flex-direction: row;
+
+      >*{
+        margin: 0 0.5em;
+      }
+
+      .search-editor {
+        flex: 1;
+      }
+    }
+  }
+
+  >.outline-content {
+    overflow: auto;
+    height: 100%;
+
+    .center {
+      padding-top: 1em;
+      text-align: center;
+      width: 100%;
+      font-family: system-ui;
+    }
+
+    table {
+      font-family: var(--editor-font-family);
+      font-size: var(--editor-font-size);
+      width: 100%;
+
+      tr.isactive {
+        background-color: @background-color-selected;
+      }
+
+      td {
+        padding: 3px 0;
+        cursor: pointer;
+
+        &.icon {
+          .icon-mixin;
+        }
+
+        &.name {
+          padding-left: 0.5em;
+        }
+      }
+    }
+  }
+}
