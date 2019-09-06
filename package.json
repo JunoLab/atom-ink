@@ -15,7 +15,7 @@
     "fuzzaldrin-plus": "^0.1.0",
     "underscore-plus": "^1.6.6",
     "element-resize-detector": "^1.1.13",
-    "etch": "^0.12.5",
+    "etch": "^0.14",
     "katex": "0.11.0",
     "fs-extra": "^5.0.0",
     "replace-in-file": "^3.0.0",
