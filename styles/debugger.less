@@ -21,20 +21,30 @@
   .debugger-editor {
     pointer-events: none;
     border-bottom: 1px solid @base-border-color;
+    padding-bottom: 1em;
   }
+
   .item {
     border-bottom: 1px solid @base-border-color;
   }
 
   .toolbar {
-    padding-left: 1em;
-    padding-right: 0.5em;
+    padding: 0em 1em 0.5em 1em;
     line-height: 2.6em;
-    height: 125px;
     max-height: 125px;
 
-    .flex-table-container {
-      padding: 0;
+    .inner-toolbar {
+      display: inline-block;
+      .flex-table-container {
+        padding: 0;
+        position: absolute;
+        right: @component-padding;
+        top: @component-padding;
+        display: inline;
+        .flex-row {
+          padding-left: 0px;
+        }
+      }
     }
 
     .next-expression {
@@ -114,9 +124,8 @@
     }
   }
 
-
   .flex-table-container {
-    padding: 1em;
+    padding: 0.5em 1em 1em 1em;
     .flex-table {
       display: flex;
       .flex-row {
@@ -140,7 +149,7 @@
   .header {
     justify-content: space-between;
     display: flex;
-    padding: 1em 1em 0.7em 1em;
+    padding: 0.5em 1em 0em 1em;
     // background-color: mix(@background-color-highlight, @base-background-color, 40%);
 
     h4 {
