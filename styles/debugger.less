@@ -31,16 +31,15 @@
   .toolbar {
     padding: 0em 1em 0.5em 1em;
     line-height: 2.6em;
-    max-height: 125px;
 
     .inner-toolbar {
-      display: inline-block;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
       .flex-table-container {
-        padding: 0;
-        position: absolute;
         right: @component-padding;
         top: @component-padding;
-        display: inline;
         .flex-row {
           padding-left: 0px;
         }
@@ -76,8 +75,9 @@
     .ink-debug-toolbar {
       position: relative;
       transform: none;
-      left: 0;
       background-color: inherit;
+      position: inherit;
+      min-width: inherit;
 
       .code {
         font-family: var(--editor-font-family);
@@ -149,8 +149,9 @@
   .header {
     justify-content: space-between;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     padding: 0.5em 1em 0em 1em;
-    // background-color: mix(@background-color-highlight, @base-background-color, 40%);
 
     h4 {
       line-height: 2em;
