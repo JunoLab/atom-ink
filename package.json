@@ -24,10 +24,10 @@
     "katex": "0.11.0",
     "replace-in-file": "^3.0.0",
     "underscore-plus": "^1.6.6",
-    "xterm": "4.0.0",
-    "xterm-addon-fit": "^0.2.0",
-    "xterm-addon-search": "^0.2.0",
-    "xterm-addon-web-links": "^0.2.0"
+    "xterm": "4.2.0",
+    "xterm-addon-fit": "^0.3.0",
+    "xterm-addon-search": "^0.3.0",
+    "xterm-addon-web-links": "^0.2.1"
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
