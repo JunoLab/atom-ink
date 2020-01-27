@@ -26,13 +26,13 @@ module.exports =
 
   profileLines: (ls) ->
     markers = []
-    watch = @observeLines ls, (ed, {line, count}) =>
+    watch = @observeLines ls, (ed, {line, count, classes}) =>
       m = ed.markBufferRange [[line, 0], [line, 1+Math.round(count*ed.preferredLineLength)]],
         invalidate: 'touch'
       markers.push m
       ed.decorateMarker m,
         type: 'highlight'
-        class: 'ink-profile-line'
+        class: "ink-profile-line #{classes.join(' ')}"
     destroy: =>
       watch.dispose()
       m.destroy() for m in markers
