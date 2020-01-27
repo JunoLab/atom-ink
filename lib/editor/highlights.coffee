@@ -24,9 +24,11 @@ module.exports =
       watch.dispose()
       m.destroy() for m in markers
 
-  profileLineView: (ed, count) ->
+  profileLineView: (ed, count, classes) ->
     v = document.createElement 'div'
-    v.classList.add 'ink-profile-line'
+    v.classList.add('ink-profile-line')
+    v.classList.add(cl) for cl in classes
+
     v.style.width = count*ed.preferredLineLength/2 + 'em'
     v
 
@@ -38,8 +40,8 @@ module.exports =
       markers.push m
       ed.decorateMarker m,
         type: 'overlay'
-        item: @profileLineView ed, count
-        class: "ink-profile-line #{classes.join(' ')}"
+        item: @profileLineView ed, count, classes
+        class: 'ink-profile-overlay'
         avoidOverflow: false
 
     destroy: =>
