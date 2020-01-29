@@ -84,7 +84,7 @@ class StepperView
 
         @view.parentElement.style.maxWidth = (window.innerWidth - RESULT_OFFSET - 10 - this.left) + 'px'
         @view.style.maxWidth = w + 'px'
-      setTimeout((() => process.nextTick(() => window.requestAnimationFrame(@widthListener))), 15*1000/60)
+      setTimeout((() => process.nextTick(() => window.requestAnimationFrame(@widthListener))), 300)
 
     window.requestAnimationFrame(@widthListener)
 

@@ -135,8 +135,16 @@
   }
 }
 
-.ink-profile-line {
-  background: fade(@background-color-info, 20%);
+atom-overlay.ink-profile-overlay{
+  pointer-events: none;
+  z-index: 0 !important;
+  .ink-profile-line {
+    position: relative;
+    height: 1.5em;
+    top: -1.5em;
+    border-radius: 0px 5px 5px 0px;
+    background: fade(@background-color-info, 20%);
+  }
 }
 
 atom-text-editor {

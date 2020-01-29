@@ -24,15 +24,26 @@ module.exports =
       watch.dispose()
       m.destroy() for m in markers
 
+  profileLineView: (ed, count, classes) ->
+    v = document.createElement 'div'
+    v.classList.add('ink-profile-line')
+    v.classList.add(cl) for cl in classes
+
+    v.style.width = count*ed.preferredLineLength*ed.defaultCharWidth + 'px'
+    v
+
   profileLines: (ls) ->
     markers = []
-    watch = @observeLines ls, (ed, {line, count}) =>
-      m = ed.markBufferRange [[line, 0], [line, 1+Math.round(count*ed.preferredLineLength)]],
-        invalidate: 'touch'
+    watch = @observeLines ls, (ed, {line, count, classes}) =>
+      m = ed.markBufferRange [[line, 0], [line, 0]],
+        invalidate: 'never'
       markers.push m
       ed.decorateMarker m,
-        type: 'highlight'
-        class: 'ink-profile-line'
+        type: 'overlay'
+        item: @profileLineView ed, count, classes
+        class: 'ink-profile-overlay'
+        avoidOverflow: false
+
     destroy: =>
       watch.dispose()
       m.destroy() for m in markers
