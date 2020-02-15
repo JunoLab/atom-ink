@@ -31,11 +31,61 @@
   .toolbar {
     padding: 0em 1em 0.5em 1em;
     line-height: 2.6em;
+    .ink-debug-toolbar {
+      width: 100%;
+
+      .ink-btn-group-variable-width {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+
+        .ink-btn-variable-width {
+          flex: 1;
+          min-width: 3em;
+        }
+      }
+    }
 
     .inner-toolbar {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+
+      .debugger-runner {
+        width: ~"calc(100% + 2em + 10px)";
+        margin: 0 -1em 0 -1em;
+        padding: 0 ~"calc(1em + 5px)" 0 ~"calc(1em + 5px)";
+        background-color: @button-background-color;
+        border-bottom: 1px solid @pane-item-border-color;
+
+        display: flex;
+
+        .btn {
+          background: @button-background-color;
+          border: none;
+          border-radius: 0;
+          border-left: 1px solid @pane-item-border-color;
+          &:focus {
+            border: none;
+            box-shadow: none;
+            outline: none;
+          }
+        }
+        select {
+          background: @button-background-color;
+          border: none;
+          border-left: 1px solid @pane-item-border-color;
+          padding-left: 1em;
+          border-radius: 0;
+          width: inherit;
+          &:focus {
+            border: none;
+            box-shadow: none;
+            border-left: 1px solid @pane-item-border-color;
+          }
+        }
+      }
 
       .flex-table-container {
         right: @component-padding;
