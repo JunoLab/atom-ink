@@ -29,12 +29,15 @@ module.exports =
     v.classList.add('ink-profile-line')
     v.classList.add(cl) for cl in classes
 
-    v.style.width = count*ed.preferredLineLength*ed.defaultCharWidth + 'px'
+    # can't use ed.defaultCharWidth here because that sometimes seems to be 0
+    v.style.width = 0.1 + count*ed.preferredLineLength + 'em'
     v
 
   profileLines: (ls) ->
     markers = []
     watch = @observeLines ls, (ed, {line, count, classes}) =>
+      if line < 0 || line > ed.getLineCount()
+        return
       m = ed.markBufferRange [[line, 0], [line, 0]],
         invalidate: 'never'
       markers.push m
