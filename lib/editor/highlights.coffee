@@ -35,6 +35,8 @@ module.exports =
   profileLines: (ls) ->
     markers = []
     watch = @observeLines ls, (ed, {line, count, classes}) =>
+      if line < 0 || line > ed.getLineCount()
+        return
       m = ed.markBufferRange [[line, 0], [line, 0]],
         invalidate: 'never'
       markers.push m
