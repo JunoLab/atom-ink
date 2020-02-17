@@ -29,6 +29,7 @@ module.exports =
     v.classList.add('ink-profile-line')
     v.classList.add(cl) for cl in classes
 
+    # can't use ed.defaultCharWidth here because that sometimes seems to be 0
     v.style.width = 0.1 + count*ed.preferredLineLength + 'em'
     v
 
