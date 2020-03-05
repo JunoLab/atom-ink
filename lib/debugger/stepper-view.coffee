@@ -65,6 +65,7 @@ class StepperView
     @editor.decorateMarker @marker,
       type: 'overlay'
       item: @view
+      class: 'ink-overlay'
       avoidOverflow: false
     @widthListener = () =>
       ed = atom.views.getView(@editor)
