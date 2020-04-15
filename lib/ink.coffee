@@ -36,7 +36,6 @@ exportables =
   KaTeX: once(=> require('./util/katexify'))
   Profiler: once(=> require './plots/profiler')
   tree: once(=> require './tree')
-  goto: once(=> require './util/gotodef')
   Opener: once(=> require('./util/opener'))
   matchHighlighter: once(=> require './util/matchHighlighter')
   ansiToHTML: once(=> require './util/ansitohtml')
