@@ -26,10 +26,10 @@
     "underscore-plus": "^1.6.6",
     "xterm": "4.5.0",
     "xterm-addon-fit": "^0.3.0",
-    "xterm-addon-search": "^0.5.0",
+    "xterm-addon-search": "^0.6.0",
     "xterm-addon-unicode11": "^0.1.1",
-    "xterm-addon-web-links": "^0.2.1",
-    "xterm-addon-webgl": "^0.5.0"
+    "xterm-addon-web-links": "^0.3.0",
+    "xterm-addon-webgl": "^0.6.0"
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
