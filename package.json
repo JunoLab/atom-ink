@@ -24,12 +24,12 @@
     "marked": "^0.8.2",
     "replace-in-file": "^3.0.0",
     "underscore-plus": "^1.6.6",
-    "xterm": "4.5.0",
-    "xterm-addon-fit": "^0.3.0",
-    "xterm-addon-search": "^0.6.0",
-    "xterm-addon-unicode11": "^0.1.1",
-    "xterm-addon-web-links": "^0.3.0",
-    "xterm-addon-webgl": "^0.6.0"
+    "xterm": "4.6.0",
+    "xterm-addon-fit": "^0.4.0",
+    "xterm-addon-search": "^0.7.0",
+    "xterm-addon-unicode11": "^0.2.0",
+    "xterm-addon-web-links": "^0.4.0",
+    "xterm-addon-webgl": "^0.7.0"
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
