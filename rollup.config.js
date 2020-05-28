@@ -14,12 +14,7 @@ let plugins = [
     resolve({extensions: ['.js', '.coffee'], preferBuiltins: true}),
 
     // so Rollup can convert externals to an ES module
-    commonjs({
-        // undetected named exports
-        namedExports: {
-            // left-hand side can be an absolute path, a path relative to the current directory, or the name of a module in node_modules
-        },
-    }),
+    commonjs(),
 ];
 
 // minify only in production mode
@@ -38,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
 
 export default [
     {
-        input: 'lib/ink.coffee',
+        input: 'lib/ink.js',
         output: [
             {
                 dir: "dist",
