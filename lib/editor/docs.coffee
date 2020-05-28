@@ -1,7 +1,6 @@
-{CompositeDisposable} = require 'atom'
+import {CompositeDisposable} from 'atom'
 
-module.exports =
-class InlineDoc
+export default class InlineDoc
   constructor: (@editor, range, opts={}) ->
     @disposables = new CompositeDisposable
     InlineDoc.removeRangeRows @editor, range
