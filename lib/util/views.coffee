@@ -1,4 +1,4 @@
-module.exports = views =
+export default views =
   dom: ({tag, attrs, contents}) ->
     view = document.createElement tag
     for k, v of attrs
