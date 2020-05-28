@@ -1,4 +1,4 @@
-import {CompositeDisposable, Emitter} from 'atom'
+import {Emitter} from 'atom'
 
 # Tooltip
 #

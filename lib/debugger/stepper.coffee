@@ -4,7 +4,7 @@ import views from '../util/views'
 import {Emitter} from 'atom'
 import {focusEditorPane} from '../util/pane-item'
 {span} = views.tags
-import {open, isUntitled, getUntitledId, editorMatchesFile} from '../util/opener'
+import {open, editorMatchesFile} from '../util/opener'
 
 export default class Stepper
   constructor: ({@buttons, @pending}) ->
