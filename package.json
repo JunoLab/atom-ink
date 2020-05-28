@@ -1,6 +1,6 @@
 {
   "name": "ink",
-  "main": "./lib/ink",
+  "main": "./dist/ink",
   "version": "0.12.4",
   "description": "A toolkit for building IDEs in Atom",
   "keywords": [
@@ -32,7 +32,14 @@
     "xterm-addon-webgl": "^0.7.0"
   },
   "scripts": {
-    "postinstall": "node scripts/postinstall.js"
+    "postinstall": "node scripts/postinstall.js",
+    "clean": "shx rm -rf dist",
+    "debug": "npm run clean && shx cp -r lib dist && NODE_ENV=development BABEL_ENV=development babel dist --out-dir dist",
+    "dev": "npm run clean && NODE_ENV=development BABEL_ENV=production rollup -c -w",
+    "build": "npm run clean && NODE_ENV=production BABEL_ENV=production rollup -c",
+    "ppublish": "bash ./ppublish.sh",
+    "prepare": "npm run build"
+  },
   "devDependencies": {
     "@types/atom": "^1.40.4",
     "rollup": "^2.11.2",
