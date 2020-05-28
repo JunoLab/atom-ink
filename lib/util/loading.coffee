@@ -1,7 +1,6 @@
-{Emitter} = require 'atom'
+import {Emitter} from 'atom'
 
-module.exports =
-class Loading
+export default class Loading
 
   status: 0
 
