@@ -1,13 +1,12 @@
-StepperView = require './stepper-view'
-# {DebuggerToolbar} = require('./toolbar')
-views = require '../util/views'
-{Emitter} = require 'atom'
-{focusEditorPane} = require '../util/pane-item'
+import StepperView from './stepper-view'
+# import {DebuggerToolbar} from './toolbar'
+import views from '../util/views'
+import {Emitter} from 'atom'
+import {focusEditorPane} from '../util/pane-item'
 {span} = views.tags
-{open, isUntitled, getUntitledId, editorMatchesFile} = require '../util/opener'
+import {open, isUntitled, getUntitledId, editorMatchesFile} from '../util/opener'
 
-module.exports =
-class Stepper
+export default class Stepper
   constructor: ({@buttons, @pending}) ->
     @views = []
     # @bars = []
