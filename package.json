@@ -23,7 +23,7 @@
     "katex": "0.11.0",
     "marked": "^0.8.2",
     "replace-in-file": "^3.0.0",
-    "underscore-plus": "^1.6.6",
+    "underscore": "^1.10.2",
     "xterm": "4.6.0",
     "xterm-addon-fit": "^0.4.0",
     "xterm-addon-search": "^0.7.0",
