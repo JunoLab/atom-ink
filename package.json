@@ -34,7 +34,7 @@
   "scripts": {
     "postinstall": "node scripts/postinstall.js",
     "clean": "shx rm -rf dist",
-    "debug": "npm run clean && shx cp -r lib dist && env NODE_ENV=development env BABEL_ENV=development babel dist --out-dir dist",
+    "debug": "npm run clean && shx cp -r lib dist && coffee -c -M -o dist lib && env BABEL_ENV=development babel dist -d dist && shx rm -r dist/*.coffee",
     "dev": "npm run clean && env NODE_ENV=development env BABEL_ENV=production rollup -c -w",
     "build": "npm run clean && env NODE_ENV=production env BABEL_ENV=production rollup -c",
     "ppublish": "bash ./ppublish.sh",
