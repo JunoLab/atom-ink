@@ -104,6 +104,11 @@
   position: relative;
   pointer-events: auto;
 
+  // https://github.com/JunoLab/Juno.jl/issues/592
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   &:hover {
     opacity: 1 !important;
     .ink-result-toolbar {
