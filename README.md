@@ -1,5 +1,9 @@
 # Ink
 
+**Attention**: We have decided to join forces with the [Julia extension for VSCode](https://github.com/julia-vscode/julia-vscode). As such, this Atom-based plugin is effectively in “maintenance-only mode” and we expect to only work on bug fixes in the future.
+
+----
+
 [![Build Status](https://travis-ci.org/JunoLab/atom-ink.svg?branch=master)](https://travis-ci.org/JunoLab/atom-ink) [![Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JunoLab/atom-ink)
 
 Ink is a toolkit for building IDEs in Atom – in particular, it's aimed at providing the UI
