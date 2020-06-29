@@ -1,4 +1,4 @@
-{CompositeDisposable, Emitter} = require 'atom'
+import {Emitter} from 'atom'
 
 # Tooltip
 #
@@ -25,8 +25,7 @@
 # .destroy()
 #     Destroy the tooltip.
 
-module.exports =
-class Tooltip
+export default class Tooltip
   constructor: (@parent, content, {@cond, @showDelay, @hideDelay, @className, @position}={}) ->
     @cond  = (-> true)  unless @cond?
     @showDelay = 150    unless @showDelay?

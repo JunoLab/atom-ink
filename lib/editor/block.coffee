@@ -1,4 +1,4 @@
-module.exports =
+export default block =
   timeout: (t, f) -> setTimeout f, t
 
   # highlights the start-end range of the provided editor object for 20 ms

@@ -1,10 +1,9 @@
-{CompositeDisposable} = require 'atom'
+import {CompositeDisposable} from 'atom'
 
 MIN_RESULT_WIDTH = 30
 RESULT_OFFSET = 20
 
-module.exports =
-class StepperView
+export default class StepperView
 
   createView: ->
     @disposables = new CompositeDisposable

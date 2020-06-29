@@ -1,8 +1,8 @@
-views = require './util/views'
+import views from './util/views'
 
 {div, span} = views.tags
 
-module.exports =
+export default tree =
   treeView: (head, children, {expand, onToggle}={}) ->
     view = views.render div 'ink tree', [
       span 'icon icon-chevron-right open'

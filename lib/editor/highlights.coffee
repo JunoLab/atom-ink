@@ -1,6 +1,6 @@
-{editorMatchesFile} = require '../util/opener'
+import {editorMatchesFile} from '../util/opener'
 
-module.exports =
+export default highlights =
   observeLines: (ls, f) ->
     atom.workspace.observeTextEditors (ed) =>
       for l in ls
